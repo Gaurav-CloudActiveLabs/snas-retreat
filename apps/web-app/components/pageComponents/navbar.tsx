@@ -30,31 +30,31 @@ export default function Navbar() {
   };
 
   return (
-    <div className="min-h-screen relative">
-      <Header />
+    <div className="min-h-screen">
+    <Header />
 
-      {/* Slideshow Section */}
-      <section
-        className="relative h-screen"
-        onMouseEnter={() => setShowNavigation(true)}
-        onMouseLeave={() => setShowNavigation(false)}
-      >
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute top-0 left-0 w-full h-full transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Image
-              src={slide}
-              alt={`Slide ${index + 1}`}
-              layout="fill"
-              objectFit="cover"
-              quality={100}
-            />
-          </div>
-        ))}
+    {/* Slideshow Section */}
+    <section
+      className="h-screen"
+      onMouseEnter={() => setShowNavigation(true)}
+      onMouseLeave={() => setShowNavigation(false)}
+    >
+      {slides.map((slide, index) => (
+        <div
+          key={index}
+          className={`absolute top-0 inset-0 transition-opacity duration-1000 ${
+            index === currentSlide ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Image
+            src={slide}
+            alt={`Slide ${index + 1}`}
+            layout="fill"
+            objectFit="cover"
+            quality={100}
+          />
+        </div>
+      ))}
 
         {/* Overlay Text and Buttons */}
         <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center bg-black bg-opacity-40 px-2">
