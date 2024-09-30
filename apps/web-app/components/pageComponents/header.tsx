@@ -9,6 +9,7 @@ import {
   Youtube,
   CornerRightUp,
   Mail,
+  Linkedin,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { LogoRectangleWithoutBg } from "@/assets/svg";
@@ -71,17 +72,17 @@ export default function Header() {
               </div>
             </div>
             <div className="flex space-x-4 mt-2 sm:mt-0 mr-1">
-              <Link href="#" className="hover:text-gray-300">
+              <Link href="https://www.facebook.com/profile.php?id=61566001004942" className="hover:text-gray-300">
                 <Facebook size={16} />
               </Link>
-              <Link href="#" className="hover:text-gray-300">
+              <Link href="https://www.instagram.com/snasretreat/" className="hover:text-gray-300">
                 <Instagram size={16} />
               </Link>
-              <Link href="#" className="hover:text-gray-300">
+              <Link href="https://x.com/SNAS_RETREAT" className="hover:text-gray-300">
                 <Twitter size={16} />
               </Link>
-              <Link href="#" className="hover:text-gray-300">
-                <Youtube size={16} />
+              <Link href="https://www.linkedin.com/company/snas-retreat/" className="hover:text-gray-300">
+                <Linkedin size={16} />
               </Link>
             </div>
           </div>

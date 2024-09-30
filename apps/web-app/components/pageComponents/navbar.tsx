@@ -57,8 +57,8 @@ export default function Navbar() {
       ))}
 
         {/* Overlay Text and Buttons */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center bg-black bg-opacity-40 px-2">
-          <h1 className="text-3xl md:text-5xl font-bold mb-6">
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center bg-black bg-opacity-40 px-2 pt-40 md:pt-10">
+          <h1 className="text-2xl md:text-5xl font-bold mb-2 md:mb-6 pt-5">
             Enjoy A Luxury Experience
           </h1>
           <p className="max-w-2xl text-base md:text-lg mb-8">
@@ -68,7 +68,7 @@ export default function Navbar() {
             offering a 360-degree view of snow-clad peaks and lush apple
             orchards.
           </p>
-          <div className="relative flex items-center">
+          <div className="relative items-center hidden md:block">
             <button className="border-2 border-white text-white py-2 px-4 text-sm font-medium transition hover:bg-white hover:text-black md:py-3 md:px-6">
               BOOK YOUR STAY NOW
             </button>

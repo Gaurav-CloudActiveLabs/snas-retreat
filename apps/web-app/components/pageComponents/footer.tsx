@@ -59,7 +59,7 @@ export default function Footer() {
               <ul className="flex mt-8 space-x-6">
                 <li>
                   <Link
-                    href="#"
+                    href="https://www.facebook.com/profile.php?id=61566001004942"
                     className="hover:text-gray-300 transition duration-300"
                   >
                     <Facebook size={24} />
@@ -67,7 +67,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="https://www.instagram.com/snasretreat/"
                     className="hover:text-gray-300 transition duration-300"
                   >
                     <Instagram size={24} />
@@ -83,7 +83,7 @@ export default function Footer() {
                 </li> */}
                 <li>
                   <Link
-                    href="#"
+                    href="https://x.com/SNAS_RETREAT"
                     className="hover:text-gray-300 transition duration-300"
                   >
                     <Twitter size={24} />
@@ -91,7 +91,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="#"
+                    href="https://www.linkedin.com/company/snas-retreat/"
                     className="hover:text-gray-300 transition duration-300"
                   >
                     <Linkedin size={24} />
