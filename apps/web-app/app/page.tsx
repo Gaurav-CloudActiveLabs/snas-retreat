@@ -8,7 +8,6 @@ import Location from "@/components/pageComponents/Location";
 import Navbar from "@/components/pageComponents/navbar";
 import RoomShowCase from "@/components/pageComponents/RoomShowcase";
 import TestimonialSection from "@/components/pageComponents/testimonial";
-import VideoTour from "@/components/pageComponents/VideoTour";
 
 export default function Home() {
   return (

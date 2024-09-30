@@ -1,7 +1,5 @@
 import { Calendar, Users, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; // Assuming you still need this import
-import { Select } from "@/components/ui/select"; // Assuming you still need this import
 import BookingImg from "../../assets/BOOK_A_ROOM.png";
 import Image from "next/image";
 

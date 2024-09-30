@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   Clock,
@@ -10,7 +9,6 @@ import {
   Youtube,
   CornerRightUp,
 } from "lucide-react";
-import logo from "../../assets/LOGO_RECTANGLE_WITHOUT_BG.png";
 import { Button } from "../ui/button";
 import { LogoRectangleWithoutBg } from "@/assets/svg";
 

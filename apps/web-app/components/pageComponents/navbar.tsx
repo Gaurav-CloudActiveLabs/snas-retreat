@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Play, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {  X, ChevronLeft, ChevronRight } from "lucide-react";
 import slider1 from "../../assets/slider1.png";
 import slider2 from "../../assets/slider2.png"
 import slider3 from "../../assets/SLIDER3.png";

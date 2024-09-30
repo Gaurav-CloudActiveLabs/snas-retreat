@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   Phone,
@@ -7,11 +6,8 @@ import {
   Facebook,
   Twitter,
   Instagram,
-  Send,
   Linkedin,
 } from "lucide-react";
-import footerBg from "../../assets/footer-bg.png";
-import LOGO_SQUARE from "../../assets/LOGO_SQUARE_WITHOUT_BG.png";
 import {  LogoSquareWithoutBg } from "@/assets/svg";
 
 export default function Footer() {

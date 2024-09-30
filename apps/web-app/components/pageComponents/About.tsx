@@ -1,4 +1,3 @@
-import { Check } from "lucide-react";
 import { Button } from "../ui/button";
 import AboutImg from "../../assets/about.png";
 import Image from "next/image";
@@ -6,6 +5,7 @@ import Image from "next/image";
 export default function About() {
   return (
     <div className="lg:px-28 px-10 mx-auto py-12 fon">
+
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Image Section */}
         <div className="lg:w-1/2">
