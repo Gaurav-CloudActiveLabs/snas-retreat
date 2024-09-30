@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  Clock,
   Phone,
   Facebook,
   Instagram,
   Twitter,
-  Youtube,
   CornerRightUp,
   Mail,
   Linkedin,
@@ -72,16 +70,28 @@ export default function Header() {
               </div>
             </div>
             <div className="flex space-x-4 mt-2 sm:mt-0 mr-1">
-              <Link href="https://www.facebook.com/profile.php?id=61566001004942" className="hover:text-gray-300">
+              <Link
+                href="https://www.facebook.com/profile.php?id=61566001004942"
+                className="hover:text-gray-300"
+              >
                 <Facebook size={16} />
               </Link>
-              <Link href="https://www.instagram.com/snasretreat/" className="hover:text-gray-300">
+              <Link
+                href="https://www.instagram.com/snasretreat/"
+                className="hover:text-gray-300"
+              >
                 <Instagram size={16} />
               </Link>
-              <Link href="https://x.com/SNAS_RETREAT" className="hover:text-gray-300">
+              <Link
+                href="https://x.com/SNAS_RETREAT"
+                className="hover:text-gray-300"
+              >
                 <Twitter size={16} />
               </Link>
-              <Link href="https://www.linkedin.com/company/snas-retreat/" className="hover:text-gray-300">
+              <Link
+                href="https://www.linkedin.com/company/snas-retreat/"
+                className="hover:text-gray-300"
+              >
                 <Linkedin size={16} />
               </Link>
             </div>
