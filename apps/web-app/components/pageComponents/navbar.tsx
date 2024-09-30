@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import {  X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import slider1 from "../../assets/SLIDER1.png";
-import slider2 from "../../assets/SLIDER2.png"
+import slider2 from "../../assets/SLIDER2.png";
 import slider3 from "../../assets/SLIDER3.png";
 import Image from "next/image";
 import Header from "./header";
@@ -30,19 +30,19 @@ export default function Navbar() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Header />
 
       {/* Slideshow Section */}
       <section
-        className="h-screen"
+        className="relative h-screen"
         onMouseEnter={() => setShowNavigation(true)}
         onMouseLeave={() => setShowNavigation(false)}
       >
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute top-0 inset-0 transition-opacity duration-1000 ${
+            className={`absolute top-0 left-0 w-full h-full transition-opacity duration-1000 ${
               index === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -57,35 +57,33 @@ export default function Navbar() {
         ))}
 
         {/* Overlay Text and Buttons */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="text-center text-white px-4 sm:px-0 max-w-2xl">
-            <h1
-              className="text-3xl md:text-4xl font-semibold mb-4"
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center bg-black bg-opacity-40 px-2">
+          <h1 className="text-3xl md:text-5xl font-bold mb-6">
+            Enjoy A Luxury Experience
+          </h1>
+          <p className="max-w-2xl text-base md:text-lg mb-8">
+            Welcome to SNAS RETREAT, where luxury meets tranquility. Escape the
+            bustle of daily life and indulge in the serene beauty of Manali’s
+            majestic mountains. Relax in the comfort of our boutique hotel,
+            offering a 360-degree view of snow-clad peaks and lush apple
+            orchards.
+          </p>
+          <div className="relative flex items-center">
+            <button className="border-2 border-white text-white py-2 px-4 text-sm font-medium transition hover:bg-white hover:text-black md:py-3 md:px-6">
+              BOOK YOUR STAY NOW
+            </button>
+            <button
+              className="block md:hidden absolute left-[-50px] md:left-[-60px] top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-opacity md:p-3"
+              onClick={prevSlide}
             >
-              Enjoy A Luxury Experience
-            </h1>
-            <p className="mb-8 max-w-xl sm:max-w-2xl mx-auto text-sm sm:text-base ">
-              Welcome to SNAS RETREAT, where luxury meets tranquility. Escape
-              the bustle of daily life and indulge in the serene beauty of
-              Manali’s majestic mountains. Relax in the comfort of our boutique
-              hotel, offering a 360-degree view of snow-clad peaks and lush
-              apple orchards
-            </p>
-            <div>
-              <button
-                className="border-solid-white-600 text-white py-3 px-4 lg:px-28 text-sm font-normal"
-                style={{ border: "2px solid #fff" }}
-              >
-                Book Your Stay Now
-              </button>
-              {/* <button
-                className="text-white py-3 px-6 text-sm font-normal flex items-center justify-center"
-                onClick={() => setShowVideo(true)}
-              >
-                <Play size={50} className="w-12 h-12 text-white" />
-                <span style={{ marginLeft: 10 }}>INTRO VIDEO</span>
-              </button> */}
-            </div>
+              <ChevronLeft size={20} className="md:size-22" />
+            </button>
+            <button
+              className="block md:hidden absolute right-[-50px] md:right-[-60px] top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-opacity md:p-3"
+              onClick={nextSlide}
+            >
+              <ChevronRight size={20} className="md:size-22" />
+            </button>
           </div>
         </div>
 
@@ -93,16 +91,16 @@ export default function Navbar() {
         {showNavigation && (
           <>
             <button
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-4 rounded-full hover:bg-opacity-75 transition-opacity"
+              className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-3 rounded-full hover:bg-opacity-75 transition-opacity md:p-4"
               onClick={prevSlide}
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={20} className="md:size-22" />
             </button>
             <button
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-4 rounded-full hover:bg-opacity-75 transition-opacity"
+              className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-3 rounded-full hover:bg-opacity-75 transition-opacity md:p-4"
               onClick={nextSlide}
             >
-              <ChevronRight size={24} />
+              <ChevronRight size={20} className="md:size-22" />
             </button>
           </>
         )}
@@ -114,7 +112,7 @@ export default function Navbar() {
       {/* Video Modal */}
       {showVideo && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="relative bg-white rounded-lg w-4/5 h-4/5 px-28 p-0 m-4">
+          <div className="relative bg-white rounded-lg w-4/5 h-4/5 p-0 m-4">
             <button
               className="absolute -top-10 -right-5 z-50 text-white hover:text-white"
               onClick={() => setShowVideo(false)}

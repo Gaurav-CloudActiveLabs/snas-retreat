@@ -9,7 +9,7 @@ import {
 
 export default function BookingForm() {
   return (
-    <div className="lg:px-28 px-10 mx-auto lg:-mt-20 md:-mt-20 -mt-40 relative z-10">
+    <div className="lg:px-28 px-10 mx-auto lg:-mt-20 md:-mt-20 mt-5 relative z-10">
       <div
         className="bg-white p-6 pt-10 shadow-lg"
         style={{

@@ -25,7 +25,7 @@ export default function Footer() {
             {/* Brand */}
             <div>
               <h2 className="text-2xl font-bold mb-2 sm:align-middle">Our Brand</h2>
-              <div className="-ml-12">
+              <div className="-ml-12 mt-6">
                 <LogoSquareWithoutBg width={250} height={250}/>
               </div>
             </div>

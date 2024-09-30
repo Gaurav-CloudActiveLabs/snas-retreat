@@ -8,6 +8,7 @@ import {
   Twitter,
   Youtube,
   CornerRightUp,
+  Mail,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { LogoRectangleWithoutBg } from "@/assets/svg";
@@ -15,6 +16,24 @@ import { LogoRectangleWithoutBg } from "@/assets/svg";
 export default function Header() {
   const [isSticky, setIsSticky] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [logoSize, setLogoSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const updateLogoSize = () => {
+      if (window.innerWidth >= 1024) {
+        setLogoSize({ width: 400, height: 80 });
+      } else if (window.innerWidth >= 768) {
+        setLogoSize({ width: 300, height: 80 });
+      } else {
+        setLogoSize({ width: 150, height: 50 });
+      }
+    };
+
+    window.addEventListener("resize", updateLogoSize);
+    updateLogoSize(); // call on initial render
+
+    return () => window.removeEventListener("resize", updateLogoSize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,12 +62,12 @@ export default function Header() {
           <div className="flex flex-col sm:flex-row justify-between items-center text-xs sm:text-sm">
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <div className="flex items-center space-x-2">
-                <Clock size={16} />
-                <span>Mon - Fri: 9:00 - 19:00 / Closed on Weekends</span>
+                <Mail size={16} />
+                <span>info@snasretreat.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={16} />
-                <span>+91 705 210-1786</span>
+                <span>+91 70183 19517</span>
               </div>
             </div>
             <div className="flex space-x-4 mt-2 sm:mt-0 mr-1">
@@ -71,7 +90,7 @@ export default function Header() {
 
       {/* Main header */}
       <header
-        className={`z-10 w-full transition-all duration-300 ${
+        className={`z-10 w-full transition-all duration-300 py-2 ${
           isSticky
             ? "fixed top-0 left-0 right-0 z-50 bg-[#654222] shadow-lg"
             : "relative top-0 bg-[#09090975] z-50"
@@ -79,8 +98,11 @@ export default function Header() {
       >
         <div className="lg:px-28 px-2 mx-auto ">
           <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center lg:-ml-4">
-              <LogoRectangleWithoutBg width={200} height={80} />
+            <Link href="/" className="flex items-center lg:-ml-12">
+              <LogoRectangleWithoutBg
+                width={logoSize?.width}
+                height={logoSize?.height}
+              />
             </Link>
             <nav className="hidden lg:block">
               <ul className="flex space-x-6 text-white cursor-pointer">
