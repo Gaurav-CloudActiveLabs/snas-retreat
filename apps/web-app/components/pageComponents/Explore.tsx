@@ -12,6 +12,7 @@ import BestAccommodation from "../../assets/BEST_ACCOMMODATION.png";
 import RestaurantBars from "../../assets/RESTAURANTS_AND_A_BAR.png";
 import SpecialOffers from "../../assets/OFFERS.png";
 import MountainView from "../../assets/MOUNTAIN_VIEW.png";
+import MountainBackground from "../../assets/OBJECTS.png"; // Import the MountainBackground image
 
 export default function Explore() {
   const cardData = [
@@ -54,8 +55,32 @@ export default function Explore() {
   ];
 
   return (
-    <div className="bg-[#f5f1eb] min-h-screen py-8">
-      <div className="lg:px-28 px-10 mx-auto">
+    <div className="relative bg-[#f5f1eb] min-h-screen py-8">
+      {/* Add Mountain Background Image to the left side */}
+      <div className="absolute left-0 top-0 w-1/4 h-full z-0">
+        <Image
+          src={MountainBackground}
+          alt="Mountain Background"
+          layout="fill"
+          objectFit="contain"
+          className="opacity-20"
+          style={{ objectPosition: "top left" }}
+        />
+      </div>
+
+      {/* Add Mountain Background Image to the right side */}
+      <div className="absolute right-0 top-0 w-1/4 h-full z-0">
+        <Image
+          src={MountainBackground}
+          alt="Mountain Background"
+          layout="fill"
+          objectFit="contain"
+          className="opacity-20"
+          style={{ objectPosition: "bottom right" }}
+        />
+      </div>
+
+      <div className="lg:px-28 px-10 mx-auto relative z-10">
         <h1 className="text-3xl md:text-4xl font-bold text-center text-[#644222] mb-6 mt-8 leading-tight">
           Explore SNAS RETREAT
         </h1>
@@ -69,7 +94,7 @@ export default function Explore() {
             <Card
               key={index}
               className="bg-white border-none shadow-md transition-all transform hover:scale-105 hover:shadow-2xl duration-300 ease-in-out"
-              style={{ borderRadius: "0px"}}
+              style={{ borderRadius: "0px" }}
             >
               <CardHeader>
                 <div className="flex justify-center mb-4">
