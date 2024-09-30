@@ -1,0 +1,13 @@
+{
+  "name": "snas-retreat-manali",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://code.clipl.net/vikalp.shandilya/SnasRetreatManali.git",
+  "author": "CloudVikalp <vikalp.shandilya@cloudactivelabs.in>",
+  "license": "MIT",
+  "packageManager": "yarn@4.4.1",
+  "workspaces": [
+    "apps/*",
+    "services/*"
+  ]
+}
