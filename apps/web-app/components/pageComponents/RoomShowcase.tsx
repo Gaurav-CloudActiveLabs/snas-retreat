@@ -1,5 +1,5 @@
 import RoomCard from "./RoomCard";
-import Room1 from "../../assets/room1.png";
+import Room1 from "../../assets/Room1.png";
 import Room2 from "../../assets/ROOM2.png";
 
 const rooms = [
