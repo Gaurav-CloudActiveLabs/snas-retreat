@@ -9,7 +9,7 @@ import {
 
 export default function BookingForm() {
   return (
-    <div className="lg:px-28 px-10 mx-auto lg:-mt-20 md:-mt-20 mt-5 relative z-10">
+    <div className="lg:px-28 px-10 mx-auto lg:-mt-20 md:-mt-20 mt-10 relative z-10">
       <div
         className="bg-white p-6 pt-10 shadow-lg"
         style={{
@@ -103,9 +103,8 @@ export default function BookingForm() {
               id="room"
               className="w-full p-3 border rounded-md text-gray-700"
             >
-              <option>Standard</option>
               <option>Deluxe</option>
-              <option>Suite</option>
+              <option>Premium</option>
             </select>
           </div>
 

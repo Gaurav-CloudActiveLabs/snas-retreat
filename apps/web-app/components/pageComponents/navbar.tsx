@@ -31,59 +31,64 @@ export default function Navbar() {
 
   return (
     <div className="min-h-screen">
-    <Header />
+      <Header />
 
-    {/* Slideshow Section */}
-    <section
-      className="h-screen"
-      onMouseEnter={() => setShowNavigation(true)}
-      onMouseLeave={() => setShowNavigation(false)}
-    >
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`absolute top-0 inset-0 transition-opacity duration-1000 ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <Image
-            src={slide}
-            alt={`Slide ${index + 1}`}
-            layout="fill"
-            objectFit="cover"
-            quality={100}
-          />
-        </div>
-      ))}
+      {/* Slideshow Section */}
+      <section
+        className="h-72 md:h-screen "
+        onMouseEnter={() => setShowNavigation(true)}
+        onMouseLeave={() => setShowNavigation(false)}
+      >
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute top-0 inset-0 transition-opacity duration-1000 ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Image
+              src={slide}
+              alt={`Slide ${index + 1}`}
+              layout="fill"
+              objectFit="cover"
+              quality={100}
+            />
+          </div>
+        ))}
 
         {/* Overlay Text and Buttons */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center bg-black bg-opacity-40 px-2 pt-40 md:pt-10">
-          <h1 className="text-2xl md:text-5xl font-bold mb-2 md:mb-6 pt-5">
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center bg-black bg-opacity-40 px-2 pt-20 md:pt-10">
+          <h1 className="text-2xl md:text-5xl font-bold mb-2 md:mb-6 pt-10">
             Enjoy A Luxury Experience
           </h1>
-          <p className="max-w-2xl text-base md:text-lg mb-8">
+          <p className="max-w-2xl text-[12px] md:text-lg mb-4">
             Welcome to SNAS RETREAT, where luxury meets tranquility. Escape the
             bustle of daily life and indulge in the serene beauty of Manali’s
             majestic mountains. Relax in the comfort of our boutique hotel,
             offering a 360-degree view of snow-clad peaks and lush apple
             orchards.
           </p>
-          <div className="relative items-center hidden md:block">
+          <div className="relative flex items-center">
             <button className="border-2 border-white text-white py-2 px-4 text-sm font-medium transition hover:bg-white hover:text-black md:py-3 md:px-6">
               BOOK YOUR STAY NOW
             </button>
-            <button
-              className="block md:hidden absolute left-[-50px] md:left-[-60px] top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-opacity md:p-3"
-              onClick={prevSlide}
-            >
-              <ChevronLeft size={20} className="md:size-22" />
-            </button>
-            <button
-              className="block md:hidden absolute right-[-50px] md:right-[-60px] top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-opacity md:p-3"
-              onClick={nextSlide}
-            >
-              <ChevronRight size={20} className="md:size-22" />
-            </button>
+
+            {showNavigation && (
+              <>
+                <button
+                  className="block md:hidden absolute left-[-40px] top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-opacity"
+                  onClick={prevSlide}
+                >
+                  <ChevronLeft size={20} className="md:w-6 md:h-6" />
+                </button>
+                <button
+                  className="block md:hidden absolute right-[-40px] top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-opacity"
+                  onClick={nextSlide}
+                >
+                  <ChevronRight size={20} className="md:w-6 md:h-6" />
+                </button>
+              </>
+            )}
           </div>
         </div>
 
