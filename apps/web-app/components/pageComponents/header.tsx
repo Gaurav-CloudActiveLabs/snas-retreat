@@ -148,7 +148,7 @@ export default function Header() {
               </Link>
             </div>
 
-            <Button onClick={toggleSidebar} className="lg:hidden text-white">
+            <Button onClick={toggleSidebar} className="mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -183,7 +183,7 @@ export default function Header() {
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          <Button onClick={toggleSidebar} className="mb-6 text-white">
+          <Button onClick={toggleSidebar} className={`mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none`}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -227,7 +227,7 @@ export default function Header() {
       </div>
       <div className="fixed bottom-4 right-4 z-50 ">
         <button
-          className=" bg-[#654222] text-white p-3 rounded-full shadow-lg hover:bg-primary-dark transition-colors"
+          className={`bg-[#654224] text-white p-3 rounded-full shadow-lg hover:bg-primary-dark transition-colors`}
           onClick={() => scrollToSection("Home")}
         >
           <CornerRightUp className="w-6 h-6 z-50 bg-[#654222]" />

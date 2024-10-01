@@ -3,12 +3,22 @@ import { Button } from "@/components/ui/button";
 import BookingImg from "../../assets/BOOK_A_ROOM.png";
 import MountainBackground from "../../assets/OBJECTS.png"; // Import the MountainBackground image
 import Image from "next/image";
+import { motion } from "framer-motion"; // Import framer-motion for animations
 
 export default function Appointment() {
   return (
-    <div className="relative  min-h-screen py-8">
-      {/* Add Mountain Background Image to the left side */}
-      <div className="absolute left-0 top-0 w-1/4 h-full z-0">
+    <div className="relative min-h-screen py-8">
+      {/* Add Mountain Background Image to the left side with animation */}
+      <motion.div
+        className="absolute left-0 top-0 w-1/4 h-full z-0"
+        animate={{ y: [0, -10, 0] }} // Animation for shaking effect
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut",
+        }}
+      >
         <Image
           src={MountainBackground}
           alt="Mountain Background"
@@ -17,10 +27,19 @@ export default function Appointment() {
           className="opacity-20"
           style={{ objectPosition: "top left" }}
         />
-      </div>
+      </motion.div>
 
-      {/* Add Mountain Background Image to the right side */}
-      <div className="absolute right-0 top-0 w-1/4 h-full z-0">
+      {/* Add Mountain Background Image to the right side with animation */}
+      <motion.div
+        className="absolute right-0 top-0 w-1/4 h-full z-0"
+        animate={{ y: [0, 10, 0] }} // Animation for shaking effect
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut",
+        }}
+      >
         <Image
           src={MountainBackground}
           alt="Mountain Background"
@@ -29,12 +48,12 @@ export default function Appointment() {
           className="opacity-20"
           style={{ objectPosition: "bottom right" }}
         />
-      </div>
+      </motion.div>
 
       <div className="lg:px-28 px-10 mx-auto py-20 relative z-10">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="lg:w-1/2">
-            <div className="mx-auto ">
+            <div className="mx-auto">
               <h1 className="text-3xl md:text-4xl font-bold text-[#644222]  mb-4 mt-6 text-center">
                 Book Your Luxury Retreat
               </h1>
@@ -126,9 +145,8 @@ export default function Appointment() {
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-brown-500 appearance-none bg-white"
                       >
                         <option>Room</option>
-                        <option value="single">Single Room</option>
-                        <option value="double">Double Room</option>
-                        <option value="suite">Suite</option>
+                        <option value="single">Deluxe</option>
+                        <option value="double">Premium</option>
                       </select>
                       <Home
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"

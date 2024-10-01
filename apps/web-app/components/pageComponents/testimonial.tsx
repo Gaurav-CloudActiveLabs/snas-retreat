@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Star, Quote } from "lucide-react";
 import testimonialBg from "../../assets/testimonialBg.png";
 import MaleAvatar from "../../assets/MaleAvatar.jpg"; // replace with the actual male avatar image path
@@ -50,8 +50,32 @@ const testimonials = [
 
 export default function TestimonialSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [testimonialsPerPage, setTestimonialsPerPage] = useState(3);
 
-  const testimonialsPerPage = 3; // Number of testimonials to display per dot
+  useEffect(() => {
+    // Update the number of testimonials per page based on the screen size
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setTestimonialsPerPage(3); // Large screens (desktop) show 3 testimonials per page
+      } else if (window.innerWidth >= 768) {
+        setTestimonialsPerPage(2); // Medium screens (tablet) show 2 testimonials per page
+      } else {
+        setTestimonialsPerPage(1); // Small screens (mobile) show 1 testimonial per page
+      }
+    };
+
+    // Set initial value
+    handleResize();
+
+    // Add event listener to handle screen resize
+    window.addEventListener("resize", handleResize);
+
+    // Clean up event listener on unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const numberOfDots = Math.ceil(testimonials.length / testimonialsPerPage);
 
   const handleDotClick = (index: SetStateAction<number>) => {
@@ -67,7 +91,7 @@ export default function TestimonialSection() {
   return (
     <section
       className="py-16 lg:px-28 px-10 mx-auto bg-[#f4f4f4] bg-cover"
-      style={{ backgroundImage: `url(${testimonialBg})` }}
+      style={{ backgroundImage: `url(${testimonialBg.src})` }}
     >
       <div className="">
         <h3 className="text-3xl md:text-4xl font-bold text-center text-[#644222] mb-6 mt-4">
@@ -75,7 +99,7 @@ export default function TestimonialSection() {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {currentTestimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white p-8  shadow-lg">
+            <div key={index} className="bg-white p-8 shadow-lg">
               <div className="flex items-center mb-4">
                 <Image
                   src={testimonial.image}
