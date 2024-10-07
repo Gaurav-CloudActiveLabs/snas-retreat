@@ -42,7 +42,7 @@ export const Review = list({
         },
       }),
       image: image({
-        storage: 'my_image_storage'
+        storage: 'my_local_images'
       }),
   },
 });

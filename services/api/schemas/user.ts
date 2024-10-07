@@ -26,14 +26,14 @@ export const User = list({
       validation: { isRequired: true },
       isIndexed: "unique",
     }),
-    passwordHash: password({ validation: { isRequired: true } }),
+    password: password({ validation: { isRequired: true } }),
     userType: select({
       type: "enum",
       options: [
         { label: 'USER', value: 'User' },
         { label: 'ADMIN', value: 'Admin' },
       ],
-      defaultValue: 'USER',
+      defaultValue: 'User',
     }),
     bookings: relationship({
       ref: "Booking.user", 

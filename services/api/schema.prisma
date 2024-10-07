@@ -12,27 +12,224 @@ generator client {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  name      String    @default("")
-  email     String    @unique @default("")
-  password  String
-  posts     Post[]    @relation("Post_author")
-  createdAt DateTime? @default(now())
+  id                     String            @id @default(cuid())
+  name                   String            @default("")
+  email                  String            @unique @default("")
+  phoneNumber            String            @unique @default("")
+  password               String
+  userType               UserUserTypeType? @default(User)
+  bookings               Booking[]         @relation("Booking_user")
+  reviews                Review[]          @relation("Review_user")
+  updatedAt              DateTime?         @updatedAt
+  createdAt              DateTime?         @default(now())
+  updatedBy              User?             @relation("User_updatedBy", fields: [updatedById], references: [id])
+  updatedById            String?           @map("updatedBy")
+  createdBy              User?             @relation("User_createdBy", fields: [createdById], references: [id])
+  createdById            String?           @map("createdBy")
+  from_User_updatedBy    User[]            @relation("User_updatedBy")
+  from_User_createdBy    User[]            @relation("User_createdBy")
+  from_Room_updatedBy    Room[]            @relation("Room_updatedBy")
+  from_Room_createdBy    Room[]            @relation("Room_createdBy")
+  from_Booking_updatedBy Booking[]         @relation("Booking_updatedBy")
+  from_Booking_createdBy Booking[]         @relation("Booking_createdBy")
+  from_Payment_updatedBy Payment[]         @relation("Payment_updatedBy")
+  from_Payment_createdBy Payment[]         @relation("Payment_createdBy")
+  from_Review_updatedBy  Review[]          @relation("Review_updatedBy")
+  from_Review_createdBy  Review[]          @relation("Review_createdBy")
+  from_Slider_updatedBy  Slider[]          @relation("Slider_updatedBy")
+  from_Slider_createdBy  Slider[]          @relation("Slider_createdBy")
+
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
 }
 
-model Post {
-  id       String  @id @default(cuid())
-  title    String  @default("")
-  content  Json    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  author   User?   @relation("Post_author", fields: [authorId], references: [id])
-  authorId String? @map("author")
-  tags     Tag[]   @relation("Post_tags")
+model Room {
+  id          String           @id @default(cuid())
+  roomType    RoomRoomTypeType @default(Premium)
+  roomNumber  String           @default("")
+  price       Float
+  description String           @default("")
+  isAvailable Boolean          @default(true)
+  bookings    Booking[]        @relation("Booking_room")
+  reviews     Review[]         @relation("Review_room")
+  images      RoomImage[]      @relation("RoomImage_room")
+  updatedAt   DateTime?        @updatedAt
+  createdAt   DateTime?        @default(now())
+  updatedBy   User?            @relation("Room_updatedBy", fields: [updatedById], references: [id])
+  updatedById String?          @map("updatedBy")
+  createdBy   User?            @relation("Room_createdBy", fields: [createdById], references: [id])
+  createdById String?          @map("createdBy")
 
-  @@index([authorId])
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
 }
 
-model Tag {
-  id    String @id @default(cuid())
-  name  String @default("")
-  posts Post[] @relation("Post_tags")
+model Booking {
+  id            String                    @id @default(cuid())
+  user          User?                     @relation("Booking_user", fields: [userId], references: [id])
+  userId        String?                   @map("user")
+  bookingNumber String                    @unique @default("")
+  room          Room?                     @relation("Booking_room", fields: [roomId], references: [id])
+  roomId        String?                   @map("room")
+  checkInDate   DateTime
+  checkOutDate  DateTime
+  totalPrice    Float
+  status        BookingStatusType?        @default(PENDING)
+  payment       Payment?                  @relation("Booking_payment", fields: [paymentId], references: [id])
+  paymentId     String?                   @unique @map("payment")
+  invoice       Invoice?                  @relation("Booking_invoice", fields: [invoiceId], references: [id])
+  invoiceId     String?                   @unique @map("invoice")
+  paymentStatus BookingPaymentStatusType? @default(Unpaid)
+  updatedAt     DateTime?                 @updatedAt
+  createdAt     DateTime?                 @default(now())
+  updatedBy     User?                     @relation("Booking_updatedBy", fields: [updatedById], references: [id])
+  updatedById   String?                   @map("updatedBy")
+  createdBy     User?                     @relation("Booking_createdBy", fields: [createdById], references: [id])
+  createdById   String?                   @map("createdBy")
+
+  @@index([userId])
+  @@index([roomId])
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
+}
+
+model Payment {
+  id            String                   @id @default(cuid())
+  booking       Booking?                 @relation("Booking_payment")
+  paymentMethod PaymentPaymentMethodType @default(CARD)
+  requestId     String                   @default("")
+  transactionId String?
+  bookingNumber String?
+  status        PaymentStatusType        @default(Pending)
+  amount        Float
+  updatedAt     DateTime?                @updatedAt
+  createdAt     DateTime?                @default(now())
+  updatedBy     User?                    @relation("Payment_updatedBy", fields: [updatedById], references: [id])
+  updatedById   String?                  @map("updatedBy")
+  createdBy     User?                    @relation("Payment_createdBy", fields: [createdById], references: [id])
+  createdById   String?                  @map("createdBy")
+
+  @@index([requestId])
+  @@index([transactionId])
+  @@index([bookingNumber])
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
+}
+
+model Review {
+  id              String    @id @default(cuid())
+  user            User?     @relation("Review_user", fields: [userId], references: [id])
+  userId          String?   @map("user")
+  room            Room?     @relation("Review_room", fields: [roomId], references: [id])
+  roomId          String?   @map("room")
+  rating          Int
+  comment         String    @default("")
+  image_id        String?
+  image_filesize  Int?
+  image_width     Int?
+  image_height    Int?
+  image_extension String?
+  updatedAt       DateTime? @updatedAt
+  createdAt       DateTime? @default(now())
+  updatedBy       User?     @relation("Review_updatedBy", fields: [updatedById], references: [id])
+  updatedById     String?   @map("updatedBy")
+  createdBy       User?     @relation("Review_createdBy", fields: [createdById], references: [id])
+  createdById     String?   @map("createdBy")
+
+  @@index([userId])
+  @@index([roomId])
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
+}
+
+model Slider {
+  id              String    @id @default(cuid())
+  image_id        String?
+  image_filesize  Int?
+  image_width     Int?
+  image_height    Int?
+  image_extension String?
+  details         String    @default("")
+  updatedAt       DateTime? @updatedAt
+  createdAt       DateTime? @default(now())
+  updatedBy       User?     @relation("Slider_updatedBy", fields: [updatedById], references: [id])
+  updatedById     String?   @map("updatedBy")
+  createdBy       User?     @relation("Slider_createdBy", fields: [createdById], references: [id])
+  createdById     String?   @map("createdBy")
+
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
+}
+
+model RoomImage {
+  id              String  @id @default(cuid())
+  image_id        String?
+  image_filesize  Int?
+  image_width     Int?
+  image_height    Int?
+  image_extension String?
+  description     String  @default("")
+  room            Room?   @relation("RoomImage_room", fields: [roomId], references: [id])
+  roomId          String? @map("room")
+
+  @@index([roomId])
+}
+
+model Faq {
+  id       String @id @default(cuid())
+  question String @default("")
+  answer   String @default("")
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  booking       Booking? @relation("Booking_invoice")
+  invoiceNumber String   @unique @default("")
+  amount        Float
+  taxDetails    String   @default("")
+}
+
+enum UserUserTypeType {
+  User
+  Admin
+}
+
+enum RoomRoomTypeType {
+  Deluxe
+  Premium
+}
+
+enum BookingStatusType {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum BookingPaymentStatusType {
+  Paid
+  Unpaid
+}
+
+enum PaymentPaymentMethodType {
+  CARD
+  UPI
+  NET_BANKING
+}
+
+enum PaymentStatusType {
+  Success
+  Failed
+  Pending
 }

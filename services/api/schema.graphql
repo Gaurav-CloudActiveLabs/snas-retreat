@@ -5,14 +5,26 @@ type User {
   id: ID!
   name: String
   email: String
+  phoneNumber: String
   password: PasswordState
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
+  userType: UserUserTypeType
+  bookings(where: BookingWhereInput! = {}, orderBy: [BookingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookingWhereUniqueInput): [Booking!]
+  bookingsCount(where: BookingWhereInput! = {}): Int
+  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  reviewsCount(where: ReviewWhereInput! = {}): Int
+  updatedAt: DateTime
   createdAt: DateTime
+  updatedBy: User
+  createdBy: User
 }
 
 type PasswordState {
   isSet: Boolean!
+}
+
+enum UserUserTypeType {
+  User
+  Admin
 }
 
 scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
@@ -20,6 +32,7 @@ scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339
 input UserWhereUniqueInput {
   id: ID
   email: String
+  phoneNumber: String
 }
 
 input UserWhereInput {
@@ -29,8 +42,14 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  posts: PostManyRelationFilter
+  phoneNumber: StringFilter
+  userType: UserUserTypeTypeNullableFilter
+  bookings: BookingManyRelationFilter
+  reviews: ReviewManyRelationFilter
+  updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
 }
 
 input IDFilter {
@@ -78,10 +97,23 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
+input UserUserTypeTypeNullableFilter {
+  equals: UserUserTypeType
+  in: [UserUserTypeType!]
+  notIn: [UserUserTypeType!]
+  not: UserUserTypeTypeNullableFilter
+}
+
+input BookingManyRelationFilter {
+  every: BookingWhereInput
+  some: BookingWhereInput
+  none: BookingWhereInput
+}
+
+input ReviewManyRelationFilter {
+  every: ReviewWhereInput
+  some: ReviewWhereInput
+  none: ReviewWhereInput
 }
 
 input DateTimeNullableFilter {
@@ -99,6 +131,9 @@ input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
+  phoneNumber: OrderDirection
+  userType: OrderDirection
+  updatedAt: OrderDirection
   createdAt: OrderDirection
 }
 
@@ -110,16 +145,25 @@ enum OrderDirection {
 input UserUpdateInput {
   name: String
   email: String
+  phoneNumber: String
   password: String
-  posts: PostRelateToManyForUpdateInput
-  createdAt: DateTime
+  userType: UserUserTypeType
+  bookings: BookingRelateToManyForUpdateInput
+  reviews: ReviewRelateToManyForUpdateInput
 }
 
-input PostRelateToManyForUpdateInput {
-  disconnect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
+input BookingRelateToManyForUpdateInput {
+  disconnect: [BookingWhereUniqueInput!]
+  set: [BookingWhereUniqueInput!]
+  create: [BookingCreateInput!]
+  connect: [BookingWhereUniqueInput!]
+}
+
+input ReviewRelateToManyForUpdateInput {
+  disconnect: [ReviewWhereUniqueInput!]
+  set: [ReviewWhereUniqueInput!]
+  create: [ReviewCreateInput!]
+  connect: [ReviewWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -130,59 +174,252 @@ input UserUpdateArgs {
 input UserCreateInput {
   name: String
   email: String
+  phoneNumber: String
   password: String
-  posts: PostRelateToManyForCreateInput
-  createdAt: DateTime
+  userType: UserUserTypeType
+  bookings: BookingRelateToManyForCreateInput
+  reviews: ReviewRelateToManyForCreateInput
 }
 
-input PostRelateToManyForCreateInput {
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
+input BookingRelateToManyForCreateInput {
+  create: [BookingCreateInput!]
+  connect: [BookingWhereUniqueInput!]
 }
 
-type Post {
+input ReviewRelateToManyForCreateInput {
+  create: [ReviewCreateInput!]
+  connect: [ReviewWhereUniqueInput!]
+}
+
+type Room {
   id: ID!
-  title: String
-  content: Post_content_Document
-  author: User
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tagsCount(where: TagWhereInput! = {}): Int
+  roomType: RoomRoomTypeType
+  roomNumber: String
+  price: Float
+  description: String
+  isAvailable: Boolean
+  bookings(where: BookingWhereInput! = {}, orderBy: [BookingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookingWhereUniqueInput): [Booking!]
+  bookingsCount(where: BookingWhereInput! = {}): Int
+  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  reviewsCount(where: ReviewWhereInput! = {}): Int
+  images(where: RoomImageWhereInput! = {}, orderBy: [RoomImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomImageWhereUniqueInput): [RoomImage!]
+  imagesCount(where: RoomImageWhereInput! = {}): Int
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
 }
 
-type Post_content_Document {
-  document(hydrateRelationships: Boolean! = false): JSON!
+enum RoomRoomTypeType {
+  Deluxe
+  Premium
 }
 
-input PostWhereUniqueInput {
+input RoomWhereUniqueInput {
   id: ID
 }
 
-input PostWhereInput {
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
+input RoomWhereInput {
+  AND: [RoomWhereInput!]
+  OR: [RoomWhereInput!]
+  NOT: [RoomWhereInput!]
   id: IDFilter
-  title: StringFilter
-  author: UserWhereInput
-  tags: TagManyRelationFilter
+  roomType: RoomRoomTypeTypeNullableFilter
+  roomNumber: StringFilter
+  price: FloatFilter
+  description: StringFilter
+  isAvailable: BooleanFilter
+  bookings: BookingManyRelationFilter
+  reviews: ReviewManyRelationFilter
+  images: RoomImageManyRelationFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
 }
 
-input TagManyRelationFilter {
-  every: TagWhereInput
-  some: TagWhereInput
-  none: TagWhereInput
+input RoomRoomTypeTypeNullableFilter {
+  equals: RoomRoomTypeType
+  in: [RoomRoomTypeType!]
+  notIn: [RoomRoomTypeType!]
+  not: RoomRoomTypeTypeNullableFilter
 }
 
-input PostOrderByInput {
+input FloatFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input RoomImageManyRelationFilter {
+  every: RoomImageWhereInput
+  some: RoomImageWhereInput
+  none: RoomImageWhereInput
+}
+
+input RoomOrderByInput {
   id: OrderDirection
-  title: OrderDirection
+  roomType: OrderDirection
+  roomNumber: OrderDirection
+  price: OrderDirection
+  description: OrderDirection
+  isAvailable: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
 }
 
-input PostUpdateInput {
-  title: String
-  content: JSON
-  author: UserRelateToOneForUpdateInput
-  tags: TagRelateToManyForUpdateInput
+input RoomUpdateInput {
+  roomType: RoomRoomTypeType
+  roomNumber: String
+  price: Float
+  description: String
+  isAvailable: Boolean
+  bookings: BookingRelateToManyForUpdateInput
+  reviews: ReviewRelateToManyForUpdateInput
+  images: RoomImageRelateToManyForUpdateInput
+}
+
+input RoomImageRelateToManyForUpdateInput {
+  disconnect: [RoomImageWhereUniqueInput!]
+  set: [RoomImageWhereUniqueInput!]
+  create: [RoomImageCreateInput!]
+  connect: [RoomImageWhereUniqueInput!]
+}
+
+input RoomUpdateArgs {
+  where: RoomWhereUniqueInput!
+  data: RoomUpdateInput!
+}
+
+input RoomCreateInput {
+  roomType: RoomRoomTypeType
+  roomNumber: String
+  price: Float
+  description: String
+  isAvailable: Boolean
+  bookings: BookingRelateToManyForCreateInput
+  reviews: ReviewRelateToManyForCreateInput
+  images: RoomImageRelateToManyForCreateInput
+}
+
+input RoomImageRelateToManyForCreateInput {
+  create: [RoomImageCreateInput!]
+  connect: [RoomImageWhereUniqueInput!]
+}
+
+type Booking {
+  id: ID!
+  user: User
+  bookingNumber: String
+  room: Room
+  checkInDate: DateTime
+  checkOutDate: DateTime
+  totalPrice: Float
+  status: BookingStatusType
+  payment: Payment
+  invoice: Invoice
+  paymentStatus: BookingPaymentStatusType
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+enum BookingStatusType {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum BookingPaymentStatusType {
+  Paid
+  Unpaid
+}
+
+input BookingWhereUniqueInput {
+  id: ID
+  bookingNumber: String
+}
+
+input BookingWhereInput {
+  AND: [BookingWhereInput!]
+  OR: [BookingWhereInput!]
+  NOT: [BookingWhereInput!]
+  id: IDFilter
+  user: UserWhereInput
+  bookingNumber: StringFilter
+  room: RoomWhereInput
+  checkInDate: DateTimeFilter
+  checkOutDate: DateTimeFilter
+  totalPrice: FloatFilter
+  status: BookingStatusTypeNullableFilter
+  payment: PaymentWhereInput
+  invoice: InvoiceWhereInput
+  paymentStatus: BookingPaymentStatusTypeNullableFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeFilter
+}
+
+input BookingStatusTypeNullableFilter {
+  equals: BookingStatusType
+  in: [BookingStatusType!]
+  notIn: [BookingStatusType!]
+  not: BookingStatusTypeNullableFilter
+}
+
+input BookingPaymentStatusTypeNullableFilter {
+  equals: BookingPaymentStatusType
+  in: [BookingPaymentStatusType!]
+  notIn: [BookingPaymentStatusType!]
+  not: BookingPaymentStatusTypeNullableFilter
+}
+
+input BookingOrderByInput {
+  id: OrderDirection
+  bookingNumber: OrderDirection
+  checkInDate: OrderDirection
+  checkOutDate: OrderDirection
+  totalPrice: OrderDirection
+  status: OrderDirection
+  paymentStatus: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input BookingUpdateInput {
+  user: UserRelateToOneForUpdateInput
+  bookingNumber: String
+  room: RoomRelateToOneForUpdateInput
+  checkInDate: DateTime
+  checkOutDate: DateTime
+  totalPrice: Float
+  status: BookingStatusType
+  payment: PaymentRelateToOneForUpdateInput
+  invoice: InvoiceRelateToOneForUpdateInput
+  paymentStatus: BookingPaymentStatusType
 }
 
 input UserRelateToOneForUpdateInput {
@@ -191,23 +428,40 @@ input UserRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
-input TagRelateToManyForUpdateInput {
-  disconnect: [TagWhereUniqueInput!]
-  set: [TagWhereUniqueInput!]
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input RoomRelateToOneForUpdateInput {
+  create: RoomCreateInput
+  connect: RoomWhereUniqueInput
+  disconnect: Boolean
 }
 
-input PostUpdateArgs {
-  where: PostWhereUniqueInput!
-  data: PostUpdateInput!
+input PaymentRelateToOneForUpdateInput {
+  create: PaymentCreateInput
+  connect: PaymentWhereUniqueInput
+  disconnect: Boolean
 }
 
-input PostCreateInput {
-  title: String
-  content: JSON
-  author: UserRelateToOneForCreateInput
-  tags: TagRelateToManyForCreateInput
+input InvoiceRelateToOneForUpdateInput {
+  create: InvoiceCreateInput
+  connect: InvoiceWhereUniqueInput
+  disconnect: Boolean
+}
+
+input BookingUpdateArgs {
+  where: BookingWhereUniqueInput!
+  data: BookingUpdateInput!
+}
+
+input BookingCreateInput {
+  user: UserRelateToOneForCreateInput
+  bookingNumber: String
+  room: RoomRelateToOneForCreateInput
+  checkInDate: DateTime
+  checkOutDate: DateTime
+  totalPrice: Float
+  status: BookingStatusType
+  payment: PaymentRelateToOneForCreateInput
+  invoice: InvoiceRelateToOneForCreateInput
+  paymentStatus: BookingPaymentStatusType
 }
 
 input UserRelateToOneForCreateInput {
@@ -215,49 +469,420 @@ input UserRelateToOneForCreateInput {
   connect: UserWhereUniqueInput
 }
 
-input TagRelateToManyForCreateInput {
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input RoomRelateToOneForCreateInput {
+  create: RoomCreateInput
+  connect: RoomWhereUniqueInput
 }
 
-type Tag {
+input PaymentRelateToOneForCreateInput {
+  create: PaymentCreateInput
+  connect: PaymentWhereUniqueInput
+}
+
+input InvoiceRelateToOneForCreateInput {
+  create: InvoiceCreateInput
+  connect: InvoiceWhereUniqueInput
+}
+
+type Payment {
   id: ID!
-  name: String
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
+  booking: Booking
+  paymentMethod: PaymentPaymentMethodType
+  requestId: String
+  transactionId: String
+  bookingNumber: String
+  status: PaymentStatusType
+  amount: Float
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
 }
 
-input TagWhereUniqueInput {
+enum PaymentPaymentMethodType {
+  CARD
+  UPI
+  NET_BANKING
+}
+
+enum PaymentStatusType {
+  Success
+  Failed
+  Pending
+}
+
+input PaymentWhereUniqueInput {
   id: ID
 }
 
-input TagWhereInput {
-  AND: [TagWhereInput!]
-  OR: [TagWhereInput!]
-  NOT: [TagWhereInput!]
+input PaymentWhereInput {
+  AND: [PaymentWhereInput!]
+  OR: [PaymentWhereInput!]
+  NOT: [PaymentWhereInput!]
   id: IDFilter
-  name: StringFilter
-  posts: PostManyRelationFilter
+  booking: BookingWhereInput
+  paymentMethod: PaymentPaymentMethodTypeNullableFilter
+  requestId: StringFilter
+  transactionId: StringNullableFilter
+  bookingNumber: StringNullableFilter
+  status: PaymentStatusTypeNullableFilter
+  amount: FloatFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
 }
 
-input TagOrderByInput {
+input PaymentPaymentMethodTypeNullableFilter {
+  equals: PaymentPaymentMethodType
+  in: [PaymentPaymentMethodType!]
+  notIn: [PaymentPaymentMethodType!]
+  not: PaymentPaymentMethodTypeNullableFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringNullableFilter
+}
+
+input PaymentStatusTypeNullableFilter {
+  equals: PaymentStatusType
+  in: [PaymentStatusType!]
+  notIn: [PaymentStatusType!]
+  not: PaymentStatusTypeNullableFilter
+}
+
+input PaymentOrderByInput {
   id: OrderDirection
-  name: OrderDirection
+  paymentMethod: OrderDirection
+  requestId: OrderDirection
+  transactionId: OrderDirection
+  bookingNumber: OrderDirection
+  status: OrderDirection
+  amount: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
 }
 
-input TagUpdateInput {
-  name: String
-  posts: PostRelateToManyForUpdateInput
+input PaymentUpdateInput {
+  booking: BookingRelateToOneForUpdateInput
+  paymentMethod: PaymentPaymentMethodType
+  requestId: String
+  transactionId: String
+  bookingNumber: String
+  status: PaymentStatusType
+  amount: Float
 }
 
-input TagUpdateArgs {
-  where: TagWhereUniqueInput!
-  data: TagUpdateInput!
+input BookingRelateToOneForUpdateInput {
+  create: BookingCreateInput
+  connect: BookingWhereUniqueInput
+  disconnect: Boolean
 }
 
-input TagCreateInput {
-  name: String
-  posts: PostRelateToManyForCreateInput
+input PaymentUpdateArgs {
+  where: PaymentWhereUniqueInput!
+  data: PaymentUpdateInput!
+}
+
+input PaymentCreateInput {
+  booking: BookingRelateToOneForCreateInput
+  paymentMethod: PaymentPaymentMethodType
+  requestId: String
+  transactionId: String
+  bookingNumber: String
+  status: PaymentStatusType
+  amount: Float
+}
+
+input BookingRelateToOneForCreateInput {
+  create: BookingCreateInput
+  connect: BookingWhereUniqueInput
+}
+
+type Review {
+  id: ID!
+  user: User
+  room: Room
+  rating: Int
+  comment: String
+  image: ImageFieldOutput
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+type ImageFieldOutput {
+  id: ID!
+  filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
+  url: String!
+}
+
+enum ImageExtension {
+  jpg
+  png
+  webp
+  gif
+}
+
+input ReviewWhereUniqueInput {
+  id: ID
+}
+
+input ReviewWhereInput {
+  AND: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  NOT: [ReviewWhereInput!]
+  id: IDFilter
+  user: UserWhereInput
+  room: RoomWhereInput
+  rating: IntFilter
+  comment: StringFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
+input ReviewOrderByInput {
+  id: OrderDirection
+  rating: OrderDirection
+  comment: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input ReviewUpdateInput {
+  user: UserRelateToOneForUpdateInput
+  room: RoomRelateToOneForUpdateInput
+  rating: Int
+  comment: String
+  image: ImageFieldInput
+}
+
+input ImageFieldInput {
+  upload: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input ReviewUpdateArgs {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateInput!
+}
+
+input ReviewCreateInput {
+  user: UserRelateToOneForCreateInput
+  room: RoomRelateToOneForCreateInput
+  rating: Int
+  comment: String
+  image: ImageFieldInput
+}
+
+type Slider {
+  id: ID!
+  image: ImageFieldOutput
+  details: String
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+input SliderWhereUniqueInput {
+  id: ID
+}
+
+input SliderWhereInput {
+  AND: [SliderWhereInput!]
+  OR: [SliderWhereInput!]
+  NOT: [SliderWhereInput!]
+  id: IDFilter
+  details: StringFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input SliderOrderByInput {
+  id: OrderDirection
+  details: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input SliderUpdateInput {
+  image: ImageFieldInput
+  details: String
+}
+
+input SliderUpdateArgs {
+  where: SliderWhereUniqueInput!
+  data: SliderUpdateInput!
+}
+
+input SliderCreateInput {
+  image: ImageFieldInput
+  details: String
+}
+
+type RoomImage {
+  id: ID!
+  image: ImageFieldOutput
+  description: String
+  room: Room
+}
+
+input RoomImageWhereUniqueInput {
+  id: ID
+}
+
+input RoomImageWhereInput {
+  AND: [RoomImageWhereInput!]
+  OR: [RoomImageWhereInput!]
+  NOT: [RoomImageWhereInput!]
+  id: IDFilter
+  description: StringFilter
+  room: RoomWhereInput
+}
+
+input RoomImageOrderByInput {
+  id: OrderDirection
+  description: OrderDirection
+}
+
+input RoomImageUpdateInput {
+  image: ImageFieldInput
+  description: String
+  room: RoomRelateToOneForUpdateInput
+}
+
+input RoomImageUpdateArgs {
+  where: RoomImageWhereUniqueInput!
+  data: RoomImageUpdateInput!
+}
+
+input RoomImageCreateInput {
+  image: ImageFieldInput
+  description: String
+  room: RoomRelateToOneForCreateInput
+}
+
+type Faq {
+  id: ID!
+  question: String
+  answer: String
+}
+
+input FaqWhereUniqueInput {
+  id: ID
+}
+
+input FaqWhereInput {
+  AND: [FaqWhereInput!]
+  OR: [FaqWhereInput!]
+  NOT: [FaqWhereInput!]
+  id: IDFilter
+  question: StringFilter
+  answer: StringFilter
+}
+
+input FaqOrderByInput {
+  id: OrderDirection
+  question: OrderDirection
+  answer: OrderDirection
+}
+
+input FaqUpdateInput {
+  question: String
+  answer: String
+}
+
+input FaqUpdateArgs {
+  where: FaqWhereUniqueInput!
+  data: FaqUpdateInput!
+}
+
+input FaqCreateInput {
+  question: String
+  answer: String
+}
+
+type Invoice {
+  id: ID!
+  booking: Booking
+  invoiceNumber: String
+  amount: Float
+  taxDetails: String
+}
+
+input InvoiceWhereUniqueInput {
+  id: ID
+  invoiceNumber: String
+}
+
+input InvoiceWhereInput {
+  AND: [InvoiceWhereInput!]
+  OR: [InvoiceWhereInput!]
+  NOT: [InvoiceWhereInput!]
+  id: IDFilter
+  booking: BookingWhereInput
+  invoiceNumber: StringFilter
+  amount: FloatFilter
+  taxDetails: StringFilter
+}
+
+input InvoiceOrderByInput {
+  id: OrderDirection
+  invoiceNumber: OrderDirection
+  amount: OrderDirection
+  taxDetails: OrderDirection
+}
+
+input InvoiceUpdateInput {
+  booking: BookingRelateToOneForUpdateInput
+  invoiceNumber: String
+  amount: Float
+  taxDetails: String
+}
+
+input InvoiceUpdateArgs {
+  where: InvoiceWhereUniqueInput!
+  data: InvoiceUpdateInput!
+}
+
+input InvoiceCreateInput {
+  booking: BookingRelateToOneForCreateInput
+  invoiceNumber: String
+  amount: Float
+  taxDetails: String
 }
 
 """
@@ -272,18 +897,54 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createPost(data: PostCreateInput!): Post
-  createPosts(data: [PostCreateInput!]!): [Post]
-  updatePost(where: PostWhereUniqueInput!, data: PostUpdateInput!): Post
-  updatePosts(data: [PostUpdateArgs!]!): [Post]
-  deletePost(where: PostWhereUniqueInput!): Post
-  deletePosts(where: [PostWhereUniqueInput!]!): [Post]
-  createTag(data: TagCreateInput!): Tag
-  createTags(data: [TagCreateInput!]!): [Tag]
-  updateTag(where: TagWhereUniqueInput!, data: TagUpdateInput!): Tag
-  updateTags(data: [TagUpdateArgs!]!): [Tag]
-  deleteTag(where: TagWhereUniqueInput!): Tag
-  deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createRoom(data: RoomCreateInput!): Room
+  createRooms(data: [RoomCreateInput!]!): [Room]
+  updateRoom(where: RoomWhereUniqueInput!, data: RoomUpdateInput!): Room
+  updateRooms(data: [RoomUpdateArgs!]!): [Room]
+  deleteRoom(where: RoomWhereUniqueInput!): Room
+  deleteRooms(where: [RoomWhereUniqueInput!]!): [Room]
+  createBooking(data: BookingCreateInput!): Booking
+  createBookings(data: [BookingCreateInput!]!): [Booking]
+  updateBooking(where: BookingWhereUniqueInput!, data: BookingUpdateInput!): Booking
+  updateBookings(data: [BookingUpdateArgs!]!): [Booking]
+  deleteBooking(where: BookingWhereUniqueInput!): Booking
+  deleteBookings(where: [BookingWhereUniqueInput!]!): [Booking]
+  createPayment(data: PaymentCreateInput!): Payment
+  createPayments(data: [PaymentCreateInput!]!): [Payment]
+  updatePayment(where: PaymentWhereUniqueInput!, data: PaymentUpdateInput!): Payment
+  updatePayments(data: [PaymentUpdateArgs!]!): [Payment]
+  deletePayment(where: PaymentWhereUniqueInput!): Payment
+  deletePayments(where: [PaymentWhereUniqueInput!]!): [Payment]
+  createReview(data: ReviewCreateInput!): Review
+  createReviews(data: [ReviewCreateInput!]!): [Review]
+  updateReview(where: ReviewWhereUniqueInput!, data: ReviewUpdateInput!): Review
+  updateReviews(data: [ReviewUpdateArgs!]!): [Review]
+  deleteReview(where: ReviewWhereUniqueInput!): Review
+  deleteReviews(where: [ReviewWhereUniqueInput!]!): [Review]
+  createSlider(data: SliderCreateInput!): Slider
+  createSliders(data: [SliderCreateInput!]!): [Slider]
+  updateSlider(where: SliderWhereUniqueInput!, data: SliderUpdateInput!): Slider
+  updateSliders(data: [SliderUpdateArgs!]!): [Slider]
+  deleteSlider(where: SliderWhereUniqueInput!): Slider
+  deleteSliders(where: [SliderWhereUniqueInput!]!): [Slider]
+  createRoomImage(data: RoomImageCreateInput!): RoomImage
+  createRoomImages(data: [RoomImageCreateInput!]!): [RoomImage]
+  updateRoomImage(where: RoomImageWhereUniqueInput!, data: RoomImageUpdateInput!): RoomImage
+  updateRoomImages(data: [RoomImageUpdateArgs!]!): [RoomImage]
+  deleteRoomImage(where: RoomImageWhereUniqueInput!): RoomImage
+  deleteRoomImages(where: [RoomImageWhereUniqueInput!]!): [RoomImage]
+  createFaq(data: FaqCreateInput!): Faq
+  createFaqs(data: [FaqCreateInput!]!): [Faq]
+  updateFaq(where: FaqWhereUniqueInput!, data: FaqUpdateInput!): Faq
+  updateFaqs(data: [FaqUpdateArgs!]!): [Faq]
+  deleteFaq(where: FaqWhereUniqueInput!): Faq
+  deleteFaqs(where: [FaqWhereUniqueInput!]!): [Faq]
+  createInvoice(data: InvoiceCreateInput!): Invoice
+  createInvoices(data: [InvoiceCreateInput!]!): [Invoice]
+  updateInvoice(where: InvoiceWhereUniqueInput!, data: InvoiceUpdateInput!): Invoice
+  updateInvoices(data: [InvoiceUpdateArgs!]!): [Invoice]
+  deleteInvoice(where: InvoiceWhereUniqueInput!): Invoice
+  deleteInvoices(where: [InvoiceWhereUniqueInput!]!): [Invoice]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -310,12 +971,30 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
-  post(where: PostWhereUniqueInput!): Post
-  posts(where: PostWhereInput! = {}, orderBy: [PostOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PostWhereUniqueInput): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
-  tag(where: TagWhereUniqueInput!): Tag
-  tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
-  tagsCount(where: TagWhereInput! = {}): Int
+  room(where: RoomWhereUniqueInput!): Room
+  rooms(where: RoomWhereInput! = {}, orderBy: [RoomOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomWhereUniqueInput): [Room!]
+  roomsCount(where: RoomWhereInput! = {}): Int
+  booking(where: BookingWhereUniqueInput!): Booking
+  bookings(where: BookingWhereInput! = {}, orderBy: [BookingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookingWhereUniqueInput): [Booking!]
+  bookingsCount(where: BookingWhereInput! = {}): Int
+  payment(where: PaymentWhereUniqueInput!): Payment
+  payments(where: PaymentWhereInput! = {}, orderBy: [PaymentOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PaymentWhereUniqueInput): [Payment!]
+  paymentsCount(where: PaymentWhereInput! = {}): Int
+  review(where: ReviewWhereUniqueInput!): Review
+  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  reviewsCount(where: ReviewWhereInput! = {}): Int
+  slider(where: SliderWhereUniqueInput!): Slider
+  sliders(where: SliderWhereInput! = {}, orderBy: [SliderOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: SliderWhereUniqueInput): [Slider!]
+  slidersCount(where: SliderWhereInput! = {}): Int
+  roomImage(where: RoomImageWhereUniqueInput!): RoomImage
+  roomImages(where: RoomImageWhereInput! = {}, orderBy: [RoomImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomImageWhereUniqueInput): [RoomImage!]
+  roomImagesCount(where: RoomImageWhereInput! = {}): Int
+  faq(where: FaqWhereUniqueInput!): Faq
+  faqs(where: FaqWhereInput! = {}, orderBy: [FaqOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: FaqWhereUniqueInput): [Faq!]
+  faqsCount(where: FaqWhereInput! = {}): Int
+  invoice(where: InvoiceWhereUniqueInput!): Invoice
+  invoices(where: InvoiceWhereInput! = {}, orderBy: [InvoiceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: InvoiceWhereUniqueInput): [Invoice!]
+  invoicesCount(where: InvoiceWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

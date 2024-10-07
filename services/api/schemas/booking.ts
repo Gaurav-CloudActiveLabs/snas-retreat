@@ -58,6 +58,7 @@ export const Booking = list({
       payment: relationship({
         ref: "Payment.booking",
       }),
+      invoice:relationship({ref:'Invoice.booking'}),
       paymentStatus: select({
         type: "enum",
         options: [

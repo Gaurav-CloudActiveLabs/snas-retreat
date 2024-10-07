@@ -1,5 +1,6 @@
 import { Booking } from "./booking";
 import { Faq } from "./faq";
+import { Invoice } from "./invoice";
 import { Payment } from "./payment";
 import { Review } from "./review";
 import { Room } from "./room";
@@ -16,5 +17,6 @@ export const lists = {
  Review,
  Slider,
  RoomImage,
- Faq
+ Faq,
+ Invoice
 };

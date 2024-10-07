@@ -12,15 +12,9 @@ export const Faq = {
   fields: {
     question: text({
         validation: { isRequired: true },
-        ui: {
-          displayMode: "textarea", 
-        },
       }),
       answer: text({
         validation: { isRequired: true },
-        ui: {
-          displayMode: "textarea", 
-        },
       }),
   },
 };
