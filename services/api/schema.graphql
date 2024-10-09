@@ -204,6 +204,10 @@ type Room {
   reviewsCount(where: ReviewWhereInput! = {}): Int
   images(where: RoomImageWhereInput! = {}, orderBy: [RoomImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomImageWhereUniqueInput): [RoomImage!]
   imagesCount(where: RoomImageWhereInput! = {}): Int
+  breakfastPrice: BreakfastPrice
+  dinnerPrice: DinnerPrice
+  numberOfAdults: Int
+  numberOfChildren: Int
   updatedAt: DateTime
   createdAt: DateTime
   updatedBy: User
@@ -232,6 +236,10 @@ input RoomWhereInput {
   bookings: BookingManyRelationFilter
   reviews: ReviewManyRelationFilter
   images: RoomImageManyRelationFilter
+  breakfastPrice: BreakfastPriceWhereInput
+  dinnerPrice: DinnerPriceWhereInput
+  numberOfAdults: IntNullableFilter
+  numberOfChildren: IntNullableFilter
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
   updatedBy: UserWhereInput
@@ -267,6 +275,17 @@ input RoomImageManyRelationFilter {
   none: RoomImageWhereInput
 }
 
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
 input RoomOrderByInput {
   id: OrderDirection
   roomType: OrderDirection
@@ -274,6 +293,8 @@ input RoomOrderByInput {
   price: OrderDirection
   description: OrderDirection
   isAvailable: OrderDirection
+  numberOfAdults: OrderDirection
+  numberOfChildren: OrderDirection
   updatedAt: OrderDirection
   createdAt: OrderDirection
 }
@@ -287,6 +308,10 @@ input RoomUpdateInput {
   bookings: BookingRelateToManyForUpdateInput
   reviews: ReviewRelateToManyForUpdateInput
   images: RoomImageRelateToManyForUpdateInput
+  breakfastPrice: BreakfastPriceRelateToOneForUpdateInput
+  dinnerPrice: DinnerPriceRelateToOneForUpdateInput
+  numberOfAdults: Int
+  numberOfChildren: Int
 }
 
 input RoomImageRelateToManyForUpdateInput {
@@ -294,6 +319,18 @@ input RoomImageRelateToManyForUpdateInput {
   set: [RoomImageWhereUniqueInput!]
   create: [RoomImageCreateInput!]
   connect: [RoomImageWhereUniqueInput!]
+}
+
+input BreakfastPriceRelateToOneForUpdateInput {
+  create: BreakfastPriceCreateInput
+  connect: BreakfastPriceWhereUniqueInput
+  disconnect: Boolean
+}
+
+input DinnerPriceRelateToOneForUpdateInput {
+  create: DinnerPriceCreateInput
+  connect: DinnerPriceWhereUniqueInput
+  disconnect: Boolean
 }
 
 input RoomUpdateArgs {
@@ -310,11 +347,25 @@ input RoomCreateInput {
   bookings: BookingRelateToManyForCreateInput
   reviews: ReviewRelateToManyForCreateInput
   images: RoomImageRelateToManyForCreateInput
+  breakfastPrice: BreakfastPriceRelateToOneForCreateInput
+  dinnerPrice: DinnerPriceRelateToOneForCreateInput
+  numberOfAdults: Int
+  numberOfChildren: Int
 }
 
 input RoomImageRelateToManyForCreateInput {
   create: [RoomImageCreateInput!]
   connect: [RoomImageWhereUniqueInput!]
+}
+
+input BreakfastPriceRelateToOneForCreateInput {
+  create: BreakfastPriceCreateInput
+  connect: BreakfastPriceWhereUniqueInput
+}
+
+input DinnerPriceRelateToOneForCreateInput {
+  create: DinnerPriceCreateInput
+  connect: DinnerPriceWhereUniqueInput
 }
 
 type Booking {
@@ -329,6 +380,13 @@ type Booking {
   payment: Payment
   invoice: Invoice
   paymentStatus: BookingPaymentStatusType
+  primaryUserName: String
+  primaryUserAge: Int
+  primaryUserGender: String
+  bookingType: String
+  companyName: String
+  companyAddress: String
+  companyGST: String
   updatedAt: DateTime
   createdAt: DateTime
   updatedBy: User
@@ -366,6 +424,13 @@ input BookingWhereInput {
   payment: PaymentWhereInput
   invoice: InvoiceWhereInput
   paymentStatus: BookingPaymentStatusTypeNullableFilter
+  primaryUserName: StringFilter
+  primaryUserAge: IntNullableFilter
+  primaryUserGender: StringNullableFilter
+  bookingType: StringNullableFilter
+  companyName: StringFilter
+  companyAddress: StringFilter
+  companyGST: StringFilter
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
   updatedBy: UserWhereInput
@@ -397,6 +462,21 @@ input BookingPaymentStatusTypeNullableFilter {
   not: BookingPaymentStatusTypeNullableFilter
 }
 
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringNullableFilter
+}
+
 input BookingOrderByInput {
   id: OrderDirection
   bookingNumber: OrderDirection
@@ -405,6 +485,13 @@ input BookingOrderByInput {
   totalPrice: OrderDirection
   status: OrderDirection
   paymentStatus: OrderDirection
+  primaryUserName: OrderDirection
+  primaryUserAge: OrderDirection
+  primaryUserGender: OrderDirection
+  bookingType: OrderDirection
+  companyName: OrderDirection
+  companyAddress: OrderDirection
+  companyGST: OrderDirection
   updatedAt: OrderDirection
   createdAt: OrderDirection
 }
@@ -420,6 +507,13 @@ input BookingUpdateInput {
   payment: PaymentRelateToOneForUpdateInput
   invoice: InvoiceRelateToOneForUpdateInput
   paymentStatus: BookingPaymentStatusType
+  primaryUserName: String
+  primaryUserAge: Int
+  primaryUserGender: String
+  bookingType: String
+  companyName: String
+  companyAddress: String
+  companyGST: String
 }
 
 input UserRelateToOneForUpdateInput {
@@ -462,6 +556,13 @@ input BookingCreateInput {
   payment: PaymentRelateToOneForCreateInput
   invoice: InvoiceRelateToOneForCreateInput
   paymentStatus: BookingPaymentStatusType
+  primaryUserName: String
+  primaryUserAge: Int
+  primaryUserGender: String
+  bookingType: String
+  companyName: String
+  companyAddress: String
+  companyGST: String
 }
 
 input UserRelateToOneForCreateInput {
@@ -538,21 +639,6 @@ input PaymentPaymentMethodTypeNullableFilter {
   in: [PaymentPaymentMethodType!]
   notIn: [PaymentPaymentMethodType!]
   not: PaymentPaymentMethodTypeNullableFilter
-}
-
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  mode: QueryMode
-  not: StringNullableFilter
 }
 
 input PaymentStatusTypeNullableFilter {
@@ -885,6 +971,218 @@ input InvoiceCreateInput {
   taxDetails: String
 }
 
+type BreakfastPrice {
+  id: ID!
+  rooms(where: RoomWhereInput! = {}, orderBy: [RoomOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomWhereUniqueInput): [Room!]
+  roomsCount(where: RoomWhereInput! = {}): Int
+  price: Float
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+input BreakfastPriceWhereUniqueInput {
+  id: ID
+}
+
+input BreakfastPriceWhereInput {
+  AND: [BreakfastPriceWhereInput!]
+  OR: [BreakfastPriceWhereInput!]
+  NOT: [BreakfastPriceWhereInput!]
+  id: IDFilter
+  rooms: RoomManyRelationFilter
+  price: FloatFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input RoomManyRelationFilter {
+  every: RoomWhereInput
+  some: RoomWhereInput
+  none: RoomWhereInput
+}
+
+input BreakfastPriceOrderByInput {
+  id: OrderDirection
+  price: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input BreakfastPriceUpdateInput {
+  rooms: RoomRelateToManyForUpdateInput
+  price: Float
+}
+
+input RoomRelateToManyForUpdateInput {
+  disconnect: [RoomWhereUniqueInput!]
+  set: [RoomWhereUniqueInput!]
+  create: [RoomCreateInput!]
+  connect: [RoomWhereUniqueInput!]
+}
+
+input BreakfastPriceUpdateArgs {
+  where: BreakfastPriceWhereUniqueInput!
+  data: BreakfastPriceUpdateInput!
+}
+
+input BreakfastPriceCreateInput {
+  rooms: RoomRelateToManyForCreateInput
+  price: Float
+}
+
+input RoomRelateToManyForCreateInput {
+  create: [RoomCreateInput!]
+  connect: [RoomWhereUniqueInput!]
+}
+
+type DinnerPrice {
+  id: ID!
+  rooms(where: RoomWhereInput! = {}, orderBy: [RoomOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomWhereUniqueInput): [Room!]
+  roomsCount(where: RoomWhereInput! = {}): Int
+  price: Float
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+input DinnerPriceWhereUniqueInput {
+  id: ID
+}
+
+input DinnerPriceWhereInput {
+  AND: [DinnerPriceWhereInput!]
+  OR: [DinnerPriceWhereInput!]
+  NOT: [DinnerPriceWhereInput!]
+  id: IDFilter
+  rooms: RoomManyRelationFilter
+  price: FloatFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input DinnerPriceOrderByInput {
+  id: OrderDirection
+  price: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input DinnerPriceUpdateInput {
+  rooms: RoomRelateToManyForUpdateInput
+  price: Float
+}
+
+input DinnerPriceUpdateArgs {
+  where: DinnerPriceWhereUniqueInput!
+  data: DinnerPriceUpdateInput!
+}
+
+input DinnerPriceCreateInput {
+  rooms: RoomRelateToManyForCreateInput
+  price: Float
+}
+
+type ReportList {
+  id: ID!
+  type: String
+  data: JSON
+}
+
+input ReportListWhereUniqueInput {
+  id: ID
+}
+
+input ReportListWhereInput {
+  AND: [ReportListWhereInput!]
+  OR: [ReportListWhereInput!]
+  NOT: [ReportListWhereInput!]
+  id: IDFilter
+  type: StringNullableFilter
+}
+
+input ReportListOrderByInput {
+  id: OrderDirection
+  type: OrderDirection
+}
+
+input ReportListUpdateInput {
+  type: String
+  data: JSON
+}
+
+input ReportListUpdateArgs {
+  where: ReportListWhereUniqueInput!
+  data: ReportListUpdateInput!
+}
+
+input ReportListCreateInput {
+  type: String
+  data: JSON
+}
+
+type Coupon {
+  id: ID!
+  code: String
+  type: String
+  value: Float
+  isUsed: Boolean
+  expirationDate: DateTime
+}
+
+input CouponWhereUniqueInput {
+  id: ID
+  code: String
+}
+
+input CouponWhereInput {
+  AND: [CouponWhereInput!]
+  OR: [CouponWhereInput!]
+  NOT: [CouponWhereInput!]
+  id: IDFilter
+  code: StringFilter
+  type: StringNullableFilter
+  value: FloatFilter
+  isUsed: BooleanFilter
+  expirationDate: DateTimeNullableFilter
+}
+
+input CouponOrderByInput {
+  id: OrderDirection
+  code: OrderDirection
+  type: OrderDirection
+  value: OrderDirection
+  isUsed: OrderDirection
+  expirationDate: OrderDirection
+}
+
+input CouponUpdateInput {
+  code: String
+  type: String
+  value: Float
+  isUsed: Boolean
+  expirationDate: DateTime
+}
+
+input CouponUpdateArgs {
+  where: CouponWhereUniqueInput!
+  data: CouponUpdateInput!
+}
+
+input CouponCreateInput {
+  code: String
+  type: String
+  value: Float
+  isUsed: Boolean
+  expirationDate: DateTime
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -945,6 +1243,30 @@ type Mutation {
   updateInvoices(data: [InvoiceUpdateArgs!]!): [Invoice]
   deleteInvoice(where: InvoiceWhereUniqueInput!): Invoice
   deleteInvoices(where: [InvoiceWhereUniqueInput!]!): [Invoice]
+  createBreakfastPrice(data: BreakfastPriceCreateInput!): BreakfastPrice
+  createBreakfastPrices(data: [BreakfastPriceCreateInput!]!): [BreakfastPrice]
+  updateBreakfastPrice(where: BreakfastPriceWhereUniqueInput!, data: BreakfastPriceUpdateInput!): BreakfastPrice
+  updateBreakfastPrices(data: [BreakfastPriceUpdateArgs!]!): [BreakfastPrice]
+  deleteBreakfastPrice(where: BreakfastPriceWhereUniqueInput!): BreakfastPrice
+  deleteBreakfastPrices(where: [BreakfastPriceWhereUniqueInput!]!): [BreakfastPrice]
+  createDinnerPrice(data: DinnerPriceCreateInput!): DinnerPrice
+  createDinnerPrices(data: [DinnerPriceCreateInput!]!): [DinnerPrice]
+  updateDinnerPrice(where: DinnerPriceWhereUniqueInput!, data: DinnerPriceUpdateInput!): DinnerPrice
+  updateDinnerPrices(data: [DinnerPriceUpdateArgs!]!): [DinnerPrice]
+  deleteDinnerPrice(where: DinnerPriceWhereUniqueInput!): DinnerPrice
+  deleteDinnerPrices(where: [DinnerPriceWhereUniqueInput!]!): [DinnerPrice]
+  createReportList(data: ReportListCreateInput!): ReportList
+  createReportLists(data: [ReportListCreateInput!]!): [ReportList]
+  updateReportList(where: ReportListWhereUniqueInput!, data: ReportListUpdateInput!): ReportList
+  updateReportLists(data: [ReportListUpdateArgs!]!): [ReportList]
+  deleteReportList(where: ReportListWhereUniqueInput!): ReportList
+  deleteReportLists(where: [ReportListWhereUniqueInput!]!): [ReportList]
+  createCoupon(data: CouponCreateInput!): Coupon
+  createCoupons(data: [CouponCreateInput!]!): [Coupon]
+  updateCoupon(where: CouponWhereUniqueInput!, data: CouponUpdateInput!): Coupon
+  updateCoupons(data: [CouponUpdateArgs!]!): [Coupon]
+  deleteCoupon(where: CouponWhereUniqueInput!): Coupon
+  deleteCoupons(where: [CouponWhereUniqueInput!]!): [Coupon]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -963,7 +1285,7 @@ type UserAuthenticationWithPasswordFailure {
 
 input CreateInitialUserInput {
   name: String
-  email: String
+  phoneNumber: String
   password: String
 }
 
@@ -995,6 +1317,18 @@ type Query {
   invoice(where: InvoiceWhereUniqueInput!): Invoice
   invoices(where: InvoiceWhereInput! = {}, orderBy: [InvoiceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: InvoiceWhereUniqueInput): [Invoice!]
   invoicesCount(where: InvoiceWhereInput! = {}): Int
+  breakfastPrice(where: BreakfastPriceWhereUniqueInput!): BreakfastPrice
+  breakfastPrices(where: BreakfastPriceWhereInput! = {}, orderBy: [BreakfastPriceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BreakfastPriceWhereUniqueInput): [BreakfastPrice!]
+  breakfastPricesCount(where: BreakfastPriceWhereInput! = {}): Int
+  dinnerPrice(where: DinnerPriceWhereUniqueInput!): DinnerPrice
+  dinnerPrices(where: DinnerPriceWhereInput! = {}, orderBy: [DinnerPriceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DinnerPriceWhereUniqueInput): [DinnerPrice!]
+  dinnerPricesCount(where: DinnerPriceWhereInput! = {}): Int
+  reportList(where: ReportListWhereUniqueInput!): ReportList
+  reportLists(where: ReportListWhereInput! = {}, orderBy: [ReportListOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReportListWhereUniqueInput): [ReportList!]
+  reportListsCount(where: ReportListWhereInput! = {}): Int
+  coupon(where: CouponWhereUniqueInput!): Coupon
+  coupons(where: CouponWhereInput! = {}, orderBy: [CouponOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CouponWhereUniqueInput): [Coupon!]
+  couponsCount(where: CouponWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

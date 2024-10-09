@@ -1,7 +1,11 @@
 import { Booking } from "./booking";
+import { BreakfastPrice } from "./breakfastPrice";
+import { Coupon } from "./coupon";
+import { DinnerPrice } from "./dinnerPrice";
 import { Faq } from "./faq";
 import { Invoice } from "./invoice";
 import { Payment } from "./payment";
+import { ReportList } from "./report";
 import { Review } from "./review";
 import { Room } from "./room";
 import { RoomImage } from "./roomImage";
@@ -18,5 +22,9 @@ export const lists = {
  Slider,
  RoomImage,
  Faq,
- Invoice
+ Invoice,
+ BreakfastPrice,
+ DinnerPrice,
+ ReportList,
+ Coupon
 };

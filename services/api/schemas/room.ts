@@ -7,6 +7,7 @@ import {
   float,
   timestamp,
   checkbox,
+  integer,
 } from "@keystone-6/core/fields";
 
 export const Room = list({
@@ -64,6 +65,9 @@ export const Room = list({
         ref: 'RoomImage.room',
         many: true, 
       }),
-     
+      breakfastPrice: relationship({ ref: 'BreakfastPrice.rooms', many: false }),
+      dinnerPrice: relationship({ ref: 'DinnerPrice.rooms', many: false }),
+      numberOfAdults: integer(),
+      numberOfChildren: integer(),
   },
 });
