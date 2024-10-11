@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Room1 from "../../assets/ROOM1.png";
 import Room2 from "../../assets/ROOM2.png";
 import ReservationForm from "./ReservationForm";
@@ -9,7 +9,7 @@ interface FormData {
   checkOut: string;
   adults: number;
   children: number;
-  roomType: string; // Changed from 'room' to 'roomType' for clarity
+  roomType: string;
 }
 
 interface RoomListProps {
@@ -17,7 +17,7 @@ interface RoomListProps {
   initialCheckOut: string;
   initialAdults: number;
   initialChildren: number;
-  initialRoomType: string; // Changed from 'initialRoom' to 'initialRoomType'
+  initialRoomType: string;
 }
 
 export default function RoomList({
@@ -38,6 +38,9 @@ export default function RoomList({
   const [availableRooms, setAvailableRooms] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+
+  const [extraRooms, setExtraRooms] = useState<number>(0);
+  const [extraBeds, setExtraBeds] = useState<number>(0);
 
   // Fetch rooms data (mocked here)
   const fetchAvailableRooms = async () => {
@@ -108,23 +111,90 @@ export default function RoomList({
     (room) => room.roomType === formData.roomType
   );
 
-  const calculateRoomCapacity = (adults: number, children: number) => {
+  // Memoize room capacity calculation to avoid triggering re-renders
+  // const roomCapacityMessage = useMemo(() => {
+  //   const maxAdults = 2;
+  //   const maxChildren = 2;
+  //   let extraRoomsNeeded = 0;
+  //   let extraBedsNeeded = 0;
+  //   let message = "";
+
+  //   if (formData.adults > maxAdults) {
+  //     extraRoomsNeeded = Math.ceil((formData.adults - maxAdults) / maxAdults);
+  //   }
+  //   // Calculate for children
+  //   if (formData.children > 1) {
+  //     const extraChildren = formData.children*1%maxChildren==0;
+  //     // 3 /2  =1
+  //     if (extraChildren) {
+  //       extraBedsNeeded = 1;
+  //     } else {
+  //       extraRoomsNeeded += Math.ceil((formData.children));
+  //       // 3 - (2 )
+  //     }
+  //   }
+
+  //   // Construct the message based on extra beds or rooms
+  //   if (extraBedsNeeded > 0) {
+  //     message = `You can add one rollaway bed for the additional child.`;
+  //   } else if (extraRoomsNeeded > 0) {
+  //     message = `A new room needs to be booked for the additional guests (${extraRoomsNeeded} extra rooms).`;
+  //   } else {
+  //     message = `Room fits ${formData.adults} adults and ${formData.children} children.`;
+  //   }
+
+  //   setExtraRooms(extraRoomsNeeded);
+  //   setExtraBeds(extraBedsNeeded);
+
+  //   return message;
+  // }, [formData.adults, formData.children]);
+
+  const roomCapacityMessage = useMemo(() => {
     const maxAdults = 2;
-    const maxChildren = 1; // under 12 years old
-    const rollawayBedAllowed = children <= maxChildren;
+    const maxChildren = 1; // Only 1 child allowed per room initially
+    let extraRoomsNeeded = 0;
+    let extraBedsNeeded = 0;
     let message = "";
 
-    if (adults > maxAdults || children > maxChildren) {
-      message = "A new room needs to be booked for the additional guests.";
-    } else if (adults === maxAdults && rollawayBedAllowed) {
-      message = "You can add one child with a rollaway bed.";
-    } else if (adults === maxAdults && children === 0) {
-      message = "Room fits 2 adults comfortably.";
-    } else {
-      message = `Room fits ${adults} adults and ${children} children.`;
+    // Calculate extra rooms needed for adults
+    if (formData.adults > maxAdults) {
+      // For every 2 additional adults, a new room is needed
+      extraRoomsNeeded = Math.ceil((formData.adults - maxAdults) / maxAdults);
     }
 
+    // Calculate for children
+    if (formData.children > maxChildren) {
+      const extraChildren = formData.children - maxChildren; // After 1st child
+      if (extraChildren === 1) {
+        // Rollaway bed can accommodate 1 extra child in the same room
+        extraBedsNeeded = 1;
+      } else {
+        // For every 3 children, 1 new room is needed
+        extraRoomsNeeded += Math.ceil(extraChildren / 3);
+      }
+    }
+
+    // Generate a message based on the calculation
+    if (extraRoomsNeeded > 0) {
+      message = `${extraRoomsNeeded} extra room${
+        extraRoomsNeeded > 1 ? "s" : ""
+      } needed.`;
+    }
+
+    if (extraBedsNeeded > 0) {
+      message += ` ${extraBedsNeeded} rollaway bed${
+        extraBedsNeeded > 1 ? "s" : ""
+      } needed.`;
+    }
+    setExtraRooms(extraRoomsNeeded);
+    setExtraBeds(extraBedsNeeded);
     return message;
+  }, [formData.adults, formData.children]);
+
+  const createQueryString = (name: string, value: any) => {
+    const params = new URLSearchParams();
+    params.set(name, value);
+    return params.toString();
   };
 
   return (
@@ -142,7 +212,7 @@ export default function RoomList({
 
         {/* Display the capacity information */}
         <div className="mt-6 text-lg font-semibold text-center">
-          {calculateRoomCapacity(formData.adults, formData.children)}
+          {roomCapacityMessage}
         </div>
 
         {!isLoading && filteredRooms.length > 0 && (
@@ -151,7 +221,6 @@ export default function RoomList({
               Available {formData.roomType} Room
             </h2>
             <div className="grid grid-cols-1 gap-6">
-              {/* Show only one room card */}
               <div className="border p-4 shadow-md rounded-lg flex">
                 <img
                   src={filteredRooms[0].images[0].src}
@@ -178,6 +247,21 @@ export default function RoomList({
                         ({filteredRooms[0].discount})
                       </span>
                     </p>
+                    <div>
+                      {extraRooms > 0 ? (
+                        <p className="text-sm text-gray-600 mt-1">
+                          Per Night for {extraRooms + 1} Rooms{" "}
+                          {filteredRooms[0].price * (extraRooms + 1)}
+                        </p>
+                      ) : (
+                        <p className="text-sm text-gray-600 mt-1">Per Night</p>
+                      )}
+                      {extraBeds > 0 && (
+                        <p className="text-sm text-gray-600 mt-1">
+                          Rollaway Bed added
+                        </p>
+                      )}
+                    </div>
                     <p className="text-sm text-gray-600 mt-1">
                       Reviews:{" "}
                       <span className="font-bold text-[#644222]">
@@ -188,13 +272,13 @@ export default function RoomList({
                       </span>
                     </p>
                   </div>
+
                   <div className="mt-4 flex justify-between items-end">
                     <button
                       onClick={() => {
-                        // Ensure filteredRooms[0] is available and has a roomType property
                         if (filteredRooms && filteredRooms.length > 0) {
                           router.push(
-                            `/hotelBooking?roomType=${filteredRooms[0].roomType}`,
+                            `/hotel-booking?checkIn=${formData.checkIn}&checkOut=${formData.checkOut}&adults=${formData.adults}&children=${formData.children}&roomType=${formData.roomType}`,
                             { scroll: false }
                           );
                         }

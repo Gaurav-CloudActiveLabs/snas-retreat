@@ -13,7 +13,7 @@ const AvailableRooms = () => {
   const checkOut = searchParams.get('checkOut') || ''
   const adults = parseInt(searchParams.get('adults') || '1', 10)
   const children = parseInt(searchParams.get('children') || '0', 10)
-  const room = searchParams.get('roomType') || 'Deluxe'
+  const roomType = searchParams.get('roomType') || 'Deluxe'
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -27,7 +27,7 @@ const AvailableRooms = () => {
           initialCheckOut={checkOut}
           initialAdults={adults}
           initialChildren={children}
-          initialRoomType={room}
+          initialRoomType={roomType}
         />
       </main>
       <Footer />
@@ -35,4 +35,4 @@ const AvailableRooms = () => {
   )
 }
 
-export default AvailableRooms
+export default AvailableRooms;

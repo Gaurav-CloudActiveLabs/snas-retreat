@@ -61,7 +61,7 @@ export default function BookingForm() {
     if (validateForm()) {
       // Navigate with query parameters
       router.push(
-        `/availableRooms?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}&roomType=${room}`,
+        `/available-rooms?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}&roomType=${room}`,
         { scroll: false }
       );
     }
