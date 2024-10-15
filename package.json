@@ -9,5 +9,19 @@
   "workspaces": [
     "apps/*",
     "services/*"
-  ]
+  ],
+  "resolutions": {
+    "graphql": "16.8.1",
+    "@keystone-6/core": "npm:@k6js-next/core-next@0.0.0-20240905-01",
+    "@keystone-6/auth": "npm:@k6js-next/auth-next@0.0.0-20240905-01",
+    "next": "15.0.0-canary.151",
+    "react": "19.0.0-rc-7771d3a7-20240827",
+    "react-dom": "19.0.0-rc-7771d3a7-20240827"
+  },
+  "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "concurrently": "^8.2.2",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.0"
+  }
 }
