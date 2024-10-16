@@ -1,10 +1,7 @@
-'use client';
-
+'use client'
 /* eslint-disable */
-import { getInitPage } from '@keystone-6/auth/pages/InitPage';
+import { getInitPage } from '@keystone-6/auth/pages/InitPage'
 
-export default getInitPage({
-  listKey: 'User',
-  fieldPaths: ['firstName', 'email', 'password'],
-  enableWelcome: false,
-});
+const fieldPaths = ["name","phoneNumber","password"]
+
+export default getInitPage({"listKey":"User","fieldPaths":["name","phoneNumber","password"],"enableWelcome":false})
