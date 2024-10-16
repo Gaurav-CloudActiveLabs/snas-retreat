@@ -24,7 +24,7 @@ import { statelessSessions } from '@keystone-6/core/session'
 // withAuth is a function we can use to wrap our base configuration
 const { withAuth } = createAuth({
   listKey: 'User',
-  identityField: 'email',
+  identityField: 'phoneNumber',
 
   // this is a GraphQL query fragment for fetching what data will be attached to a context.session
   //   this can be helpful for when you are writing your access control functions

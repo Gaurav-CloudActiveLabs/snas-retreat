@@ -14,6 +14,7 @@ import { lists } from "./schemas/index";
 // when you write your list-level access control functions, as they typically rely on session data
 import { withAuth, session } from "./auth";
 import dotEnv from "dotenv";
+import { extendGraphqlSchema } from "./customSchema";
 dotEnv.config();
 
 export default withAuth(
@@ -48,5 +49,6 @@ export default withAuth(
       },
     },
     session,
+    extendGraphqlSchema
   })
 );

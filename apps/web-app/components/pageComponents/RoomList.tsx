@@ -278,7 +278,7 @@ export default function RoomList({
                       onClick={() => {
                         if (filteredRooms && filteredRooms.length > 0) {
                           router.push(
-                            `/hotel-booking?checkIn=${formData.checkIn}&checkOut=${formData.checkOut}&adults=${formData.adults}&children=${formData.children}&roomType=${formData.roomType}`,
+                            `/selected-room?checkIn=${formData.checkIn}&checkOut=${formData.checkOut}&adults=${formData.adults}&children=${formData.children}&roomType=${formData.roomType}`,
                             { scroll: false }
                           );
                         }

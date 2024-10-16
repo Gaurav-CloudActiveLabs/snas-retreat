@@ -1,4 +1,5 @@
 import { Booking } from "./booking";
+import { BookingPrimaryUser } from "./bookingPrimaryUser";
 import { BreakfastPrice } from "./breakfastPrice";
 import { Coupon } from "./coupon";
 import { DinnerPrice } from "./dinnerPrice";
@@ -26,5 +27,6 @@ export const lists = {
  BreakfastPrice,
  DinnerPrice,
  ReportList,
- Coupon
+ Coupon,
+ BookingPrimaryUser
 };

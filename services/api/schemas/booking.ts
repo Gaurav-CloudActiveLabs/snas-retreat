@@ -68,24 +68,14 @@ export const Booking = list({
       ],
       defaultValue: "Unpaid",
     }),
-    primaryUserName: text(),
-    primaryUserAge: integer(),
-    primaryUserGender: select({
-      options: [
-        { label: "Male", value: "male" },
-        { label: "Female", value: "female" },
-        { label: "Non-binary", value: "non_binary" },
-        { label: "Prefer not to say", value: "prefer_not_to_say" },
-      ],
-    }),
     bookingType: select({
       options: [
         { label: "PERSONAL", value: "PERSONAL" },
         { label: "CORPORATE", value: "CORPORATE" },
       ],
     }),
-    companyName: text(),
-    companyAddress: text(),
-    companyGST: text(),
+    primaryUser: relationship({
+      ref: "BookingPrimaryUser.booking",
+    }),
   },
 });
