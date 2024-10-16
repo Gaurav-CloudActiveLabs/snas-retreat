@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const CREATE_PAYMENT = gql`
   mutation CreatePayment($input: PaymentInput!) {
@@ -16,6 +16,14 @@ export const GET_PAYMENT = gql`
       id
       amount
       status
+    }
+  }
+`;
+
+export const Get_Rooms = gql`
+  query Rooms {
+    rooms {
+      id
     }
   }
 `;

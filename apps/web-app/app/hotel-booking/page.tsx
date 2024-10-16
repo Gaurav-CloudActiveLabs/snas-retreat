@@ -30,30 +30,44 @@ import {
   Tag,
 } from "lucide-react";
 // Instead of importing from './gql/payment'
-import { CREATE_PAYMENT, GET_PAYMENT } from "../../gql";
+import { useMutation,useQuery ,gql} from "@apollo/client";
+import { CREATE_BOOKING, CREATE_PAYMENT, GET_PAYMENT, Get_Rooms } from "../../gql";
 
-// Use the queries/mutations in your Apollo client or elsewhere
+
 
 export default function PrimaryBooking() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  // const [createBooking, { loading, error, data }] = useMutation(CREATE_BOOKING);
+  const { loading, error, data } = useQuery(Get_Rooms);
 
-  const checkIn = searchParams.get("checkIn") || "16 Oct 2024";
-  const checkOut = searchParams.get("checkOut") || "17 Oct 2024";
-  const adults = parseInt(searchParams.get("adults") || "2", 10);
-  const children = parseInt(searchParams.get("children") || "0", 10);
+  useEffect(() => {
+    if (loading) {
+      console.log("Loading rooms...");
+    }
+    if (error) {
+      console.error("Error fetching rooms:", error);
+    }
+    if (data) {
+      console.log("Rooms data:", data.rooms);
+    }
+  }, [loading, error, data]);
+  
+  const checkIn = searchParams.get("checkIn");
+  const checkOut = searchParams.get("checkOut");
+  const adults = parseInt(searchParams.get("adults") || "2");
+  const children = parseInt(searchParams.get("children") || "0");
   const roomType =
-    searchParams.get("roomType") ||
-    "Superior Room Garden View with Balcony Twin Bed";
+    searchParams.get("roomType") ;
   const mealOption = searchParams.get("mealOption") || "Room with Breakfast";
   const initialBasePrice = parseInt(searchParams.get("basePrice") || "0");
 
   // States
-  const [basePrice, setBasePrice] = useState<any>(initialBasePrice);
-  const [gstPrice, setGstPrice] = useState<any>();
-  const [finalPrice, setFinalPrice] = useState<any>();
-  const [couponCode, setCouponCode] = useState<any>("");
-  const [primaryUser, setPrimaryUser] = useState<any>({
+  const [basePrice, setBasePrice] = useState<number>(initialBasePrice);
+  const [gstPrice, setGstPrice] = useState<number>(0);
+  const [finalPrice, setFinalPrice] = useState<number>(0);
+  const [couponCode, setCouponCode] = useState<string>("");
+  const [primaryUser, setPrimaryUser] = useState({
     name: "",
     age: "",
     gender: "male",
@@ -70,9 +84,9 @@ export default function PrimaryBooking() {
   const applyCoupon = () => {
     if (couponCode === "DISCOUNT10") {
       const discount = basePrice * 0.1;
-      const discountedPrice = finalPrice - discount;
+      const discountedPrice = basePrice - discount;
+      const gst = discountedPrice * 0.05;
       setBasePrice(discountedPrice);
-      const gst = basePrice * 0.05; // 5% GST
       setGstPrice(gst);
       setFinalPrice(discountedPrice + gst);
     }
@@ -90,19 +104,59 @@ export default function PrimaryBooking() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setPrimaryUser((prev: any) => ({ ...prev, [name]: value }));
+    setPrimaryUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Booking details submitted:", primaryUser);
-    // Handle booking logic (e.g., send data to backend)
-  };
 
+    // Populate booking data
+    const bookingData = {
+      checkInDate: checkIn,
+      checkOutDate: checkOut,
+      room: {
+        connect: {
+          id: "cm2bl381d0000hmxrrz9xr5by", // replace with actual room ID
+        },
+      },
+      totalPrice: finalPrice,
+      totalPriceWithoutTax: basePrice,
+      user: {
+        connect: {
+          id: "cm21vu4d30000t67nrch90ebk", // replace with actual user ID
+        },
+      },
+      bookingType: primaryUser.bookingType,
+      // primaryUser: {
+      //   create: {
+      //     address: primaryUser.address,
+      //     age: parseInt(primaryUser.age),
+      //     bookingType: primaryUser.bookingType,
+      //     companyAddress: primaryUser.companyAddress,
+      //     companyName: primaryUser.companyName,
+      //     gstNumber: primaryUser.gstNumber,
+      //     name: primaryUser.name,
+      //     primaryUserGender: primaryUser.gender,
+      //     verificationId: primaryUser.verificationId,
+      //     verificationIdType: primaryUser.verificationIdType,
+      //   },
+      // },
+    };
+    console.log("bookingData",bookingData)
+    try {
+      // const result =   await createBooking({
+      //   variables: { data: bookingData },
+      // });
+      // console.log('Booking Successful:', result);
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
-      <main className="lg:px-28 px-10 mx-auto py-12">
+      {/* <main className="lg:px-28 px-10 mx-auto py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <Card>
@@ -116,12 +170,12 @@ export default function PrimaryBooking() {
                   <div>
                     <h3 className="font-semibold">CHECK IN</h3>
                     <p>{checkIn}</p>
-                    <p>2 PM</p>
+                    <p>12 PM</p>
                   </div>
                   <div>
                     <h3 className="font-semibold">CHECK OUT</h3>
                     <p>{checkOut}</p>
-                    <p>12 PM</p>
+                    <p>11 AM</p>
                   </div>
                 </div>
                 <p className="mt-4">
@@ -261,9 +315,9 @@ export default function PrimaryBooking() {
                         <SelectTrigger className="w-full">
                           <span>
                             {primaryUser.bookingType === "personal"
-                              ? "Personal Use"
+                              ? "Personal"
                               : primaryUser.bookingType === "corporate"
-                              ? "Corporate Booking"
+                              ? "Corporate"
                               : "Select Booking Type"}
                           </span>
                         </SelectTrigger>
@@ -389,7 +443,7 @@ export default function PrimaryBooking() {
             </Button>
           </div>
         </div>
-      </main>
+      </main> */}
       <Footer />
     </div>
   );

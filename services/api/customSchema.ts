@@ -1,17 +1,18 @@
-import { mergeSchemas } from '@graphql-tools/schema';
-import { GraphQLSchema } from 'graphql';
+import { mergeSchemas } from "@graphql-tools/schema";
+import { GraphQLSchema } from "graphql";
 import {
-  payment,
-  payments,
-  paymentsType,
-  updatePayment,
-  updatePayments,
-} from './customMutation/payment';
-const typeDefs = String.raw`
-${paymentsType}
-type Mutation {   
-    ${payments}
-    ${updatePayments}
+  bookingPayment,
+  bookingPayments,
+  bookingPaymentsType,
+  updateBookingPayment,
+  updateBookingPayments,
+} from "./customMutation/bookingPayment";
+
+const typeDefs = `
+  ${bookingPaymentsType}
+  type Mutation {   
+    ${bookingPayments}
+    ${updateBookingPayments}
   }  
 `;
 
@@ -21,8 +22,8 @@ export const extendGraphqlSchema = (schema: GraphQLSchema) =>
     typeDefs,
     resolvers: {
       Mutation: {
-        payment,
-        updatePayment,
+        bookingPayment,
+        updateBookingPayment,
       },
       Query: {},
     },

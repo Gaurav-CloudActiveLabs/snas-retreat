@@ -58,7 +58,7 @@ export const User = list({
     listView: {
       initialColumns: [],
     },
-    isHidden: ({ session }) =>
-      session?.data?.userType === "Admin" ? false : true,
+    // isHidden: ({ session }) =>
+    //   session?.data?.userType === "Admin" ? false : true,
   },
 });

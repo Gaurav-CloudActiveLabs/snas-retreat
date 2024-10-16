@@ -49,6 +49,8 @@ export default withAuth(
       },
     },
     session,
-    extendGraphqlSchema
+    graphql: {
+      extendGraphqlSchema,
+    },
   })
 );

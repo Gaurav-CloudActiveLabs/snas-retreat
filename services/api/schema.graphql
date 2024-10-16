@@ -375,18 +375,14 @@ type Booking {
   room: Room
   checkInDate: DateTime
   checkOutDate: DateTime
+  totalPriceWithoutTax: Float
   totalPrice: Float
   status: BookingStatusType
   payment: Payment
   invoice: Invoice
   paymentStatus: BookingPaymentStatusType
-  primaryUserName: String
-  primaryUserAge: Int
-  primaryUserGender: String
   bookingType: String
-  companyName: String
-  companyAddress: String
-  companyGST: String
+  primaryUser: BookingPrimaryUser
   updatedAt: DateTime
   createdAt: DateTime
   updatedBy: User
@@ -419,18 +415,14 @@ input BookingWhereInput {
   room: RoomWhereInput
   checkInDate: DateTimeFilter
   checkOutDate: DateTimeFilter
+  totalPriceWithoutTax: FloatFilter
   totalPrice: FloatFilter
   status: BookingStatusTypeNullableFilter
   payment: PaymentWhereInput
   invoice: InvoiceWhereInput
   paymentStatus: BookingPaymentStatusTypeNullableFilter
-  primaryUserName: StringFilter
-  primaryUserAge: IntNullableFilter
-  primaryUserGender: StringNullableFilter
   bookingType: StringNullableFilter
-  companyName: StringFilter
-  companyAddress: StringFilter
-  companyGST: StringFilter
+  primaryUser: BookingPrimaryUserWhereInput
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
   updatedBy: UserWhereInput
@@ -482,16 +474,11 @@ input BookingOrderByInput {
   bookingNumber: OrderDirection
   checkInDate: OrderDirection
   checkOutDate: OrderDirection
+  totalPriceWithoutTax: OrderDirection
   totalPrice: OrderDirection
   status: OrderDirection
   paymentStatus: OrderDirection
-  primaryUserName: OrderDirection
-  primaryUserAge: OrderDirection
-  primaryUserGender: OrderDirection
   bookingType: OrderDirection
-  companyName: OrderDirection
-  companyAddress: OrderDirection
-  companyGST: OrderDirection
   updatedAt: OrderDirection
   createdAt: OrderDirection
 }
@@ -502,18 +489,14 @@ input BookingUpdateInput {
   room: RoomRelateToOneForUpdateInput
   checkInDate: DateTime
   checkOutDate: DateTime
+  totalPriceWithoutTax: Float
   totalPrice: Float
   status: BookingStatusType
   payment: PaymentRelateToOneForUpdateInput
   invoice: InvoiceRelateToOneForUpdateInput
   paymentStatus: BookingPaymentStatusType
-  primaryUserName: String
-  primaryUserAge: Int
-  primaryUserGender: String
   bookingType: String
-  companyName: String
-  companyAddress: String
-  companyGST: String
+  primaryUser: BookingPrimaryUserRelateToOneForUpdateInput
 }
 
 input UserRelateToOneForUpdateInput {
@@ -540,6 +523,12 @@ input InvoiceRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
+input BookingPrimaryUserRelateToOneForUpdateInput {
+  create: BookingPrimaryUserCreateInput
+  connect: BookingPrimaryUserWhereUniqueInput
+  disconnect: Boolean
+}
+
 input BookingUpdateArgs {
   where: BookingWhereUniqueInput!
   data: BookingUpdateInput!
@@ -551,18 +540,14 @@ input BookingCreateInput {
   room: RoomRelateToOneForCreateInput
   checkInDate: DateTime
   checkOutDate: DateTime
+  totalPriceWithoutTax: Float
   totalPrice: Float
   status: BookingStatusType
   payment: PaymentRelateToOneForCreateInput
   invoice: InvoiceRelateToOneForCreateInput
   paymentStatus: BookingPaymentStatusType
-  primaryUserName: String
-  primaryUserAge: Int
-  primaryUserGender: String
   bookingType: String
-  companyName: String
-  companyAddress: String
-  companyGST: String
+  primaryUser: BookingPrimaryUserRelateToOneForCreateInput
 }
 
 input UserRelateToOneForCreateInput {
@@ -583,6 +568,11 @@ input PaymentRelateToOneForCreateInput {
 input InvoiceRelateToOneForCreateInput {
   create: InvoiceCreateInput
   connect: InvoiceWhereUniqueInput
+}
+
+input BookingPrimaryUserRelateToOneForCreateInput {
+  create: BookingPrimaryUserCreateInput
+  connect: BookingPrimaryUserWhereUniqueInput
 }
 
 type Payment {
@@ -1183,6 +1173,100 @@ input CouponCreateInput {
   expirationDate: DateTime
 }
 
+type BookingPrimaryUser {
+  id: ID!
+  name: String
+  age: Int
+  primaryUserGender: String
+  verificationIdType: String
+  verificationId: String
+  bookingType: String
+  address: String
+  companyName: String
+  companyAddress: String
+  gstNumber: String
+  booking: Booking
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+input BookingPrimaryUserWhereUniqueInput {
+  id: ID
+}
+
+input BookingPrimaryUserWhereInput {
+  AND: [BookingPrimaryUserWhereInput!]
+  OR: [BookingPrimaryUserWhereInput!]
+  NOT: [BookingPrimaryUserWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  age: IntNullableFilter
+  primaryUserGender: StringNullableFilter
+  verificationIdType: StringNullableFilter
+  verificationId: StringFilter
+  bookingType: StringNullableFilter
+  address: StringFilter
+  companyName: StringFilter
+  companyAddress: StringFilter
+  gstNumber: StringFilter
+  booking: BookingWhereInput
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input BookingPrimaryUserOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  age: OrderDirection
+  primaryUserGender: OrderDirection
+  verificationIdType: OrderDirection
+  verificationId: OrderDirection
+  bookingType: OrderDirection
+  address: OrderDirection
+  companyName: OrderDirection
+  companyAddress: OrderDirection
+  gstNumber: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input BookingPrimaryUserUpdateInput {
+  name: String
+  age: Int
+  primaryUserGender: String
+  verificationIdType: String
+  verificationId: String
+  bookingType: String
+  address: String
+  companyName: String
+  companyAddress: String
+  gstNumber: String
+  booking: BookingRelateToOneForUpdateInput
+}
+
+input BookingPrimaryUserUpdateArgs {
+  where: BookingPrimaryUserWhereUniqueInput!
+  data: BookingPrimaryUserUpdateInput!
+}
+
+input BookingPrimaryUserCreateInput {
+  name: String
+  age: Int
+  primaryUserGender: String
+  verificationIdType: String
+  verificationId: String
+  bookingType: String
+  address: String
+  companyName: String
+  companyAddress: String
+  gstNumber: String
+  booking: BookingRelateToOneForCreateInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -1267,9 +1351,17 @@ type Mutation {
   updateCoupons(data: [CouponUpdateArgs!]!): [Coupon]
   deleteCoupon(where: CouponWhereUniqueInput!): Coupon
   deleteCoupons(where: [CouponWhereUniqueInput!]!): [Coupon]
+  createBookingPrimaryUser(data: BookingPrimaryUserCreateInput!): BookingPrimaryUser
+  createBookingPrimaryUsers(data: [BookingPrimaryUserCreateInput!]!): [BookingPrimaryUser]
+  updateBookingPrimaryUser(where: BookingPrimaryUserWhereUniqueInput!, data: BookingPrimaryUserUpdateInput!): BookingPrimaryUser
+  updateBookingPrimaryUsers(data: [BookingPrimaryUserUpdateArgs!]!): [BookingPrimaryUser]
+  deleteBookingPrimaryUser(where: BookingPrimaryUserWhereUniqueInput!): BookingPrimaryUser
+  deleteBookingPrimaryUsers(where: [BookingPrimaryUserWhereUniqueInput!]!): [BookingPrimaryUser]
   endSession: Boolean!
-  authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
+  authenticateUserWithPassword(phoneNumber: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
+  bookingPayment(bookingId: String!, userId: String!): bookingPaymentsType
+  updateBookingPayment(bookingId: String, paymentId: String, signature: String, paymentError: JSON): bookingPaymentsType
 }
 
 union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
@@ -1329,6 +1421,9 @@ type Query {
   coupon(where: CouponWhereUniqueInput!): Coupon
   coupons(where: CouponWhereInput! = {}, orderBy: [CouponOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CouponWhereUniqueInput): [Coupon!]
   couponsCount(where: CouponWhereInput! = {}): Int
+  bookingPrimaryUser(where: BookingPrimaryUserWhereUniqueInput!): BookingPrimaryUser
+  bookingPrimaryUsers(where: BookingPrimaryUserWhereInput! = {}, orderBy: [BookingPrimaryUserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookingPrimaryUserWhereUniqueInput): [BookingPrimaryUser!]
+  bookingPrimaryUsersCount(where: BookingPrimaryUserWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
@@ -1463,4 +1558,9 @@ type KeystoneAdminUISort {
 enum KeystoneAdminUISortDirection {
   ASC
   DESC
+}
+
+type bookingPaymentsType {
+  message: String!
+  payment: Payment
 }

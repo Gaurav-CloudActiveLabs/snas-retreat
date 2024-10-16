@@ -3,6 +3,7 @@ import "./globals.css";
 import { Jost } from "next/font/google";
 import OGImage from "@/assets/ogimage.png";
 import favicon from "@/assets/favicon.png";
+import CustomApolloProvider from "@/components/ApolloProvider";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     siteName: "SNAS RETREAT, Manali",
     images: [
       {
-        url: OGImage.src, // Add the URL of your image here
+        url: OGImage.src,
         width: 800,
         height: 600,
         alt: "SNAS RETREAT Hotel View",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
       "Experience luxury at SNAS RETREAT, a boutique hotel in Manali offering stunning mountain views, spacious rooms, fine dining, and world-class amenities. Book your perfect getaway today!",
     images: [
       {
-        url: OGImage.src, // Add the URL of your image here
+        url: OGImage.src,
         alt: "SNAS RETREAT Hotel View",
       },
     ],
@@ -51,15 +52,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
         <link rel="icon" href={favicon.src} sizes="16x16" type="image/png" />
       </head>
-      <body className={`${jost.variable} antialiased`}>{children}</body>
+      <body className={`${jost.variable} antialiased`}>
+        <CustomApolloProvider>{children}</CustomApolloProvider>
+      </body>
     </html>
   );
 }

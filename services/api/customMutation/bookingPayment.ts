@@ -3,95 +3,86 @@ import { key_secret, razorpay } from "../RazorPay/razorPayfunction";
 import crypto from "crypto";
 import { generateReceiptId } from "../utils/helper";
 
-export const payments = `payment(id: String!): paymentsType`;
+export const bookingPayments = `bookingPayment(bookingId: String!,userId: String!): bookingPaymentsType`;
 
-export const updatePayments = `updatePayment(orderId: String, paymentId: String, signature: String, paymentError: JSON): paymentsType`;
+export const updateBookingPayments = `updateBookingPayment(bookingId: String, paymentId: String, signature: String, paymentError: JSON): bookingPaymentsType`;
 
-export const paymentsType = `type paymentsType {
+export const bookingPaymentsType = `type bookingPaymentsType {
   message: String!
   payment: Payment
 }`;
 
-export async function payment(
+export async function bookingPayment(
   root: any,
-  { id }: { id: string },
+  { bookingId ,userId}: { bookingId: string,userId: string },
   context: Context
 ){
-  const userId = context?.session?.data?.id;
+  // const userId = context?.session?.data?.id;
   if (!userId) {
     throw new Error(`Server Error: Please login first to pay for trip`);
   }
 
   try {
     const sudo = context.sudo();
-
     // Fetch the trip details
-    // const booking = await sudo.query.Trip.findOne({
-    //   where: { id },
-    //   query: "id estimatedFare finalFare",
-    // });
+    const booking = await sudo.query.Booking.findOne({
+      where: { id:bookingId },
+      query: "id totalPrice",
+    });
 
-    // if (booking?.id) {
-    //   const receiptId = generateReceiptId();
-    //   // Create payment options for Razorpay
-    //   const paymentOptions = {
-    //     amount: Math.round(booking.finalFare * 100), // Amount in smallest currency unit (paisa)
-    //     currency: "INR",
-    //     receipt: receiptId,
-    //   };
+    if (booking?.id) {
+      const receiptId = generateReceiptId();
+      // Create payment options for Razorpay
+      const paymentOptions = {
+        amount: Math.round(booking.totalPrice * 100), // Amount in smallest currency unit (paisa)
+        currency: "INR",
+        receipt: receiptId,
+      };
 
-    //   // Create an order on Razorpay
-    //   const rpOrder = await razorpay.orders.create(paymentOptions);
-    //   const rpOrderJson = JSON.stringify(rpOrder);
+      console.log("paymentOptions",paymentOptions)
 
-    //   // Prepare payment data to be stored in the database
-    //   const paymentData = {
-    //     orderId: rpOrder.id,
-    //     status: "initiated",
-    //     user: { connect: { id: userId } },
-    //     amount: paymentOptions.amount / 100,
-    //     currency: "INR",
-    //     response: { created: rpOrderJson },
-    //   };
+      // Create an order on Razorpay
+      const rpOrder = await razorpay.orders.create(paymentOptions);
+      const rpOrderJson = JSON.stringify(rpOrder);
 
-    //   // Create a payment entry in the database
-    //   const createdPayment = await sudo.db.Payment.createOne({
-    //     data: paymentData,
-    //   });
+      console.log("rpOrder",rpOrder)
+      console.log("rpOrderJson",rpOrderJson)
 
-    //   // Create a corresponding transaction entry
-    //   await sudo.db.Transaction.createOne({
-    //     data: {
-    //       transactionId: receiptId,
-    //       amount: createdPayment.amount,
-    //       currency: "INR",
-    //       status: "pending",
-    //       payment: { connect: { id: createdPayment.id } },
-    //       trip: { connect: { id: trip.id } },
-    //       type: "payment",
-    //       response: { created: rpOrderJson },
-    //     },
-    //   });
+      // Prepare payment data to be stored in the database
+      const paymentData = {
+        requestId: rpOrder.id,
+        status: "Pending",
+        booking: { connect: { id: bookingId } },
+        amount: paymentOptions.amount / 100,
+        // response: { created: rpOrderJson },
+      };
 
-    //   return { message: "success", payment: createdPayment };
-    // } else {
-    //   return { message: "No Trip found with given ID" };
-    // }
+      // // Create a payment entry in the database
+      const createdPayment = await sudo.db.Payment.createOne({
+        data: paymentData,
+      });
+
+     
+
+      return { message: "success" ,payment:createdPayment};
+    } else {
+      return { message: "No Trip found with given ID" };
+    }
   } catch (error) {
     console.error("Error while adding trip order:", error);
     return { message: `Error: ${error}` };
   }
 }
 
-export async function updatePayment(
+export async function updateBookingPayment(
   root: any,
   {
-    orderId,
+    bookingId,
     paymentId,
     signature,
     paymentError,
   }: {
-    orderId: string;
+    bookingId: string;
     paymentId: string;
     signature: string;
     paymentError?: any;
@@ -159,7 +150,7 @@ export async function updatePayment(
     //   },
     // });
 
-    return { message: "success", payment };
+    return { message: "success" };
   } catch (error) {
     console.error("Error while updating trip payment:", error);
     return { message: `Error: ${error}` };

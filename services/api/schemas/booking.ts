@@ -44,6 +44,9 @@ export const Booking = list({
     checkOutDate: timestamp({
       validation: { isRequired: true },
     }),
+    totalPriceWithoutTax:float({
+      validation: { isRequired: true },
+    }),
     totalPrice: float({
       validation: { isRequired: true },
     }),
