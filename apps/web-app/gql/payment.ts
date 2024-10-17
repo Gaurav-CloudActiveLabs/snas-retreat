@@ -13,3 +13,26 @@ export const BOOKING_PAYMENT = gql`
     }
   }
 `;
+
+export const UPDATE_BOOKING_PAYMENT = gql`
+  mutation UpdateBookingPayment(
+    $requestId: String
+    $bookingId: String
+    $paymentId: String
+    $signature: String
+  ) {
+    updateBookingPayment(
+      requestId: $requestId
+      bookingId: $bookingId
+      paymentId: $paymentId
+      signature: $signature
+    ) {
+      message
+      payment {
+        id
+        requestId
+        response
+      }
+    }
+  }
+`;

@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 // Instead of importing from './gql/payment'
 import { useMutation, useQuery, gql } from "@apollo/client";
-import { BOOKING_PAYMENT, CREATE_BOOKING } from "../../gql";
+import { BOOKING_PAYMENT, CREATE_BOOKING, UPDATE_BOOKING_PAYMENT } from "../../gql";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 
 export default function PrimaryBooking() {
@@ -41,6 +41,7 @@ export default function PrimaryBooking() {
   const razorPayKeyId: any = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
   const [createBooking] = useMutation(CREATE_BOOKING);
   const [bookingPayment] = useMutation(BOOKING_PAYMENT);
+  const [updateBookingPayment] = useMutation(UPDATE_BOOKING_PAYMENT);
 
   const checkIn: any = searchParams.get("checkIn");
   const checkOut: any = searchParams.get("checkOut");
@@ -109,14 +110,14 @@ export default function PrimaryBooking() {
       checkOutDate,
       room: {
         connect: {
-          id: "cm2bl381d0000hmxrrz9xr5by", // Replace with actual room ID
+          id: "cm2d7jl220001qelxs6geevb0", // Replace with actual room ID
         },
       },
       totalPrice: finalPrice,
       totalPriceWithoutTax: basePrice,
       user: {
         connect: {
-          id: "cm21vu4d30000t67nrch90ebk", // Replace with actual user ID
+          id: "cm2d2vtau0000i5mwifkpqeg6", // Replace with actual user ID
         },
       },
       bookingType: primaryUser.bookingType,
@@ -149,7 +150,7 @@ export default function PrimaryBooking() {
         const payment: any = await bookingPayment({
           variables: {
             bookingId,
-            userId: "cm21vu4d30000t67nrch90ebk", // Replace with actual user ID
+            userId: "cm2d2vtau0000i5mwifkpqeg6", // Replace with actual user ID
           },
         });
 
@@ -172,8 +173,9 @@ export default function PrimaryBooking() {
 
         const options: RazorpayOrderOptions = {
           key: razorPayKeyId,
-          amount: 100, // Amount in paise
+          amount: payment?.amount, // Amount in paise
           currency: payment.currency,
+          image: "https://i.imgur.com/3g7nmJC.png",
           name: "SNAS Retreat",
           description: "Test Transaction",
           order_id: payment?.requestId, // Generate order_id on server
@@ -244,8 +246,9 @@ export default function PrimaryBooking() {
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* User Name */}
                     <div className="space-y-2">
-                      <Label htmlFor="name"> User Name</Label>
+                      <Label htmlFor="name">User Name</Label>
                       <Input
                         id="name"
                         name="name"
@@ -257,6 +260,7 @@ export default function PrimaryBooking() {
                       />
                     </div>
 
+                    {/* Age */}
                     <div className="space-y-2">
                       <Label htmlFor="age">Age</Label>
                       <Input
@@ -270,6 +274,7 @@ export default function PrimaryBooking() {
                       />
                     </div>
 
+                    {/* Gender */}
                     <div className="space-y-2">
                       <Label htmlFor="gender">Gender</Label>
                       <Select
@@ -284,10 +289,10 @@ export default function PrimaryBooking() {
                             {primaryUser.gender === "male"
                               ? "Male"
                               : primaryUser.gender === "female"
-                              ? "Female"
-                              : primaryUser.gender === "non_binary"
-                              ? "Non-binary"
-                              : "Prefer not to say"}
+                                ? "Female"
+                                : primaryUser.gender === "non_binary"
+                                  ? "Non-binary"
+                                  : "Prefer not to say"}
                           </span>
                         </SelectTrigger>
                         <SelectContent>
@@ -301,9 +306,10 @@ export default function PrimaryBooking() {
                       </Select>
                     </div>
 
+                    {/* Verification Id Type */}
                     <div className="space-y-2">
                       <Label htmlFor="verificationIdType">
-                        Verification Id Type
+                        Verification ID Type
                       </Label>
                       <Select
                         onValueChange={(value) =>
@@ -317,13 +323,13 @@ export default function PrimaryBooking() {
                             {primaryUser.verificationIdType === "aadhaar"
                               ? "Aadhaar"
                               : primaryUser.verificationIdType === "voterID"
-                              ? "Voter ID"
-                              : primaryUser.verificationIdType === "passport"
-                              ? "Passport"
-                              : primaryUser.verificationIdType ===
-                                "drivingLicense"
-                              ? "Driving License"
-                              : "Select Verification ID"}
+                                ? "Voter ID"
+                                : primaryUser.verificationIdType === "passport"
+                                  ? "Passport"
+                                  : primaryUser.verificationIdType ===
+                                      "drivingLicense"
+                                    ? "Driving License"
+                                    : "Select Verification ID"}
                           </span>
                         </SelectTrigger>
                         <SelectContent>
@@ -337,6 +343,7 @@ export default function PrimaryBooking() {
                       </Select>
                     </div>
 
+                    {/* Government ID */}
                     <div className="space-y-2">
                       <Label htmlFor="verificationId">Government ID</Label>
                       <Input
@@ -350,6 +357,8 @@ export default function PrimaryBooking() {
                         className="w-full"
                       />
                     </div>
+
+                    {/* Booking Type */}
                     <div className="space-y-2">
                       <Label htmlFor="bookingType">Booking Type</Label>
                       <Select
@@ -364,8 +373,8 @@ export default function PrimaryBooking() {
                             {primaryUser.bookingType === "personal"
                               ? "Personal"
                               : primaryUser.bookingType === "corporate"
-                              ? "Corporate"
-                              : "Select Booking Type"}
+                                ? "Corporate"
+                                : "Select Booking Type"}
                           </span>
                         </SelectTrigger>
                         <SelectContent>
@@ -378,6 +387,7 @@ export default function PrimaryBooking() {
                     </div>
                   </div>
 
+                  {/* Conditional Fields */}
                   {primaryUser.bookingType === "personal" && (
                     <div className="space-y-2">
                       <Label htmlFor="address">Personal Address</Label>
@@ -386,6 +396,7 @@ export default function PrimaryBooking() {
                         name="address"
                         type="text"
                         value={primaryUser.address}
+                        required={primaryUser.bookingType === "personal"}
                         onChange={handleInputChange}
                         placeholder="Enter your address"
                         className="w-full"
@@ -402,6 +413,7 @@ export default function PrimaryBooking() {
                           name="companyName"
                           type="text"
                           value={primaryUser.companyName}
+                          required={primaryUser.bookingType === "corporate"}
                           onChange={handleInputChange}
                           className="w-full"
                         />
@@ -413,6 +425,7 @@ export default function PrimaryBooking() {
                           name="companyAddress"
                           type="text"
                           value={primaryUser.companyAddress}
+                          required={primaryUser.bookingType === "corporate"}
                           onChange={handleInputChange}
                           className="w-full"
                         />
@@ -424,6 +437,7 @@ export default function PrimaryBooking() {
                           name="gstNumber"
                           type="text"
                           value={primaryUser.gstNumber}
+                          required={primaryUser.bookingType === "corporate"}
                           onChange={handleInputChange}
                           className="w-full"
                         />
