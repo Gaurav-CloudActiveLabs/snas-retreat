@@ -1,8 +1,5 @@
 "use client";
 import ContextProvider from "@/context/provider";
-// ^ this file needs the "use client" pragma
-
-import { HttpLink } from "@apollo/client";
 import {
   ApolloNextAppProvider,
   ApolloClient,
@@ -38,9 +35,9 @@ function makeClient() {
 export function ApolloWrapper({ children }: React.PropsWithChildren) {
   return (
     <ApolloNextAppProvider makeClient={makeClient}>
-      {/* <ContextProvider> */}
+      <ContextProvider>
       {children}
-      {/* </ContextProvider> */}
+      </ContextProvider>
     </ApolloNextAppProvider>
   );
 }

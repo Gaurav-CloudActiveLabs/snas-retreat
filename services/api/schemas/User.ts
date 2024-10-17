@@ -24,7 +24,6 @@ export const User = list({
       isIndexed: "unique",
     }),
     phoneNumber: text({
-      isIndexed: "unique",
     }),
     password: password({ validation: { isRequired: true } }),
     userType: select({
@@ -51,48 +50,6 @@ export const User = list({
         createView: { fieldMode: "edit" },
         listView: { fieldMode: "read" },
         itemView: { fieldMode: "edit" },
-      },
-    }),
-    verified: checkbox({
-      defaultValue: false,
-      access: {
-        update: () => false,
-        read: () => {
-          return false;
-        },
-      },
-      hooks: {
-        resolveInput: {
-          create: async ({ resolvedData }) => {
-            resolvedData.verified = false;
-            return resolvedData.verified;
-          },
-          update: async ({ resolvedData }) => {
-            resolvedData.verified = false;
-            return resolvedData.verified;
-          },
-        },
-      },
-    }),
-    isAdmin: checkbox({
-      defaultValue: false,
-      access: {
-        update: () => false,
-        read: () => {
-          return false;
-        },
-      },
-      hooks: {
-        resolveInput: {
-          create: async ({ resolvedData }) => {
-            resolvedData.isAdmin = false;
-            return resolvedData.isAdmin;
-          },
-          update: async ({ resolvedData }) => {
-            resolvedData.isAdmin = false;
-            return resolvedData.isAdmin;
-          },
-        },
       },
     }),
     otps: relationship({ ref: 'Otp.user', many: true }),
