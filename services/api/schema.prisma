@@ -23,6 +23,7 @@ model User {
   reviews                           Review[]             @relation("Review_user")
   verified                          Boolean              @default(false)
   isAdmin                           Boolean              @default(false)
+  otps                              Otp[]                @relation("Otp_user")
   updatedAt                         DateTime?            @updatedAt
   createdAt                         DateTime?            @default(now())
   updatedBy                         User?                @relation("User_updatedBy", fields: [updatedById], references: [id])
@@ -42,12 +43,24 @@ model User {
   from_Review_createdBy             Review[]             @relation("Review_createdBy")
   from_Slider_updatedBy             Slider[]             @relation("Slider_updatedBy")
   from_Slider_createdBy             Slider[]             @relation("Slider_createdBy")
+  from_RoomImage_updatedBy          RoomImage[]          @relation("RoomImage_updatedBy")
+  from_RoomImage_createdBy          RoomImage[]          @relation("RoomImage_createdBy")
+  from_Faq_updatedBy                Faq[]                @relation("Faq_updatedBy")
+  from_Faq_createdBy                Faq[]                @relation("Faq_createdBy")
+  from_Invoice_updatedBy            Invoice[]            @relation("Invoice_updatedBy")
+  from_Invoice_createdBy            Invoice[]            @relation("Invoice_createdBy")
   from_BreakfastPrice_updatedBy     BreakfastPrice[]     @relation("BreakfastPrice_updatedBy")
   from_BreakfastPrice_createdBy     BreakfastPrice[]     @relation("BreakfastPrice_createdBy")
   from_DinnerPrice_updatedBy        DinnerPrice[]        @relation("DinnerPrice_updatedBy")
   from_DinnerPrice_createdBy        DinnerPrice[]        @relation("DinnerPrice_createdBy")
+  from_ReportList_updatedBy         ReportList[]         @relation("ReportList_updatedBy")
+  from_ReportList_createdBy         ReportList[]         @relation("ReportList_createdBy")
+  from_Coupon_updatedBy             Coupon[]             @relation("Coupon_updatedBy")
+  from_Coupon_createdBy             Coupon[]             @relation("Coupon_createdBy")
   from_BookingPrimaryUser_updatedBy BookingPrimaryUser[] @relation("BookingPrimaryUser_updatedBy")
   from_BookingPrimaryUser_createdBy BookingPrimaryUser[] @relation("BookingPrimaryUser_createdBy")
+  from_Otp_updatedBy                Otp[]                @relation("Otp_updatedBy")
+  from_Otp_createdBy                Otp[]                @relation("Otp_createdBy")
 
   @@index([updatedAt])
   @@index([createdAt])
@@ -201,31 +214,63 @@ model Slider {
 }
 
 model RoomImage {
-  id              String  @id @default(cuid())
+  id              String    @id @default(cuid())
   image_id        String?
   image_filesize  Int?
   image_width     Int?
   image_height    Int?
   image_extension String?
-  description     String  @default("")
-  room            Room?   @relation("RoomImage_room", fields: [roomId], references: [id])
-  roomId          String? @map("room")
+  description     String    @default("")
+  room            Room?     @relation("RoomImage_room", fields: [roomId], references: [id])
+  roomId          String?   @map("room")
+  updatedAt       DateTime? @updatedAt
+  createdAt       DateTime? @default(now())
+  updatedBy       User?     @relation("RoomImage_updatedBy", fields: [updatedById], references: [id])
+  updatedById     String?   @map("updatedBy")
+  createdBy       User?     @relation("RoomImage_createdBy", fields: [createdById], references: [id])
+  createdById     String?   @map("createdBy")
 
   @@index([roomId])
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
 }
 
 model Faq {
-  id       String @id @default(cuid())
-  question String @default("")
-  answer   String @default("")
+  id          String    @id @default(cuid())
+  question    String    @default("")
+  answer      String    @default("")
+  updatedAt   DateTime? @updatedAt
+  createdAt   DateTime? @default(now())
+  updatedBy   User?     @relation("Faq_updatedBy", fields: [updatedById], references: [id])
+  updatedById String?   @map("updatedBy")
+  createdBy   User?     @relation("Faq_createdBy", fields: [createdById], references: [id])
+  createdById String?   @map("createdBy")
+
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
 }
 
 model Invoice {
-  id            String   @id @default(cuid())
-  booking       Booking? @relation("Booking_invoice")
-  invoiceNumber String   @unique @default("")
+  id            String    @id @default(cuid())
+  booking       Booking?  @relation("Booking_invoice")
+  invoiceNumber String    @unique @default("")
   amount        Float
-  taxDetails    String   @default("")
+  taxDetails    String    @default("")
+  updatedAt     DateTime? @updatedAt
+  createdAt     DateTime? @default(now())
+  updatedBy     User?     @relation("Invoice_updatedBy", fields: [updatedById], references: [id])
+  updatedById   String?   @map("updatedBy")
+  createdBy     User?     @relation("Invoice_createdBy", fields: [createdById], references: [id])
+  createdById   String?   @map("createdBy")
+
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
 }
 
 model BreakfastPrice {
@@ -263,9 +308,20 @@ model DinnerPrice {
 }
 
 model ReportList {
-  id   String  @id @default(cuid())
-  type String?
-  data Json?
+  id          String    @id @default(cuid())
+  type        String?
+  data        Json?
+  updatedAt   DateTime? @updatedAt
+  createdAt   DateTime? @default(now())
+  updatedBy   User?     @relation("ReportList_updatedBy", fields: [updatedById], references: [id])
+  updatedById String?   @map("updatedBy")
+  createdBy   User?     @relation("ReportList_createdBy", fields: [createdById], references: [id])
+  createdById String?   @map("createdBy")
+
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
 }
 
 model Coupon {
@@ -275,6 +331,17 @@ model Coupon {
   value          Float
   isUsed         Boolean   @default(false)
   expirationDate DateTime?
+  updatedAt      DateTime? @updatedAt
+  createdAt      DateTime? @default(now())
+  updatedBy      User?     @relation("Coupon_updatedBy", fields: [updatedById], references: [id])
+  updatedById    String?   @map("updatedBy")
+  createdBy      User?     @relation("Coupon_createdBy", fields: [createdById], references: [id])
+  createdById    String?   @map("createdBy")
+
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
 }
 
 model BookingPrimaryUser {
@@ -297,6 +364,25 @@ model BookingPrimaryUser {
   createdBy          User?     @relation("BookingPrimaryUser_createdBy", fields: [createdById], references: [id])
   createdById        String?   @map("createdBy")
 
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
+}
+
+model Otp {
+  id          String    @id @default(cuid())
+  otp         String    @default("")
+  user        User?     @relation("Otp_user", fields: [userId], references: [id])
+  userId      String?   @map("user")
+  updatedAt   DateTime? @updatedAt
+  createdAt   DateTime? @default(now())
+  updatedBy   User?     @relation("Otp_updatedBy", fields: [updatedById], references: [id])
+  updatedById String?   @map("updatedBy")
+  createdBy   User?     @relation("Otp_createdBy", fields: [createdById], references: [id])
+  createdById String?   @map("createdBy")
+
+  @@index([userId])
   @@index([updatedAt])
   @@index([createdAt])
   @@index([updatedById])

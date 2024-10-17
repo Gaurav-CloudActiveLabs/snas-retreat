@@ -1,6 +1,7 @@
 import { float, relationship, text } from '@keystone-6/core/fields';
+import { list } from './lib';
 
-export const Invoice = {
+export const Invoice = list({
     access: {
         operation: {
           create: () => true,
@@ -25,5 +26,5 @@ export const Invoice = {
         label: 'Tax Details (e.g., GST)',
       }),
   },
-};
+});
 

@@ -14,6 +14,8 @@ type User {
   reviewsCount(where: ReviewWhereInput! = {}): Int
   verified: Boolean
   isAdmin: Boolean
+  otps(where: OtpWhereInput! = {}, orderBy: [OtpOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: OtpWhereUniqueInput): [Otp!]
+  otpsCount(where: OtpWhereInput! = {}): Int
   updatedAt: DateTime
   createdAt: DateTime
   updatedBy: User
@@ -50,6 +52,7 @@ input UserWhereInput {
   reviews: ReviewManyRelationFilter
   verified: BooleanFilter
   isAdmin: BooleanFilter
+  otps: OtpManyRelationFilter
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
   updatedBy: UserWhereInput
@@ -125,6 +128,12 @@ input BooleanFilter {
   not: BooleanFilter
 }
 
+input OtpManyRelationFilter {
+  every: OtpWhereInput
+  some: OtpWhereInput
+  none: OtpWhereInput
+}
+
 input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
@@ -163,6 +172,7 @@ input UserUpdateInput {
   reviews: ReviewRelateToManyForUpdateInput
   verified: Boolean
   isAdmin: Boolean
+  otps: OtpRelateToManyForUpdateInput
 }
 
 input BookingRelateToManyForUpdateInput {
@@ -177,6 +187,13 @@ input ReviewRelateToManyForUpdateInput {
   set: [ReviewWhereUniqueInput!]
   create: [ReviewCreateInput!]
   connect: [ReviewWhereUniqueInput!]
+}
+
+input OtpRelateToManyForUpdateInput {
+  disconnect: [OtpWhereUniqueInput!]
+  set: [OtpWhereUniqueInput!]
+  create: [OtpCreateInput!]
+  connect: [OtpWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -194,6 +211,7 @@ input UserCreateInput {
   reviews: ReviewRelateToManyForCreateInput
   verified: Boolean
   isAdmin: Boolean
+  otps: OtpRelateToManyForCreateInput
 }
 
 input BookingRelateToManyForCreateInput {
@@ -204,6 +222,11 @@ input BookingRelateToManyForCreateInput {
 input ReviewRelateToManyForCreateInput {
   create: [ReviewCreateInput!]
   connect: [ReviewWhereUniqueInput!]
+}
+
+input OtpRelateToManyForCreateInput {
+  create: [OtpCreateInput!]
+  connect: [OtpWhereUniqueInput!]
 }
 
 type Room {
@@ -805,6 +828,10 @@ type RoomImage {
   image: ImageFieldOutput
   description: String
   room: Room
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
 }
 
 input RoomImageWhereUniqueInput {
@@ -818,11 +845,17 @@ input RoomImageWhereInput {
   id: IDFilter
   description: StringFilter
   room: RoomWhereInput
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
 }
 
 input RoomImageOrderByInput {
   id: OrderDirection
   description: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
 }
 
 input RoomImageUpdateInput {
@@ -846,6 +879,10 @@ type Faq {
   id: ID!
   question: String
   answer: String
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
 }
 
 input FaqWhereUniqueInput {
@@ -859,12 +896,18 @@ input FaqWhereInput {
   id: IDFilter
   question: StringFilter
   answer: StringFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
 }
 
 input FaqOrderByInput {
   id: OrderDirection
   question: OrderDirection
   answer: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
 }
 
 input FaqUpdateInput {
@@ -888,6 +931,10 @@ type Invoice {
   invoiceNumber: String
   amount: Float
   taxDetails: String
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
 }
 
 input InvoiceWhereUniqueInput {
@@ -904,6 +951,10 @@ input InvoiceWhereInput {
   invoiceNumber: StringFilter
   amount: FloatFilter
   taxDetails: StringFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
 }
 
 input InvoiceOrderByInput {
@@ -911,6 +962,8 @@ input InvoiceOrderByInput {
   invoiceNumber: OrderDirection
   amount: OrderDirection
   taxDetails: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
 }
 
 input InvoiceUpdateInput {
@@ -1054,6 +1107,10 @@ type ReportList {
   id: ID!
   type: String
   data: JSON
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
 }
 
 input ReportListWhereUniqueInput {
@@ -1066,11 +1123,17 @@ input ReportListWhereInput {
   NOT: [ReportListWhereInput!]
   id: IDFilter
   type: StringNullableFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
 }
 
 input ReportListOrderByInput {
   id: OrderDirection
   type: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
 }
 
 input ReportListUpdateInput {
@@ -1095,6 +1158,10 @@ type Coupon {
   value: Float
   isUsed: Boolean
   expirationDate: DateTime
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
 }
 
 input CouponWhereUniqueInput {
@@ -1112,6 +1179,10 @@ input CouponWhereInput {
   value: FloatFilter
   isUsed: BooleanFilter
   expirationDate: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
 }
 
 input CouponOrderByInput {
@@ -1121,6 +1192,8 @@ input CouponOrderByInput {
   value: OrderDirection
   isUsed: OrderDirection
   expirationDate: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
 }
 
 input CouponUpdateInput {
@@ -1238,6 +1311,55 @@ input BookingPrimaryUserCreateInput {
   booking: BookingRelateToOneForCreateInput
 }
 
+type Otp {
+  id: ID!
+  otp: String
+  user: User
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+input OtpWhereUniqueInput {
+  id: ID
+}
+
+input OtpWhereInput {
+  AND: [OtpWhereInput!]
+  OR: [OtpWhereInput!]
+  NOT: [OtpWhereInput!]
+  id: IDFilter
+  otp: StringFilter
+  user: UserWhereInput
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input OtpOrderByInput {
+  id: OrderDirection
+  otp: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input OtpUpdateInput {
+  otp: String
+  user: UserRelateToOneForUpdateInput
+}
+
+input OtpUpdateArgs {
+  where: OtpWhereUniqueInput!
+  data: OtpUpdateInput!
+}
+
+input OtpCreateInput {
+  otp: String
+  user: UserRelateToOneForCreateInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -1328,11 +1450,20 @@ type Mutation {
   updateBookingPrimaryUsers(data: [BookingPrimaryUserUpdateArgs!]!): [BookingPrimaryUser]
   deleteBookingPrimaryUser(where: BookingPrimaryUserWhereUniqueInput!): BookingPrimaryUser
   deleteBookingPrimaryUsers(where: [BookingPrimaryUserWhereUniqueInput!]!): [BookingPrimaryUser]
+  createOtp(data: OtpCreateInput!): Otp
+  createOtps(data: [OtpCreateInput!]!): [Otp]
+  updateOtp(where: OtpWhereUniqueInput!, data: OtpUpdateInput!): Otp
+  updateOtps(data: [OtpUpdateArgs!]!): [Otp]
+  deleteOtp(where: OtpWhereUniqueInput!): Otp
+  deleteOtps(where: [OtpWhereUniqueInput!]!): [Otp]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
   bookingPayment(bookingId: String!, userId: String!): bookingPaymentsType
+  registerUser(email: String!): registerUserMassage
   updateBookingPayment(requestId: String, bookingId: String, paymentId: String, signature: String, paymentError: JSON): bookingPaymentsType
+  verifyOtp(email: String!, otp: String!): verifyOtpMessage
+  resendOtp(email: String!): resendOtpMessage
 }
 
 union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
@@ -1395,6 +1526,9 @@ type Query {
   bookingPrimaryUser(where: BookingPrimaryUserWhereUniqueInput!): BookingPrimaryUser
   bookingPrimaryUsers(where: BookingPrimaryUserWhereInput! = {}, orderBy: [BookingPrimaryUserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookingPrimaryUserWhereUniqueInput): [BookingPrimaryUser!]
   bookingPrimaryUsersCount(where: BookingPrimaryUserWhereInput! = {}): Int
+  otp(where: OtpWhereUniqueInput!): Otp
+  otps(where: OtpWhereInput! = {}, orderBy: [OtpOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: OtpWhereUniqueInput): [Otp!]
+  otpsCount(where: OtpWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
@@ -1534,4 +1668,24 @@ enum KeystoneAdminUISortDirection {
 type bookingPaymentsType {
   message: String!
   payment: Payment
+}
+
+type registerUserMassage {
+  message: String
+  result: String
+  type: String
+  userID: String
+  request_id: String
+}
+
+type resendOtpMessage {
+  message: String
+  type: String
+}
+
+type verifyOtpMessage {
+  message: String
+  result: String
+  user: User!
+  token: String!
 }

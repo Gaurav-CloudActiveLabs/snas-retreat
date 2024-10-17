@@ -6,8 +6,9 @@ import {
   text,
   timestamp,
 } from "@keystone-6/core/fields";
+import { list } from "./lib";
 
-export const Coupon = {
+export const Coupon = list({
   access: {
     operation: {
       create: () => true,
@@ -28,4 +29,4 @@ export const Coupon = {
     isUsed: checkbox({ defaultValue: false }),
     expirationDate: timestamp(),
   },
-};
+});

@@ -95,6 +95,7 @@ export const User = list({
         },
       },
     }),
+    otps: relationship({ ref: 'Otp.user', many: true }),
   },
   ui: {
     labelField: "name",

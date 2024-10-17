@@ -12,7 +12,7 @@ import { Room } from "./room";
 import { RoomImage } from "./roomImage";
 import { Slider } from "./slider";
 import { User } from "./user";
-
+import { Otp } from "./otp";
 
 export const lists = {
  User,
@@ -28,5 +28,6 @@ export const lists = {
  DinnerPrice,
  ReportList,
  Coupon,
- BookingPrimaryUser
+ BookingPrimaryUser,
+ Otp
 };
