@@ -154,23 +154,6 @@ export default function PrimaryBooking() {
           },
         });
 
-        // Prepare Razorpay options
-        // const options = {
-        //   key: razorPayKeyId,
-        //   currency: payment.currency,
-        //   image: "https://i.imgur.com/3g7nmJC.png",
-        //   amount: payment?.amount.toString(),
-        //   name: "SNAS Retreat",
-        //   order_id: payment?.requestId,
-        //   prefill: {
-        //     // Uncomment and populate if user data is available
-        //     // email: user?.email,
-        //     // contact: user?.phone,
-        //     // name: user?.name,
-        //   },
-        //   theme: { color: "#F37254" },
-        // };
-
         const options: RazorpayOrderOptions = {
           key: razorPayKeyId,
           amount: payment?.amount, // Amount in paise

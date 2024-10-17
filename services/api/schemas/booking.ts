@@ -28,7 +28,7 @@ export const Booking = list({
         itemView: { fieldMode: "edit" },
       },
     }),
-    bookingNumber: text({ isIndexed: "unique" }),
+    bookingNumber: text(),
     room: relationship({
       ref: "Room.bookings",
       many: false,

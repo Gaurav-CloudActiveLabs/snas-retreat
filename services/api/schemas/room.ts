@@ -32,7 +32,10 @@ export const Room = list({
       roomNumber: text({
         validation: { isRequired: true },
       }),
-      price: float({
+      actualPrice: float({
+        validation: { isRequired: true },
+      }),
+      offerPrice: float({
         validation: { isRequired: true },
       }),
       description: text({
