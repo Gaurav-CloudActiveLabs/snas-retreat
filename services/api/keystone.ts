@@ -52,5 +52,8 @@ export default withAuth(
     graphql: {
       extendGraphqlSchema,
     },
+    server:{
+      cors: { origin: '*', credentials: true },
+    },
   })
 );

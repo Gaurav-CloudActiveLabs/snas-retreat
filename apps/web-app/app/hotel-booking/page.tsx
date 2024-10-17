@@ -30,35 +30,23 @@ import {
   Tag,
 } from "lucide-react";
 // Instead of importing from './gql/payment'
-import { useMutation,useQuery ,gql} from "@apollo/client";
-import { CREATE_BOOKING, CREATE_PAYMENT, GET_PAYMENT, Get_Rooms } from "../../gql";
-
-
+import { useMutation, useQuery, gql } from "@apollo/client";
+import { BOOKING_PAYMENT, CREATE_BOOKING } from "../../gql";
+import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 
 export default function PrimaryBooking() {
+  const { error, isLoading, Razorpay } = useRazorpay();
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const [createBooking, { loading, error, data }] = useMutation(CREATE_BOOKING);
-  const { loading, error, data } = useQuery(Get_Rooms);
+  const razorPayKeyId: any = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+  const [createBooking] = useMutation(CREATE_BOOKING);
+  const [bookingPayment] = useMutation(BOOKING_PAYMENT);
 
-  useEffect(() => {
-    if (loading) {
-      console.log("Loading rooms...");
-    }
-    if (error) {
-      console.error("Error fetching rooms:", error);
-    }
-    if (data) {
-      console.log("Rooms data:", data.rooms);
-    }
-  }, [loading, error, data]);
-  
-  const checkIn = searchParams.get("checkIn");
-  const checkOut = searchParams.get("checkOut");
+  const checkIn: any = searchParams.get("checkIn");
+  const checkOut: any = searchParams.get("checkOut");
   const adults = parseInt(searchParams.get("adults") || "2");
   const children = parseInt(searchParams.get("children") || "0");
-  const roomType =
-    searchParams.get("roomType") ;
+  const roomType = searchParams.get("roomType");
   const mealOption = searchParams.get("mealOption") || "Room with Breakfast";
   const initialBasePrice = parseInt(searchParams.get("basePrice") || "0");
 
@@ -111,52 +99,111 @@ export default function PrimaryBooking() {
     e.preventDefault();
     console.log("Booking details submitted:", primaryUser);
 
-    // Populate booking data
+    // Convert check-in and check-out dates to ISO strings
+    const checkInDate = new Date(checkIn).toISOString();
+    const checkOutDate = new Date(checkOut).toISOString();
+
+    // Create booking data object
     const bookingData = {
-      checkInDate: checkIn,
-      checkOutDate: checkOut,
+      checkInDate,
+      checkOutDate,
       room: {
         connect: {
-          id: "cm2bl381d0000hmxrrz9xr5by", // replace with actual room ID
+          id: "cm2bl381d0000hmxrrz9xr5by", // Replace with actual room ID
         },
       },
       totalPrice: finalPrice,
       totalPriceWithoutTax: basePrice,
       user: {
         connect: {
-          id: "cm21vu4d30000t67nrch90ebk", // replace with actual user ID
+          id: "cm21vu4d30000t67nrch90ebk", // Replace with actual user ID
         },
       },
       bookingType: primaryUser.bookingType,
-      // primaryUser: {
-      //   create: {
-      //     address: primaryUser.address,
-      //     age: parseInt(primaryUser.age),
-      //     bookingType: primaryUser.bookingType,
-      //     companyAddress: primaryUser.companyAddress,
-      //     companyName: primaryUser.companyName,
-      //     gstNumber: primaryUser.gstNumber,
-      //     name: primaryUser.name,
-      //     primaryUserGender: primaryUser.gender,
-      //     verificationId: primaryUser.verificationId,
-      //     verificationIdType: primaryUser.verificationIdType,
-      //   },
-      // },
+      primaryUser: {
+        create: {
+          address: primaryUser.address,
+          age: parseInt(primaryUser.age, 10), // Safely parse age as an integer
+          bookingType: primaryUser.bookingType,
+          companyAddress: primaryUser.companyAddress,
+          companyName: primaryUser.companyName,
+          gstNumber: primaryUser.gstNumber,
+          name: primaryUser.name,
+          primaryUserGender: primaryUser.gender,
+          verificationId: primaryUser.verificationId,
+          verificationIdType: primaryUser.verificationIdType,
+        },
+      },
     };
-    console.log("bookingData",bookingData)
+
     try {
-      // const result =   await createBooking({
-      //   variables: { data: bookingData },
-      // });
-      // console.log('Booking Successful:', result);
-    } catch (error) {
-      console.error("Error submitting booking:", error);
+      // Create booking
+      const bookingResult = await createBooking({
+        variables: { data: bookingData },
+      });
+
+      // If booking is successful, proceed with payment
+      if (bookingResult?.data?.createBooking?.id) {
+        const bookingId = bookingResult?.data?.createBooking?.id;
+
+        const payment: any = await bookingPayment({
+          variables: {
+            bookingId,
+            userId: "cm21vu4d30000t67nrch90ebk", // Replace with actual user ID
+          },
+        });
+
+        // Prepare Razorpay options
+        // const options = {
+        //   key: razorPayKeyId,
+        //   currency: payment.currency,
+        //   image: "https://i.imgur.com/3g7nmJC.png",
+        //   amount: payment?.amount.toString(),
+        //   name: "SNAS Retreat",
+        //   order_id: payment?.requestId,
+        //   prefill: {
+        //     // Uncomment and populate if user data is available
+        //     // email: user?.email,
+        //     // contact: user?.phone,
+        //     // name: user?.name,
+        //   },
+        //   theme: { color: "#F37254" },
+        // };
+
+        const options: RazorpayOrderOptions = {
+          key: razorPayKeyId,
+          amount: 100, // Amount in paise
+          currency: payment.currency,
+          name: "SNAS Retreat",
+          description: "Test Transaction",
+          order_id: payment?.requestId, // Generate order_id on server
+          handler: (response) => {
+            console.log(response);
+            alert("Payment Successful!");
+          },
+          prefill: {
+            name: "John Doe",
+            email: "john.doe@example.com",
+            contact: "9999999999",
+          },
+          theme: {
+            color: "#F37254",
+          },
+        };
+        const razorpayInstance = new Razorpay(options);
+        razorpayInstance.open();
+      } else {
+        console.error("Booking creation failed, no booking ID returned.");
+      }
+    } catch (error: any) {
+      console.error("Error submitting booking:", error.message || error);
     }
   };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
-      {/* <main className="lg:px-28 px-10 mx-auto py-12">
+      <main className="lg:px-28 px-10 mx-auto py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <Card>
@@ -443,7 +490,7 @@ export default function PrimaryBooking() {
             </Button>
           </div>
         </div>
-      </main> */}
+      </main>
       <Footer />
     </div>
   );

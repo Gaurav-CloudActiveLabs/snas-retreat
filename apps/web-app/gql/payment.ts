@@ -1,29 +1,15 @@
 import { gql } from "@apollo/client";
 
-export const CREATE_PAYMENT = gql`
-  mutation CreatePayment($input: PaymentInput!) {
-    createPayment(input: $input) {
-      id
-      amount
-      status
-    }
-  }
-`;
-
-export const GET_PAYMENT = gql`
-  query GetPayment($id: ID!) {
-    payment(id: $id) {
-      id
-      amount
-      status
-    }
-  }
-`;
-
-export const Get_Rooms = gql`
-  query Rooms {
-    rooms {
-      id
+export const BOOKING_PAYMENT = gql`
+  mutation BookingPayment($bookingId: String!, $userId: String!) {
+    bookingPayment(bookingId: $bookingId, userId: $userId) {
+      message
+      payment {
+        id
+        requestId
+        currency
+        amount
+      }
     }
   }
 `;

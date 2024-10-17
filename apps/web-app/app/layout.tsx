@@ -3,7 +3,7 @@ import "./globals.css";
 import { Jost } from "next/font/google";
 import OGImage from "@/assets/ogimage.png";
 import favicon from "@/assets/favicon.png";
-import CustomApolloProvider from "@/components/ApolloProvider";
+import { ApolloWrapper } from "@/lib/ApolloClientProvider";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -61,7 +61,7 @@ export default function RootLayout({
         <link rel="icon" href={favicon.src} sizes="16x16" type="image/png" />
       </head>
       <body className={`${jost.variable} antialiased`}>
-        <CustomApolloProvider>{children}</CustomApolloProvider>
+        <ApolloWrapper>{children}</ApolloWrapper>
       </body>
     </html>
   );

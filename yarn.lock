@@ -31,7 +31,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.9.2":
+"@apollo/client-react-streaming@npm:0.11.3":
+  version: 0.11.3
+  resolution: "@apollo/client-react-streaming@npm:0.11.3"
+  dependencies:
+    ts-invariant: "npm:^0.10.3"
+  peerDependencies:
+    "@apollo/client": ^3.10.4
+    react: ^18
+  checksum: 10c0/69e746ae33bce1a97c0cabab74ffd24173d0009ccd44891fed94126b0db15082b31051d3b372b3761375fa6ba3a96c889e6605a117e23f54856bff5f1d84ab5e
+  languageName: node
+  linkType: hard
+
+"@apollo/client@npm:^3.8.0, @apollo/client@npm:^3.9.2":
   version: 3.11.8
   resolution: "@apollo/client@npm:3.11.8"
   dependencies:
@@ -65,6 +77,19 @@ __metadata:
     subscriptions-transport-ws:
       optional: true
   checksum: 10c0/a9b697460aa6a5d7e59685132509871675995af14b5fc69213ca22f973600cfe3391b27b7b871579c5b4e18a0d6755ffd1076a2d8dd970a54a43973feaa99ffa
+  languageName: node
+  linkType: hard
+
+"@apollo/experimental-nextjs-app-support@npm:^0.11.3":
+  version: 0.11.3
+  resolution: "@apollo/experimental-nextjs-app-support@npm:0.11.3"
+  dependencies:
+    "@apollo/client-react-streaming": "npm:0.11.3"
+  peerDependencies:
+    "@apollo/client": ^3.10.4
+    next: ^13.4.1 || ^14.0.0 || 15.0.0-rc.0
+    react: ^18
+  checksum: 10c0/b70e1945cac03c153e94bef5aa23d85a40d21ee1342010cdf7d0995d3fff9a274144e35a87e7b4cf27a8ec33513995dc93169aeb068bb2abed87a8e61d6020bc
   languageName: node
   linkType: hard
 
@@ -3828,6 +3853,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/apollo-upload-client@npm:^18.0.0":
+  version: 18.0.0
+  resolution: "@types/apollo-upload-client@npm:18.0.0"
+  dependencies:
+    "@apollo/client": "npm:^3.8.0"
+    "@types/extract-files": "npm:*"
+    graphql: "npm:14 - 16"
+  checksum: 10c0/e733c3a2abe6286da5557e393c0fcc9946bfdeb9115aabc978d7443f58ada466cb56ba98331d25266664186c6e424aea783eadd4fb7870c3d93f5b3fcafc696a
+  languageName: node
+  linkType: hard
+
 "@types/body-parser@npm:*":
   version: 1.19.5
   resolution: "@types/body-parser@npm:1.19.5"
@@ -3856,6 +3892,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/cookie@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@types/cookie@npm:0.6.0"
+  checksum: 10c0/5b326bd0188120fb32c0be086b141b1481fec9941b76ad537f9110e10d61ee2636beac145463319c71e4be67a17e85b81ca9e13ceb6e3bb63b93d16824d6c149
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:^4.17.30, @types/express-serve-static-core@npm:^4.17.33":
   version: 4.19.6
   resolution: "@types/express-serve-static-core@npm:4.19.6"
@@ -3877,6 +3920,13 @@ __metadata:
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:*"
   checksum: 10c0/12e562c4571da50c7d239e117e688dc434db1bac8be55613294762f84fd77fbd0658ccd553c7d3ab02408f385bc93980992369dd30e2ecd2c68c358e6af8fabf
+  languageName: node
+  linkType: hard
+
+"@types/extract-files@npm:*":
+  version: 13.0.1
+  resolution: "@types/extract-files@npm:13.0.1"
+  checksum: 10c0/4732f875db36498a4bf3deb6965267d515cc7a82be6a3b0346a6b9a6c9eec173ebae774301070de6c7f9b879121d81bc106498cce9cc7bc521b2e75b84710ed2
   languageName: node
   linkType: hard
 
@@ -4384,6 +4434,18 @@ __metadata:
     normalize-path: "npm:^3.0.0"
     picomatch: "npm:^2.0.4"
   checksum: 10c0/57b06ae984bc32a0d22592c87384cd88fe4511b1dd7581497831c56d41939c8a001b28e7b853e1450f2bf61992dfcaa8ae2d0d161a0a90c4fb631ef07098fbac
+  languageName: node
+  linkType: hard
+
+"apollo-upload-client@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "apollo-upload-client@npm:16.0.0"
+  dependencies:
+    extract-files: "npm:^11.0.0"
+  peerDependencies:
+    "@apollo/client": ^3.0.0
+    graphql: 14 - 15
+  checksum: 10c0/300a391519a6ff7ab88f8ae631c2eb5cdff1cc25188ac73511ffa1ed15f52bcd25c4cd08066c54f757a5c05b78fa67cfebc1df60ca6c533907219631401df630
   languageName: node
   linkType: hard
 
@@ -5081,6 +5143,23 @@ __metadata:
   version: 0.6.0
   resolution: "cookie@npm:0.6.0"
   checksum: 10c0/f2318b31af7a31b4ddb4a678d024514df5e705f9be5909a192d7f116cfb6d45cbacf96a473fa733faa95050e7cff26e7832bb3ef94751592f1387b71c8956686
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^0.7.0":
+  version: 0.7.2
+  resolution: "cookie@npm:0.7.2"
+  checksum: 10c0/9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
+  languageName: node
+  linkType: hard
+
+"cookies-next@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "cookies-next@npm:4.3.0"
+  dependencies:
+    "@types/cookie": "npm:^0.6.0"
+    cookie: "npm:^0.7.0"
+  checksum: 10c0/091e2712340d595192e442c16d774fa9995a08b0425675a336527c7ee1941f5ea6cb8850cb5401a760e6c8d25bd846a3ce339d057d0c8f84e7b2ce5a4b31f939
   languageName: node
   linkType: hard
 
@@ -6684,7 +6763,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^16.8.1":
+"graphql@npm:14 - 16, graphql@npm:^16.8.1":
   version: 16.9.0
   resolution: "graphql@npm:16.9.0"
   checksum: 10c0/a8850f077ff767377237d1f8b1da2ec70aeb7623cdf1dfc9e1c7ae93accc0c8149c85abe68923be9871a2934b1bce5a2496f846d4d56e1cfb03eaaa7ddba9b6a
@@ -8988,6 +9067,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-razorpay@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "react-razorpay@npm:3.0.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/7d7215500b98810e91b9dec1f8f0057610a074a6c95b1c6f8b25339b30be63452a2b11512addf73bf19becb70157dacdd4d906d1ccf0a4711e59cc7cf540d480
+  languageName: node
+  linkType: hard
+
 "react-remove-scroll-bar@npm:^2.3.4, react-remove-scroll-bar@npm:^2.3.6":
   version: 2.3.6
   resolution: "react-remove-scroll-bar@npm:2.3.6"
@@ -10506,16 +10594,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web-app@workspace:apps/web-app"
   dependencies:
+    "@apollo/experimental-nextjs-app-support": "npm:^0.11.3"
     "@radix-ui/react-icons": "npm:^1.3.0"
     "@radix-ui/react-label": "npm:^2.1.0"
     "@radix-ui/react-radio-group": "npm:^1.2.1"
     "@radix-ui/react-select": "npm:^2.1.1"
     "@radix-ui/react-slot": "npm:^1.1.0"
+    "@types/apollo-upload-client": "npm:^18.0.0"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
+    apollo-upload-client: "npm:^16.0.0"
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.1"
+    cookies-next: "npm:^4.3.0"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.13"
     framer-motion: "npm:^11.9.0"
@@ -10524,6 +10616,7 @@ __metadata:
     postcss: "npm:^8"
     react: "npm:^18"
     react-dom: "npm:^18"
+    react-razorpay: "npm:^3.0.1"
     tailwind-merge: "npm:^2.5.2"
     tailwindcss: "npm:^3.4.1"
     tailwindcss-animate: "npm:^1.0.7"

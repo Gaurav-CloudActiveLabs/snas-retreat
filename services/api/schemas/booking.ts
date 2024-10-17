@@ -75,8 +75,8 @@ export const Booking = list({
     }),
     bookingType: select({
       options: [
-        { label: "PERSONAL", value: "PERSONAL" },
-        { label: "CORPORATE", value: "CORPORATE" },
+        { label: "PERSONAL", value: "personal" },
+        { label: "CORPORATE", value: "corporate" },
       ],
     }),
     primaryUser: relationship({
