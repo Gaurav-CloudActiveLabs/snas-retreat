@@ -15,6 +15,7 @@ import { lists } from "./schemas/index";
 import { withAuth, session } from "./auth";
 import dotEnv from "dotenv";
 import { contextProvider } from "./lib/ctx";
+import { extendGraphqlSchema } from "./mutations";
 // import { extendGraphqlSchema } from "./customSchema";
 dotEnv.config();
 
@@ -22,6 +23,10 @@ export default withAuth(
   config({
     ui: {
       basePath: '/admin',
+    },
+    server:{
+      port: Number(process.env.PORT) || 3001,
+      cors: { origin: '*', credentials: true },
     },
     db: {
       // we're using sqlite for the fastest startup experience
@@ -40,7 +45,7 @@ export default withAuth(
       my_local_images: {
         kind: "local",
         type: "image",
-        generateUrl: (path) => `http://localhost:3000/images${path}`,
+        generateUrl: (path) => `http://localhost:c/images${path}`,
         serverRoute: {
           path: "/images",
         },
@@ -49,7 +54,7 @@ export default withAuth(
       my_local_file: {
         kind: "local",
         type: "file",
-        generateUrl: (path) => `http://localhost:3000/file${path}`,
+        generateUrl: (path) => `http://localhost:3001/file${path}`,
         serverRoute: {
           path: "/file",
         },
@@ -57,6 +62,8 @@ export default withAuth(
       },
     },
     session,
-    // extendGraphqlSchema
+    graphql: {
+      extendGraphqlSchema,
+    }
   })
 );

@@ -2,6 +2,6 @@
 /* eslint-disable */
 import { getInitPage } from '@keystone-6/auth/pages/InitPage'
 
-const fieldPaths = ["name","phoneNumber","password"]
+const fieldPaths = ["name","email","password"]
 
-export default getInitPage({"listKey":"User","fieldPaths":["name","phoneNumber","password"],"enableWelcome":false})
+export default getInitPage({"listKey":"User","fieldPaths":["name","email","password"],"enableWelcome":false})

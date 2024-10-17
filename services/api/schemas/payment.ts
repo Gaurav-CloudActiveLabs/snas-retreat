@@ -5,6 +5,7 @@ import {
   relationship,
   select,
   float,
+  json,
 } from "@keystone-6/core/fields";
 
 export const Payment = list({
@@ -26,30 +27,36 @@ export const Payment = list({
       },
     }),
     paymentMethod: select({
-      type: "enum",
+      type: "string",
       options: [
-        { label: "Card", value: "CARD" },
-        { label: "UPI", value: "UPI" },
-        { label: "Net Banking", value: "NET_BANKING" },
+        { label: 'Razorpay', value: 'razorpay' },
+        { label: 'Cash On Delivery', value: 'cod' },
+        { label: 'Other', value: 'other' },
       ],
+      defaultValue: 'razorpay',
       validation: { isRequired: true },
-      defaultValue: "CARD",
     }),
     requestId: text({ isIndexed: true }),
     transactionId: text({ isIndexed: true, db: { isNullable: true } }),
     bookingNumber: text({ isIndexed: true, db: { isNullable: true } }),
     status: select({
-      type: "enum",
+      type: "string",
       options: [
-        { label: "Success", value: "Success" },
-        { label: "Failed", value: "Failed" },
-        { label: "Pending", value: "Pending" },
+        { label: 'Initiated', value: 'initiated' },
+        { label: 'Processing', value: 'processing' },
+        { label: 'Success', value: 'success' },
+        { label: 'Failure', value: 'failure' },
       ],
       validation: { isRequired: true },
-      defaultValue: "Pending",
+      defaultValue: "initiated",
     }),
     amount: float({
       validation: { isRequired: true },
+    }),
+    currency: text({ defaultValue: 'INR', db: { isNullable: true } }),
+    response: json({}),
+    user: relationship({
+      ref: 'User',
     }),
   },
 });

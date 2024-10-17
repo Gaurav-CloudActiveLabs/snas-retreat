@@ -44,24 +44,29 @@ export const Booking = list({
     checkOutDate: timestamp({
       validation: { isRequired: true },
     }),
+    totalPriceWithoutTax:float({
+      validation: { isRequired: true },
+    }),
     totalPrice: float({
       validation: { isRequired: true },
     }),
     status: select({
-      type: "enum",
+      type: "string",
       options: [
-        { label: "PENDING", value: "PENDING" },
-        { label: "CONFIRMED", value: "CONFIRMED" },
-        { label: "CANCELLED", value: "CANCELLED" },
+        { label: "PENDING", value: "pending" },
+        { label: "CONFIRMED", value: "confirmed" },
+        { label: "CANCELLED", value: "cancelled" },
+        { label: "Success", value: "success" },
+        { label: "Failure", value: "failure" },
       ],
-      defaultValue: "PENDING",
+      defaultValue: "pending",
     }),
     payment: relationship({
       ref: "Payment.booking",
     }),
     invoice: relationship({ ref: "Invoice.booking" }),
     paymentStatus: select({
-      type: "enum",
+      type: "string",
       options: [
         { label: "PAID", value: "Paid" },
         { label: "UNPAID", value: "Unpaid" },
@@ -70,8 +75,8 @@ export const Booking = list({
     }),
     bookingType: select({
       options: [
-        { label: "PERSONAL", value: "PERSONAL" },
-        { label: "CORPORATE", value: "CORPORATE" },
+        { label: "PERSONAL", value: "personal" },
+        { label: "CORPORATE", value: "corporate" },
       ],
     }),
     primaryUser: relationship({

@@ -385,28 +385,18 @@ type Booking {
   room: Room
   checkInDate: DateTime
   checkOutDate: DateTime
+  totalPriceWithoutTax: Float
   totalPrice: Float
-  status: BookingStatusType
+  status: String
   payment: Payment
   invoice: Invoice
-  paymentStatus: BookingPaymentStatusType
+  paymentStatus: String
   bookingType: String
   primaryUser: BookingPrimaryUser
   updatedAt: DateTime
   createdAt: DateTime
   updatedBy: User
   createdBy: User
-}
-
-enum BookingStatusType {
-  PENDING
-  CONFIRMED
-  CANCELLED
-}
-
-enum BookingPaymentStatusType {
-  Paid
-  Unpaid
 }
 
 input BookingWhereUniqueInput {
@@ -424,11 +414,12 @@ input BookingWhereInput {
   room: RoomWhereInput
   checkInDate: DateTimeFilter
   checkOutDate: DateTimeFilter
+  totalPriceWithoutTax: FloatFilter
   totalPrice: FloatFilter
-  status: BookingStatusTypeNullableFilter
+  status: StringNullableFilter
   payment: PaymentWhereInput
   invoice: InvoiceWhereInput
-  paymentStatus: BookingPaymentStatusTypeNullableFilter
+  paymentStatus: StringNullableFilter
   bookingType: StringNullableFilter
   primaryUser: BookingPrimaryUserWhereInput
   updatedAt: DateTimeNullableFilter
@@ -446,20 +437,6 @@ input DateTimeFilter {
   gt: DateTime
   gte: DateTime
   not: DateTimeFilter
-}
-
-input BookingStatusTypeNullableFilter {
-  equals: BookingStatusType
-  in: [BookingStatusType!]
-  notIn: [BookingStatusType!]
-  not: BookingStatusTypeNullableFilter
-}
-
-input BookingPaymentStatusTypeNullableFilter {
-  equals: BookingPaymentStatusType
-  in: [BookingPaymentStatusType!]
-  notIn: [BookingPaymentStatusType!]
-  not: BookingPaymentStatusTypeNullableFilter
 }
 
 input StringNullableFilter {
@@ -482,6 +459,7 @@ input BookingOrderByInput {
   bookingNumber: OrderDirection
   checkInDate: OrderDirection
   checkOutDate: OrderDirection
+  totalPriceWithoutTax: OrderDirection
   totalPrice: OrderDirection
   status: OrderDirection
   paymentStatus: OrderDirection
@@ -496,11 +474,12 @@ input BookingUpdateInput {
   room: RoomRelateToOneForUpdateInput
   checkInDate: DateTime
   checkOutDate: DateTime
+  totalPriceWithoutTax: Float
   totalPrice: Float
-  status: BookingStatusType
+  status: String
   payment: PaymentRelateToOneForUpdateInput
   invoice: InvoiceRelateToOneForUpdateInput
-  paymentStatus: BookingPaymentStatusType
+  paymentStatus: String
   bookingType: String
   primaryUser: BookingPrimaryUserRelateToOneForUpdateInput
 }
@@ -546,11 +525,12 @@ input BookingCreateInput {
   room: RoomRelateToOneForCreateInput
   checkInDate: DateTime
   checkOutDate: DateTime
+  totalPriceWithoutTax: Float
   totalPrice: Float
-  status: BookingStatusType
+  status: String
   payment: PaymentRelateToOneForCreateInput
   invoice: InvoiceRelateToOneForCreateInput
-  paymentStatus: BookingPaymentStatusType
+  paymentStatus: String
   bookingType: String
   primaryUser: BookingPrimaryUserRelateToOneForCreateInput
 }
@@ -583,28 +563,19 @@ input BookingPrimaryUserRelateToOneForCreateInput {
 type Payment {
   id: ID!
   booking: Booking
-  paymentMethod: PaymentPaymentMethodType
+  paymentMethod: String
   requestId: String
   transactionId: String
   bookingNumber: String
-  status: PaymentStatusType
+  status: String
   amount: Float
+  currency: String
+  response: JSON
+  user: User
   updatedAt: DateTime
   createdAt: DateTime
   updatedBy: User
   createdBy: User
-}
-
-enum PaymentPaymentMethodType {
-  CARD
-  UPI
-  NET_BANKING
-}
-
-enum PaymentStatusType {
-  Success
-  Failed
-  Pending
 }
 
 input PaymentWhereUniqueInput {
@@ -617,30 +588,18 @@ input PaymentWhereInput {
   NOT: [PaymentWhereInput!]
   id: IDFilter
   booking: BookingWhereInput
-  paymentMethod: PaymentPaymentMethodTypeNullableFilter
+  paymentMethod: StringFilter
   requestId: StringFilter
   transactionId: StringNullableFilter
   bookingNumber: StringNullableFilter
-  status: PaymentStatusTypeNullableFilter
+  status: StringFilter
   amount: FloatFilter
+  currency: StringNullableFilter
+  user: UserWhereInput
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
   updatedBy: UserWhereInput
   createdBy: UserWhereInput
-}
-
-input PaymentPaymentMethodTypeNullableFilter {
-  equals: PaymentPaymentMethodType
-  in: [PaymentPaymentMethodType!]
-  notIn: [PaymentPaymentMethodType!]
-  not: PaymentPaymentMethodTypeNullableFilter
-}
-
-input PaymentStatusTypeNullableFilter {
-  equals: PaymentStatusType
-  in: [PaymentStatusType!]
-  notIn: [PaymentStatusType!]
-  not: PaymentStatusTypeNullableFilter
 }
 
 input PaymentOrderByInput {
@@ -651,18 +610,22 @@ input PaymentOrderByInput {
   bookingNumber: OrderDirection
   status: OrderDirection
   amount: OrderDirection
+  currency: OrderDirection
   updatedAt: OrderDirection
   createdAt: OrderDirection
 }
 
 input PaymentUpdateInput {
   booking: BookingRelateToOneForUpdateInput
-  paymentMethod: PaymentPaymentMethodType
+  paymentMethod: String
   requestId: String
   transactionId: String
   bookingNumber: String
-  status: PaymentStatusType
+  status: String
   amount: Float
+  currency: String
+  response: JSON
+  user: UserRelateToOneForUpdateInput
 }
 
 input BookingRelateToOneForUpdateInput {
@@ -678,12 +641,15 @@ input PaymentUpdateArgs {
 
 input PaymentCreateInput {
   booking: BookingRelateToOneForCreateInput
-  paymentMethod: PaymentPaymentMethodType
+  paymentMethod: String
   requestId: String
   transactionId: String
   bookingNumber: String
-  status: PaymentStatusType
+  status: String
   amount: Float
+  currency: String
+  response: JSON
+  user: UserRelateToOneForCreateInput
 }
 
 input BookingRelateToOneForCreateInput {
@@ -1363,8 +1329,10 @@ type Mutation {
   deleteBookingPrimaryUser(where: BookingPrimaryUserWhereUniqueInput!): BookingPrimaryUser
   deleteBookingPrimaryUsers(where: [BookingPrimaryUserWhereUniqueInput!]!): [BookingPrimaryUser]
   endSession: Boolean!
-  authenticateUserWithPassword(phoneNumber: String!, password: String!): UserAuthenticationWithPasswordResult
+  authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
+  bookingPayment(bookingId: String!, userId: String!): bookingPaymentsType
+  updateBookingPayment(requestId: String, bookingId: String, paymentId: String, signature: String, paymentError: JSON): bookingPaymentsType
 }
 
 union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
@@ -1380,7 +1348,7 @@ type UserAuthenticationWithPasswordFailure {
 
 input CreateInitialUserInput {
   name: String
-  phoneNumber: String
+  email: String
   password: String
 }
 
@@ -1561,4 +1529,9 @@ type KeystoneAdminUISort {
 enum KeystoneAdminUISortDirection {
   ASC
   DESC
+}
+
+type bookingPaymentsType {
+  message: String!
+  payment: Payment
 }

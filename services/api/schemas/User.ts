@@ -20,10 +20,10 @@ export const User = list({
   fields: {
     name: text({ validation: { isRequired: true } }),
     email: text({
+      validation: { isRequired: true },
       isIndexed: "unique",
     }),
     phoneNumber: text({
-      validation: { isRequired: true },
       isIndexed: "unique",
     }),
     password: password({ validation: { isRequired: true } }),
@@ -101,7 +101,7 @@ export const User = list({
     listView: {
       initialColumns: [],
     },
-    isHidden: ({ session }) =>
-      session?.data?.userType === "Admin" ? false : true,
+    // isHidden: ({ session }) =>
+    //   session?.data?.userType === "admin" ? false : true,
   },
 });

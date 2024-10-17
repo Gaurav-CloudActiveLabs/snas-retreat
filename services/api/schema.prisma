@@ -35,6 +35,7 @@ model User {
   from_Room_createdBy               Room[]               @relation("Room_createdBy")
   from_Booking_updatedBy            Booking[]            @relation("Booking_updatedBy")
   from_Booking_createdBy            Booking[]            @relation("Booking_createdBy")
+  from_Payment_user                 Payment[]            @relation("Payment_user")
   from_Payment_updatedBy            Payment[]            @relation("Payment_updatedBy")
   from_Payment_createdBy            Payment[]            @relation("Payment_createdBy")
   from_Review_updatedBy             Review[]             @relation("Review_updatedBy")
@@ -86,30 +87,31 @@ model Room {
 }
 
 model Booking {
-  id            String                    @id @default(cuid())
-  user          User?                     @relation("Booking_user", fields: [userId], references: [id])
-  userId        String?                   @map("user")
-  bookingNumber String                    @unique @default("")
-  room          Room?                     @relation("Booking_room", fields: [roomId], references: [id])
-  roomId        String?                   @map("room")
-  checkInDate   DateTime
-  checkOutDate  DateTime
-  totalPrice    Float
-  status        BookingStatusType?        @default(PENDING)
-  payment       Payment?                  @relation("Booking_payment", fields: [paymentId], references: [id])
-  paymentId     String?                   @unique @map("payment")
-  invoice       Invoice?                  @relation("Booking_invoice", fields: [invoiceId], references: [id])
-  invoiceId     String?                   @unique @map("invoice")
-  paymentStatus BookingPaymentStatusType? @default(Unpaid)
-  bookingType   String?
-  primaryUser   BookingPrimaryUser?       @relation("Booking_primaryUser", fields: [primaryUserId], references: [id])
-  primaryUserId String?                   @unique @map("primaryUser")
-  updatedAt     DateTime?                 @updatedAt
-  createdAt     DateTime?                 @default(now())
-  updatedBy     User?                     @relation("Booking_updatedBy", fields: [updatedById], references: [id])
-  updatedById   String?                   @map("updatedBy")
-  createdBy     User?                     @relation("Booking_createdBy", fields: [createdById], references: [id])
-  createdById   String?                   @map("createdBy")
+  id                   String              @id @default(cuid())
+  user                 User?               @relation("Booking_user", fields: [userId], references: [id])
+  userId               String?             @map("user")
+  bookingNumber        String              @unique @default("")
+  room                 Room?               @relation("Booking_room", fields: [roomId], references: [id])
+  roomId               String?             @map("room")
+  checkInDate          DateTime
+  checkOutDate         DateTime
+  totalPriceWithoutTax Float
+  totalPrice           Float
+  status               String?             @default("pending")
+  payment              Payment?            @relation("Booking_payment", fields: [paymentId], references: [id])
+  paymentId            String?             @unique @map("payment")
+  invoice              Invoice?            @relation("Booking_invoice", fields: [invoiceId], references: [id])
+  invoiceId            String?             @unique @map("invoice")
+  paymentStatus        String?             @default("Unpaid")
+  bookingType          String?
+  primaryUser          BookingPrimaryUser? @relation("Booking_primaryUser", fields: [primaryUserId], references: [id])
+  primaryUserId        String?             @unique @map("primaryUser")
+  updatedAt            DateTime?           @updatedAt
+  createdAt            DateTime?           @default(now())
+  updatedBy            User?               @relation("Booking_updatedBy", fields: [updatedById], references: [id])
+  updatedById          String?             @map("updatedBy")
+  createdBy            User?               @relation("Booking_createdBy", fields: [createdById], references: [id])
+  createdById          String?             @map("createdBy")
 
   @@index([userId])
   @@index([roomId])
@@ -120,24 +122,29 @@ model Booking {
 }
 
 model Payment {
-  id            String                   @id @default(cuid())
-  booking       Booking?                 @relation("Booking_payment")
-  paymentMethod PaymentPaymentMethodType @default(CARD)
-  requestId     String                   @default("")
+  id            String    @id @default(cuid())
+  booking       Booking?  @relation("Booking_payment")
+  paymentMethod String    @default("razorpay")
+  requestId     String    @default("")
   transactionId String?
   bookingNumber String?
-  status        PaymentStatusType        @default(Pending)
+  status        String    @default("initiated")
   amount        Float
-  updatedAt     DateTime?                @updatedAt
-  createdAt     DateTime?                @default(now())
-  updatedBy     User?                    @relation("Payment_updatedBy", fields: [updatedById], references: [id])
-  updatedById   String?                  @map("updatedBy")
-  createdBy     User?                    @relation("Payment_createdBy", fields: [createdById], references: [id])
-  createdById   String?                  @map("createdBy")
+  currency      String?   @default("INR")
+  response      Json?
+  user          User?     @relation("Payment_user", fields: [userId], references: [id])
+  userId        String?   @map("user")
+  updatedAt     DateTime? @updatedAt
+  createdAt     DateTime? @default(now())
+  updatedBy     User?     @relation("Payment_updatedBy", fields: [updatedById], references: [id])
+  updatedById   String?   @map("updatedBy")
+  createdBy     User?     @relation("Payment_createdBy", fields: [createdById], references: [id])
+  createdById   String?   @map("createdBy")
 
   @@index([requestId])
   @@index([transactionId])
   @@index([bookingNumber])
+  @@index([userId])
   @@index([updatedAt])
   @@index([createdAt])
   @@index([updatedById])
@@ -304,27 +311,4 @@ enum UserUserTypeType {
 enum RoomRoomTypeType {
   Deluxe
   Premium
-}
-
-enum BookingStatusType {
-  PENDING
-  CONFIRMED
-  CANCELLED
-}
-
-enum BookingPaymentStatusType {
-  Paid
-  Unpaid
-}
-
-enum PaymentPaymentMethodType {
-  CARD
-  UPI
-  NET_BANKING
-}
-
-enum PaymentStatusType {
-  Success
-  Failed
-  Pending
 }

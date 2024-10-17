@@ -7,11 +7,11 @@ import { statelessSessions } from '@keystone-6/core/session'
 
 const { withAuth } = createAuth({
   listKey: 'User',
-  identityField: 'phoneNumber',
+  identityField: 'email',
   sessionData: 'name createdAt',
   secretField: 'password',
   initFirstItem: {
-    fields: ['name', 'phoneNumber', 'password'],
+    fields: ['name', 'email', 'password'],
     itemData: {
       isAdmin: true,
       verified: true,
