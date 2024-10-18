@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,58 +11,66 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Header from "@/components/pageComponents/header";
 import Footer from "@/components/pageComponents/footer";
-import {
-  CalendarDays,
-  Users,
-  Utensils,
-  Building2,
-  CreditCard,
-  Tag,
-} from "lucide-react";
-// Instead of importing from './gql/payment'
-import { useMutation, useQuery, gql } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
   BOOKING_PAYMENT,
   CREATE_BOOKING,
   UPDATE_BOOKING_PAYMENT,
 } from "../../gql";
-import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
+import { useRazorpay } from "react-razorpay";
+import { ROOMS } from "@/gql";
+import { CreditCard, Tag } from "lucide-react";
+import { GlobalInfo } from "@/context/provider";
 
 export default function PrimaryBooking() {
-  const { error, isLoading, Razorpay } = useRazorpay();
+  const { userDetails } = useContext(GlobalInfo);
+  const { Razorpay } = useRazorpay();
   const router = useRouter();
+  const userId = userDetails?.user?.id;
+  const userName = userDetails?.user?.name;
+  const userEmail = userDetails?.user?.email;
   const searchParams = useSearchParams();
-  const razorPayKeyId: any = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+  const razorPayKeyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+  // Queries and Mutations
   const [createBooking] = useMutation(CREATE_BOOKING);
   const [bookingPayment] = useMutation(BOOKING_PAYMENT);
   const [updateBookingPayment] = useMutation(UPDATE_BOOKING_PAYMENT);
+  const {
+    loading: loadingRooms,
+    error: roomsError,
+    data: roomsData,
+  } = useQuery(ROOMS, {
+    variables: {
+      where: {
+        isAvailable: {
+          equals: true,
+        },
+      },
+    },
+  });
 
-  const checkIn: any = searchParams.get("checkIn");
-  const checkOut: any = searchParams.get("checkOut");
+  // Extracting query params
+  const checkIn = searchParams.get("checkIn") || "";
+  const checkOut = searchParams.get("checkOut") || "";
   const adults = parseInt(searchParams.get("adults") || "2");
   const children = parseInt(searchParams.get("children") || "0");
-  const roomType = searchParams.get("roomType");
+  const roomType = searchParams.get("roomType") || "Standard";
   const mealOption = searchParams.get("mealOption") || "Room with Breakfast";
-  const initialBasePrice = parseInt(searchParams.get("basePrice") || "0");
+  const extraRooms = parseInt(searchParams.get("extraRooms") || "0", 10);
+  const extraBeds = parseInt(searchParams.get("extraBeds") || "0", 10);
 
   // States
-  const [basePrice, setBasePrice] = useState<number>(initialBasePrice);
+  const [basePrice, setBasePrice] = useState<number>(0);
   const [gstPrice, setGstPrice] = useState<number>(0);
   const [finalPrice, setFinalPrice] = useState<number>(0);
   const [couponCode, setCouponCode] = useState<string>("");
   const [primaryUser, setPrimaryUser] = useState({
     name: "",
-    age: "",
+    age: 18,
     gender: "male",
     verificationIdType: "aadhaar",
     verificationId: "",
@@ -72,6 +80,57 @@ export default function PrimaryBooking() {
     companyAddress: "",
     gstNumber: "",
   });
+
+  // Assuming primaryUser is defined in your state
+const [errors, setErrors] = useState({
+  name: '',
+  age: '',
+  verificationId: '',
+  address: '',
+  companyName: '',
+  companyAddress: '',
+  gstNumber: '',
+});
+
+
+  const [roomIds, setRoomIds] = useState<string[]>([]);
+
+  // Set basePrice and Room IDs from roomType.offerPrice when roomsData is available
+  useEffect(() => {
+    if (roomsData) {
+      const availableRooms = roomsData.rooms
+        .filter((room: any) => room.roomType.name === roomType)
+        .slice(0, extraRooms + 1); // Get the required number of rooms (extraRooms + 1)
+
+      if (availableRooms.length > 0) {
+        setRoomIds(availableRooms.map((room: any) => room.id)); // Set room IDs
+
+        const roomType = availableRooms[0].roomType;
+        let total = roomType.offerPrice * (extraRooms + 1); // Base price for all rooms
+
+        if (mealOption === "with-breakfast")
+          total += roomType.breakfastPrice.price * (extraRooms + 1);
+        if (mealOption === "with-breakfast-dinner")
+          total +=
+            (roomType.breakfastPrice.price + roomType.dinnerPrice.price) *
+            (extraRooms + 1);
+
+        setBasePrice(roomType.offerPrice ? total*numberOfDays : 0);
+      }
+    }
+  }, [roomsData, roomType, extraRooms, mealOption]);
+
+    // Calculate number of days
+    const calculateDays = (checkIn: string, checkOut: string) => {
+      const checkInDate = new Date(checkIn);
+      const checkOutDate = new Date(checkOut);
+      const timeDifference = checkOutDate.getTime() - checkInDate.getTime();
+      const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)); // Convert milliseconds to days
+      return daysDifference >= 0 ? daysDifference : 0; // Return 0 if check-out is before check-in
+    };
+  
+    // Calculate number of days between check-in and check-out
+    const numberOfDays = calculateDays(checkIn, checkOut); 
 
   // Apply Coupon Logic
   const applyCoupon = () => {
@@ -85,9 +144,16 @@ export default function PrimaryBooking() {
     }
   };
 
-  // Recalculate final price with 5% GST
   useEffect(() => {
-    const gst = basePrice * 0.05; // 5% GST
+    let gstRate = 0;
+
+    if (basePrice <= 7500) {
+      gstRate = 0.12; // 12% GST
+    } else {
+      gstRate = 0.18; // 18% GST
+    }
+
+    const gst = basePrice * gstRate;
     setGstPrice(gst);
     setFinalPrice(basePrice + gst);
   }, [basePrice]);
@@ -100,35 +166,85 @@ export default function PrimaryBooking() {
     setPrimaryUser((prev) => ({ ...prev, [name]: value }));
   };
 
+  const validateForm = () => {
+    const newErrors:any = { ...errors };
+    // Reset errors
+    Object.keys(newErrors).forEach(key => {
+      newErrors[key] = '';
+    });
+  
+    // Validate Name
+    if (!primaryUser.name.trim()) {
+      newErrors.name = 'User Name is required.';
+    }
+  
+    // Validate Age
+    if (!primaryUser.age) {
+      newErrors.age = 'Age is required.';
+    } else if (primaryUser.age < 18 ) {
+      newErrors.age = 'Age must be greater then 18.';
+    }
+  
+    // Validate Government ID
+    if (!primaryUser.verificationId.trim()) {
+      newErrors.verificationId = 'Government ID is required.';
+    }
+  
+    // Validate Address if Booking Type is Personal
+    if (primaryUser.bookingType === 'personal' && !primaryUser.address.trim()) {
+      newErrors.address = 'Address is required for personal booking.';
+    }
+  
+    // Validate Company Name if Booking Type is Corporate
+    if (primaryUser.bookingType === 'corporate') {
+      if (!primaryUser.companyName.trim()) {
+        newErrors.companyName = 'Company Name is required for corporate booking.';
+      }
+      if (!primaryUser.companyAddress.trim()) {
+        newErrors.companyAddress = 'Company Address is required for corporate booking.';
+      }
+      if (!primaryUser.gstNumber.trim()) {
+        newErrors.gstNumber = 'GST Number is required for corporate booking.';
+      }
+    }
+  
+    // Update the errors state
+    setErrors(newErrors);
+    
+    // Check if there are any errors
+    return Object.values(newErrors).every(error => error === '');
+  };
+  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Booking details submitted:", primaryUser);
+    const isValid = validateForm();
+
+    if (isValid) {
 
     // Convert check-in and check-out dates to ISO strings
     const checkInDate = new Date(checkIn).toISOString();
     const checkOutDate = new Date(checkOut).toISOString();
 
-    // Create booking data object
+    // Create booking data object with multiple room IDs
     const bookingData = {
       checkInDate,
       checkOutDate,
-      room: {
-        connect: {
-          id: "cm2d7jl220001qelxs6geevb0", // Replace with actual room ID
-        },
+      rooms: {
+        connect: roomIds.map((id) => ({ id })) // Multiple room IDs
       },
       totalPrice: finalPrice,
       totalPriceWithoutTax: basePrice,
       user: {
         connect: {
-          id: "cm2d2vtau0000i5mwifkpqeg6", // Replace with actual user ID
+          id: userId,
         },
       },
       bookingType: primaryUser.bookingType,
       primaryUser: {
         create: {
           address: primaryUser.address,
-          age: parseInt(primaryUser.age, 10), // Safely parse age as an integer
+          age: primaryUser.age,
           bookingType: primaryUser.bookingType,
           companyAddress: primaryUser.companyAddress,
           companyName: primaryUser.companyName,
@@ -158,7 +274,7 @@ export default function PrimaryBooking() {
           },
         });
 
-        const options: RazorpayOrderOptions = {
+        const options: any = {
           key: razorPayKeyId,
           amount: payment?.amount, // Amount in paise
           currency: payment.currency,
@@ -166,8 +282,7 @@ export default function PrimaryBooking() {
           name: "SNAS Retreat",
           description: "Test Transaction",
           order_id: payment?.requestId, // Generate order_id on server
-          handler: async (response) => {
-            console.log("response", response);
+          handler: async (response: any) => {
             if (
               Object.keys(response).includes("razorpay_payment_id") &&
               response.razorpay_payment_id
@@ -213,6 +328,7 @@ export default function PrimaryBooking() {
     } catch (error: any) {
       console.error("Error submitting booking:", error.message || error);
     }
+  }
   };
 
   return (
@@ -241,7 +357,7 @@ export default function PrimaryBooking() {
                   </div>
                 </div>
                 <p className="mt-4">
-                  {adults} Adults | {children} Children | 1 Room
+                  {adults} Adults | {children} Children | {extraRooms + 1} Room
                 </p>
                 <h3 className="font-semibold mt-4">{roomType}</h3>
                 <ul className="list-disc list-inside mt-2">
@@ -269,8 +385,11 @@ export default function PrimaryBooking() {
                         required
                         value={primaryUser.name}
                         onChange={handleInputChange}
-                        className="w-full"
+                        className={`w-full ${errors.name ? "border-red-500" : ""}`}
                       />
+                      {errors.name && (
+                        <p className="text-red-500 text-sm">{errors.name}</p>
+                      )}
                     </div>
 
                     {/* Age */}
@@ -283,8 +402,11 @@ export default function PrimaryBooking() {
                         required
                         value={primaryUser.age}
                         onChange={handleInputChange}
-                        className="w-full"
+                        className={`w-full ${errors.age ? "border-red-500" : ""}`}
                       />
+                      {errors.age && (
+                        <p className="text-red-500 text-sm">{errors.age}</p>
+                      )}
                     </div>
 
                     {/* Gender */}
@@ -367,8 +489,13 @@ export default function PrimaryBooking() {
                         value={primaryUser.verificationId}
                         onChange={handleInputChange}
                         placeholder="Enter Government ID"
-                        className="w-full"
+                        className={`w-full ${errors.verificationId ? "border-red-500" : ""}`}
                       />
+                      {errors.verificationId && (
+                        <p className="text-red-500 text-sm">
+                          {errors.verificationId}
+                        </p>
+                      )}
                     </div>
 
                     {/* Booking Type */}
@@ -412,8 +539,11 @@ export default function PrimaryBooking() {
                         required={primaryUser.bookingType === "personal"}
                         onChange={handleInputChange}
                         placeholder="Enter your address"
-                        className="w-full"
+                        className={`w-full ${errors.address ? "border-red-500" : ""}`}
                       />
+                      {errors.address && (
+                        <p className="text-red-500 text-sm">{errors.address}</p>
+                      )}
                     </div>
                   )}
 
@@ -428,8 +558,13 @@ export default function PrimaryBooking() {
                           value={primaryUser.companyName}
                           required={primaryUser.bookingType === "corporate"}
                           onChange={handleInputChange}
-                          className="w-full"
+                          className={`w-full ${errors.companyName ? "border-red-500" : ""}`}
                         />
+                        {errors.companyName && (
+                          <p className="text-red-500 text-sm">
+                            {errors.companyName}
+                          </p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="companyAddress">Company Address</Label>
@@ -440,8 +575,13 @@ export default function PrimaryBooking() {
                           value={primaryUser.companyAddress}
                           required={primaryUser.bookingType === "corporate"}
                           onChange={handleInputChange}
-                          className="w-full"
+                          className={`w-full ${errors.companyAddress ? "border-red-500" : ""}`}
                         />
+                        {errors.companyAddress && (
+                          <p className="text-red-500 text-sm">
+                            {errors.companyAddress}
+                          </p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="gstNumber">GST Number</Label>
@@ -452,8 +592,13 @@ export default function PrimaryBooking() {
                           value={primaryUser.gstNumber}
                           required={primaryUser.bookingType === "corporate"}
                           onChange={handleInputChange}
-                          className="w-full"
+                          className={`w-full ${errors.gstNumber ? "border-red-500" : ""}`}
                         />
+                        {errors.gstNumber && (
+                          <p className="text-red-500 text-sm">
+                            {errors.gstNumber}
+                          </p>
+                        )}
                       </div>
                     </div>
                   )}
@@ -472,11 +617,13 @@ export default function PrimaryBooking() {
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span>1 Room x 1 Night</span>
+                    <span>{extraRooms + 1} Room x {numberOfDays} Night</span>
                     <span>₹ {basePrice}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Hotel Taxes (5% GST)</span>
+                    <span>
+                      Hotel Taxes {basePrice <= 7500 ? `(12%)` : `(18%)`}{" "}
+                    </span>
                     <span>₹ {gstPrice}</span>
                   </div>
                   <div className="flex justify-between font-bold">

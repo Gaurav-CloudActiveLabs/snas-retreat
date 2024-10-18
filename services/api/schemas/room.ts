@@ -1,14 +1,6 @@
 // import { isAdmin, isSignedIn } from "../utils/access";
 import { list } from "./lib";
-import {
-  text,
-  relationship,
-  select,
-  float,
-  timestamp,
-  checkbox,
-  integer,
-} from "@keystone-6/core/fields";
+import { text, relationship, checkbox } from "@keystone-6/core/fields";
 
 export const Room = list({
   access: {
@@ -16,61 +8,33 @@ export const Room = list({
       create: () => true,
       query: () => true,
       update: () => true,
-      delete:() => true,
+      delete: () => true,
     },
   },
   fields: {
-    roomType: select({
-        type: "enum",
-        options: [
-          { label: 'Deluxe', value: 'Deluxe' },
-          { label: 'Premium', value: 'Premium' },
-        ],
-        validation: { isRequired: true },
-        defaultValue: 'Premium',
-      }),
-      roomNumber: text({
-        validation: { isRequired: true },
-      }),
-      actualPrice: float({
-        validation: { isRequired: true },
-      }),
-      offerPrice: float({
-        validation: { isRequired: true },
-      }),
-      description: text({
-        ui: {
-          displayMode: "textarea",
-        },
-      }),
-      isAvailable: checkbox({
-        defaultValue: true,
-      }),
-      bookings: relationship({
-        ref: "Booking.room",
-        many: true, 
-        ui: {
-          createView: { fieldMode: "edit" },
-          listView: { fieldMode: "read" },
-          itemView: { fieldMode: "edit" },
-        },
-      }),
-      reviews: relationship({
-        ref: "Review.room",
-        many: true, 
-        ui: {
-          createView: { fieldMode: "edit" },
-          listView: { fieldMode: "read" },
-          itemView: { fieldMode: "edit" },
-        },
-      }),
-      images: relationship({
-        ref: 'RoomImage.room',
-        many: true, 
-      }),
-      breakfastPrice: relationship({ ref: 'BreakfastPrice.rooms', many: false }),
-      dinnerPrice: relationship({ ref: 'DinnerPrice.rooms', many: false }),
-      numberOfAdults: integer(),
-      numberOfChildren: integer(),
+    roomType: relationship({
+      ref: "RoomType.rooms",
+      ui: {
+        createView: { fieldMode: "edit" },
+        listView: { fieldMode: "read" },
+        itemView: { fieldMode: "edit" },
+        labelField: "name",
+      },
+    }),
+    roomNumber: text({
+      validation: { isRequired: true },
+    }),
+    isAvailable: checkbox({
+      defaultValue: true,
+    }),
+    bookings: relationship({
+      ref: "Booking.rooms",
+      many: true,
+      ui: {
+        createView: { fieldMode: "edit" },
+        listView: { fieldMode: "read" },
+        itemView: { fieldMode: "edit" },
+      },
+    }),
   },
 });

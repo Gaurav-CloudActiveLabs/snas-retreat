@@ -21,7 +21,7 @@ fields: {
     label: 'Image Description',
   }),
   room: relationship({
-    ref: 'Room.images',
+    ref: 'RoomType.images',
     many: false, 
   }),
 },

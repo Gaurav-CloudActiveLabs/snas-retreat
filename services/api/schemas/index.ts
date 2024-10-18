@@ -13,10 +13,12 @@ import { RoomImage } from "./roomImage";
 import { Slider } from "./slider";
 import { User } from "./user";
 import { Otp } from "./otp";
+import { RoomType } from "./roomType";
 
 export const lists = {
  User,
  Room,
+ RoomType,
  Booking,
  Payment,
  Review,

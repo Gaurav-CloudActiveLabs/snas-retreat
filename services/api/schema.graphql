@@ -215,31 +215,15 @@ input OtpRelateToManyForCreateInput {
 
 type Room {
   id: ID!
-  roomType: RoomRoomTypeType
+  roomType: RoomType
   roomNumber: String
-  actualPrice: Float
-  offerPrice: Float
-  description: String
   isAvailable: Boolean
   bookings(where: BookingWhereInput! = {}, orderBy: [BookingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookingWhereUniqueInput): [Booking!]
   bookingsCount(where: BookingWhereInput! = {}): Int
-  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
-  reviewsCount(where: ReviewWhereInput! = {}): Int
-  images(where: RoomImageWhereInput! = {}, orderBy: [RoomImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomImageWhereUniqueInput): [RoomImage!]
-  imagesCount(where: RoomImageWhereInput! = {}): Int
-  breakfastPrice: BreakfastPrice
-  dinnerPrice: DinnerPrice
-  numberOfAdults: Int
-  numberOfChildren: Int
   updatedAt: DateTime
   createdAt: DateTime
   updatedBy: User
   createdBy: User
-}
-
-enum RoomRoomTypeType {
-  Deluxe
-  Premium
 }
 
 input RoomWhereUniqueInput {
@@ -251,15 +235,97 @@ input RoomWhereInput {
   OR: [RoomWhereInput!]
   NOT: [RoomWhereInput!]
   id: IDFilter
-  roomType: RoomRoomTypeTypeNullableFilter
+  roomType: RoomTypeWhereInput
   roomNumber: StringFilter
+  isAvailable: BooleanFilter
+  bookings: BookingManyRelationFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input RoomOrderByInput {
+  id: OrderDirection
+  roomNumber: OrderDirection
+  isAvailable: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input RoomUpdateInput {
+  roomType: RoomTypeRelateToOneForUpdateInput
+  roomNumber: String
+  isAvailable: Boolean
+  bookings: BookingRelateToManyForUpdateInput
+}
+
+input RoomTypeRelateToOneForUpdateInput {
+  create: RoomTypeCreateInput
+  connect: RoomTypeWhereUniqueInput
+  disconnect: Boolean
+}
+
+input RoomUpdateArgs {
+  where: RoomWhereUniqueInput!
+  data: RoomUpdateInput!
+}
+
+input RoomCreateInput {
+  roomType: RoomTypeRelateToOneForCreateInput
+  roomNumber: String
+  isAvailable: Boolean
+  bookings: BookingRelateToManyForCreateInput
+}
+
+input RoomTypeRelateToOneForCreateInput {
+  create: RoomTypeCreateInput
+  connect: RoomTypeWhereUniqueInput
+}
+
+type RoomType {
+  id: ID!
+  name: String
+  actualPrice: Float
+  offerPrice: Float
+  description: String
+  reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
+  reviewsCount(where: ReviewWhereInput! = {}): Int
+  images(where: RoomImageWhereInput! = {}, orderBy: [RoomImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomImageWhereUniqueInput): [RoomImage!]
+  imagesCount(where: RoomImageWhereInput! = {}): Int
+  rooms(where: RoomWhereInput! = {}, orderBy: [RoomOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomWhereUniqueInput): [Room!]
+  roomsCount(where: RoomWhereInput! = {}): Int
+  breakfastPrice: BreakfastPrice
+  dinnerPrice: DinnerPrice
+  numberOfAdults: Int
+  numberOfChildren: Int
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+input RoomTypeWhereUniqueInput {
+  id: ID
+}
+
+input RoomTypeWhereInput {
+  AND: [RoomTypeWhereInput!]
+  OR: [RoomTypeWhereInput!]
+  NOT: [RoomTypeWhereInput!]
+  id: IDFilter
+  name: StringFilter
   actualPrice: FloatFilter
   offerPrice: FloatFilter
   description: StringFilter
-  isAvailable: BooleanFilter
-  bookings: BookingManyRelationFilter
   reviews: ReviewManyRelationFilter
   images: RoomImageManyRelationFilter
+  rooms: RoomManyRelationFilter
   breakfastPrice: BreakfastPriceWhereInput
   dinnerPrice: DinnerPriceWhereInput
   numberOfAdults: IntNullableFilter
@@ -268,13 +334,6 @@ input RoomWhereInput {
   createdAt: DateTimeNullableFilter
   updatedBy: UserWhereInput
   createdBy: UserWhereInput
-}
-
-input RoomRoomTypeTypeNullableFilter {
-  equals: RoomRoomTypeType
-  in: [RoomRoomTypeType!]
-  notIn: [RoomRoomTypeType!]
-  not: RoomRoomTypeTypeNullableFilter
 }
 
 input FloatFilter {
@@ -288,15 +347,16 @@ input FloatFilter {
   not: FloatFilter
 }
 
-input BooleanFilter {
-  equals: Boolean
-  not: BooleanFilter
-}
-
 input RoomImageManyRelationFilter {
   every: RoomImageWhereInput
   some: RoomImageWhereInput
   none: RoomImageWhereInput
+}
+
+input RoomManyRelationFilter {
+  every: RoomWhereInput
+  some: RoomWhereInput
+  none: RoomWhereInput
 }
 
 input IntNullableFilter {
@@ -310,30 +370,26 @@ input IntNullableFilter {
   not: IntNullableFilter
 }
 
-input RoomOrderByInput {
+input RoomTypeOrderByInput {
   id: OrderDirection
-  roomType: OrderDirection
-  roomNumber: OrderDirection
+  name: OrderDirection
   actualPrice: OrderDirection
   offerPrice: OrderDirection
   description: OrderDirection
-  isAvailable: OrderDirection
   numberOfAdults: OrderDirection
   numberOfChildren: OrderDirection
   updatedAt: OrderDirection
   createdAt: OrderDirection
 }
 
-input RoomUpdateInput {
-  roomType: RoomRoomTypeType
-  roomNumber: String
+input RoomTypeUpdateInput {
+  name: String
   actualPrice: Float
   offerPrice: Float
   description: String
-  isAvailable: Boolean
-  bookings: BookingRelateToManyForUpdateInput
   reviews: ReviewRelateToManyForUpdateInput
   images: RoomImageRelateToManyForUpdateInput
+  rooms: RoomRelateToManyForUpdateInput
   breakfastPrice: BreakfastPriceRelateToOneForUpdateInput
   dinnerPrice: DinnerPriceRelateToOneForUpdateInput
   numberOfAdults: Int
@@ -345,6 +401,13 @@ input RoomImageRelateToManyForUpdateInput {
   set: [RoomImageWhereUniqueInput!]
   create: [RoomImageCreateInput!]
   connect: [RoomImageWhereUniqueInput!]
+}
+
+input RoomRelateToManyForUpdateInput {
+  disconnect: [RoomWhereUniqueInput!]
+  set: [RoomWhereUniqueInput!]
+  create: [RoomCreateInput!]
+  connect: [RoomWhereUniqueInput!]
 }
 
 input BreakfastPriceRelateToOneForUpdateInput {
@@ -359,21 +422,19 @@ input DinnerPriceRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
-input RoomUpdateArgs {
-  where: RoomWhereUniqueInput!
-  data: RoomUpdateInput!
+input RoomTypeUpdateArgs {
+  where: RoomTypeWhereUniqueInput!
+  data: RoomTypeUpdateInput!
 }
 
-input RoomCreateInput {
-  roomType: RoomRoomTypeType
-  roomNumber: String
+input RoomTypeCreateInput {
+  name: String
   actualPrice: Float
   offerPrice: Float
   description: String
-  isAvailable: Boolean
-  bookings: BookingRelateToManyForCreateInput
   reviews: ReviewRelateToManyForCreateInput
   images: RoomImageRelateToManyForCreateInput
+  rooms: RoomRelateToManyForCreateInput
   breakfastPrice: BreakfastPriceRelateToOneForCreateInput
   dinnerPrice: DinnerPriceRelateToOneForCreateInput
   numberOfAdults: Int
@@ -383,6 +444,11 @@ input RoomCreateInput {
 input RoomImageRelateToManyForCreateInput {
   create: [RoomImageCreateInput!]
   connect: [RoomImageWhereUniqueInput!]
+}
+
+input RoomRelateToManyForCreateInput {
+  create: [RoomCreateInput!]
+  connect: [RoomWhereUniqueInput!]
 }
 
 input BreakfastPriceRelateToOneForCreateInput {
@@ -399,7 +465,8 @@ type Booking {
   id: ID!
   user: User
   bookingNumber: String
-  room: Room
+  rooms(where: RoomWhereInput! = {}, orderBy: [RoomOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomWhereUniqueInput): [Room!]
+  roomsCount(where: RoomWhereInput! = {}): Int
   checkInDate: DateTime
   checkOutDate: DateTime
   totalPriceWithoutTax: Float
@@ -427,7 +494,7 @@ input BookingWhereInput {
   id: IDFilter
   user: UserWhereInput
   bookingNumber: StringFilter
-  room: RoomWhereInput
+  rooms: RoomManyRelationFilter
   checkInDate: DateTimeFilter
   checkOutDate: DateTimeFilter
   totalPriceWithoutTax: FloatFilter
@@ -487,7 +554,7 @@ input BookingOrderByInput {
 input BookingUpdateInput {
   user: UserRelateToOneForUpdateInput
   bookingNumber: String
-  room: RoomRelateToOneForUpdateInput
+  rooms: RoomRelateToManyForUpdateInput
   checkInDate: DateTime
   checkOutDate: DateTime
   totalPriceWithoutTax: Float
@@ -503,12 +570,6 @@ input BookingUpdateInput {
 input UserRelateToOneForUpdateInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
-  disconnect: Boolean
-}
-
-input RoomRelateToOneForUpdateInput {
-  create: RoomCreateInput
-  connect: RoomWhereUniqueInput
   disconnect: Boolean
 }
 
@@ -538,7 +599,7 @@ input BookingUpdateArgs {
 input BookingCreateInput {
   user: UserRelateToOneForCreateInput
   bookingNumber: String
-  room: RoomRelateToOneForCreateInput
+  rooms: RoomRelateToManyForCreateInput
   checkInDate: DateTime
   checkOutDate: DateTime
   totalPriceWithoutTax: Float
@@ -554,11 +615,6 @@ input BookingCreateInput {
 input UserRelateToOneForCreateInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
-}
-
-input RoomRelateToOneForCreateInput {
-  create: RoomCreateInput
-  connect: RoomWhereUniqueInput
 }
 
 input PaymentRelateToOneForCreateInput {
@@ -676,7 +732,7 @@ input BookingRelateToOneForCreateInput {
 type Review {
   id: ID!
   user: User
-  room: Room
+  roomType: RoomType
   rating: Int
   comment: String
   image: ImageFieldOutput
@@ -712,7 +768,7 @@ input ReviewWhereInput {
   NOT: [ReviewWhereInput!]
   id: IDFilter
   user: UserWhereInput
-  room: RoomWhereInput
+  roomType: RoomTypeWhereInput
   rating: IntFilter
   comment: StringFilter
   updatedAt: DateTimeNullableFilter
@@ -742,7 +798,7 @@ input ReviewOrderByInput {
 
 input ReviewUpdateInput {
   user: UserRelateToOneForUpdateInput
-  room: RoomRelateToOneForUpdateInput
+  roomType: RoomTypeRelateToOneForUpdateInput
   rating: Int
   comment: String
   image: ImageFieldInput
@@ -762,7 +818,7 @@ input ReviewUpdateArgs {
 
 input ReviewCreateInput {
   user: UserRelateToOneForCreateInput
-  room: RoomRelateToOneForCreateInput
+  roomType: RoomTypeRelateToOneForCreateInput
   rating: Int
   comment: String
   image: ImageFieldInput
@@ -820,7 +876,7 @@ type RoomImage {
   id: ID!
   image: ImageFieldOutput
   description: String
-  room: Room
+  room: RoomType
   updatedAt: DateTime
   createdAt: DateTime
   updatedBy: User
@@ -837,7 +893,7 @@ input RoomImageWhereInput {
   NOT: [RoomImageWhereInput!]
   id: IDFilter
   description: StringFilter
-  room: RoomWhereInput
+  room: RoomTypeWhereInput
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
   updatedBy: UserWhereInput
@@ -854,7 +910,7 @@ input RoomImageOrderByInput {
 input RoomImageUpdateInput {
   image: ImageFieldInput
   description: String
-  room: RoomRelateToOneForUpdateInput
+  room: RoomTypeRelateToOneForUpdateInput
 }
 
 input RoomImageUpdateArgs {
@@ -865,7 +921,7 @@ input RoomImageUpdateArgs {
 input RoomImageCreateInput {
   image: ImageFieldInput
   description: String
-  room: RoomRelateToOneForCreateInput
+  room: RoomTypeRelateToOneForCreateInput
 }
 
 type Faq {
@@ -980,8 +1036,8 @@ input InvoiceCreateInput {
 
 type BreakfastPrice {
   id: ID!
-  rooms(where: RoomWhereInput! = {}, orderBy: [RoomOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomWhereUniqueInput): [Room!]
-  roomsCount(where: RoomWhereInput! = {}): Int
+  rooms(where: RoomTypeWhereInput! = {}, orderBy: [RoomTypeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomTypeWhereUniqueInput): [RoomType!]
+  roomsCount(where: RoomTypeWhereInput! = {}): Int
   price: Float
   updatedAt: DateTime
   createdAt: DateTime
@@ -998,7 +1054,7 @@ input BreakfastPriceWhereInput {
   OR: [BreakfastPriceWhereInput!]
   NOT: [BreakfastPriceWhereInput!]
   id: IDFilter
-  rooms: RoomManyRelationFilter
+  rooms: RoomTypeManyRelationFilter
   price: FloatFilter
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
@@ -1006,10 +1062,10 @@ input BreakfastPriceWhereInput {
   createdBy: UserWhereInput
 }
 
-input RoomManyRelationFilter {
-  every: RoomWhereInput
-  some: RoomWhereInput
-  none: RoomWhereInput
+input RoomTypeManyRelationFilter {
+  every: RoomTypeWhereInput
+  some: RoomTypeWhereInput
+  none: RoomTypeWhereInput
 }
 
 input BreakfastPriceOrderByInput {
@@ -1020,15 +1076,15 @@ input BreakfastPriceOrderByInput {
 }
 
 input BreakfastPriceUpdateInput {
-  rooms: RoomRelateToManyForUpdateInput
+  rooms: RoomTypeRelateToManyForUpdateInput
   price: Float
 }
 
-input RoomRelateToManyForUpdateInput {
-  disconnect: [RoomWhereUniqueInput!]
-  set: [RoomWhereUniqueInput!]
-  create: [RoomCreateInput!]
-  connect: [RoomWhereUniqueInput!]
+input RoomTypeRelateToManyForUpdateInput {
+  disconnect: [RoomTypeWhereUniqueInput!]
+  set: [RoomTypeWhereUniqueInput!]
+  create: [RoomTypeCreateInput!]
+  connect: [RoomTypeWhereUniqueInput!]
 }
 
 input BreakfastPriceUpdateArgs {
@@ -1037,19 +1093,19 @@ input BreakfastPriceUpdateArgs {
 }
 
 input BreakfastPriceCreateInput {
-  rooms: RoomRelateToManyForCreateInput
+  rooms: RoomTypeRelateToManyForCreateInput
   price: Float
 }
 
-input RoomRelateToManyForCreateInput {
-  create: [RoomCreateInput!]
-  connect: [RoomWhereUniqueInput!]
+input RoomTypeRelateToManyForCreateInput {
+  create: [RoomTypeCreateInput!]
+  connect: [RoomTypeWhereUniqueInput!]
 }
 
 type DinnerPrice {
   id: ID!
-  rooms(where: RoomWhereInput! = {}, orderBy: [RoomOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomWhereUniqueInput): [Room!]
-  roomsCount(where: RoomWhereInput! = {}): Int
+  rooms(where: RoomTypeWhereInput! = {}, orderBy: [RoomTypeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomTypeWhereUniqueInput): [RoomType!]
+  roomsCount(where: RoomTypeWhereInput! = {}): Int
   price: Float
   updatedAt: DateTime
   createdAt: DateTime
@@ -1066,7 +1122,7 @@ input DinnerPriceWhereInput {
   OR: [DinnerPriceWhereInput!]
   NOT: [DinnerPriceWhereInput!]
   id: IDFilter
-  rooms: RoomManyRelationFilter
+  rooms: RoomTypeManyRelationFilter
   price: FloatFilter
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
@@ -1082,7 +1138,7 @@ input DinnerPriceOrderByInput {
 }
 
 input DinnerPriceUpdateInput {
-  rooms: RoomRelateToManyForUpdateInput
+  rooms: RoomTypeRelateToManyForUpdateInput
   price: Float
 }
 
@@ -1092,7 +1148,7 @@ input DinnerPriceUpdateArgs {
 }
 
 input DinnerPriceCreateInput {
-  rooms: RoomRelateToManyForCreateInput
+  rooms: RoomTypeRelateToManyForCreateInput
   price: Float
 }
 
@@ -1371,6 +1427,12 @@ type Mutation {
   updateRooms(data: [RoomUpdateArgs!]!): [Room]
   deleteRoom(where: RoomWhereUniqueInput!): Room
   deleteRooms(where: [RoomWhereUniqueInput!]!): [Room]
+  createRoomType(data: RoomTypeCreateInput!): RoomType
+  createRoomTypes(data: [RoomTypeCreateInput!]!): [RoomType]
+  updateRoomType(where: RoomTypeWhereUniqueInput!, data: RoomTypeUpdateInput!): RoomType
+  updateRoomTypes(data: [RoomTypeUpdateArgs!]!): [RoomType]
+  deleteRoomType(where: RoomTypeWhereUniqueInput!): RoomType
+  deleteRoomTypes(where: [RoomTypeWhereUniqueInput!]!): [RoomType]
   createBooking(data: BookingCreateInput!): Booking
   createBookings(data: [BookingCreateInput!]!): [Booking]
   updateBooking(where: BookingWhereUniqueInput!, data: BookingUpdateInput!): Booking
@@ -1483,6 +1545,9 @@ type Query {
   room(where: RoomWhereUniqueInput!): Room
   rooms(where: RoomWhereInput! = {}, orderBy: [RoomOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomWhereUniqueInput): [Room!]
   roomsCount(where: RoomWhereInput! = {}): Int
+  roomType(where: RoomTypeWhereUniqueInput!): RoomType
+  roomTypes(where: RoomTypeWhereInput! = {}, orderBy: [RoomTypeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoomTypeWhereUniqueInput): [RoomType!]
+  roomTypesCount(where: RoomTypeWhereInput! = {}): Int
   booking(where: BookingWhereUniqueInput!): Booking
   bookings(where: BookingWhereInput! = {}, orderBy: [BookingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookingWhereUniqueInput): [Booking!]
   bookingsCount(where: BookingWhereInput! = {}): Int

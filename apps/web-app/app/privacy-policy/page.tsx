@@ -1,9 +1,13 @@
+"use client"
+import Footer from "@/components/pageComponents/footer"
+import Header from "@/components/pageComponents/header"
 import { Mail, Shield, Database, Lock, Cookie, CheckSquare } from "lucide-react"
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gray-100">
+    <Header />
+    <main className="lg:px-28 px-10 mx-auto py-12">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">Privacy Policy</h1>
         
         <p className="mb-8 text-gray-700">
@@ -81,7 +85,8 @@ export default function PrivacyPolicy() {
             </p>
           </section>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   )
 }

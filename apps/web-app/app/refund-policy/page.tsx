@@ -1,11 +1,14 @@
+"use client"
+import Footer from "@/components/pageComponents/footer"
+import Header from "@/components/pageComponents/header"
 import { Mail, DollarSign, Clock, AlertCircle, Percent, HelpCircle } from "lucide-react"
 
 export default function RefundPolicy() {
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gray-100">
+    <Header />
+    <main className="lg:px-28 px-10 mx-auto py-12">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">Refund Policy</h1>
-        
         <div className="space-y-8">
           <section>
             <h2 className="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
@@ -64,7 +67,8 @@ export default function RefundPolicy() {
             </p>
           </section>
         </div>
-      </div>
+        </main>
+      <Footer />
     </div>
   )
 }

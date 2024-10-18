@@ -29,9 +29,9 @@ export const Booking = list({
       },
     }),
     bookingNumber: text(),
-    room: relationship({
+    rooms: relationship({
       ref: "Room.bookings",
-      many: false,
+      many: true,
       ui: {
         createView: { fieldMode: "edit" },
         listView: { fieldMode: "read" },

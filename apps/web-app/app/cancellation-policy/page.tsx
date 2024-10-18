@@ -1,9 +1,13 @@
+"use client"
+import Footer from "@/components/pageComponents/footer"
+import Header from "@/components/pageComponents/header"
 import { Mail, Calendar, AlertCircle, DollarSign, UserX, LogOut } from "lucide-react"
 
 export default function CancellationPolicy() {
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gray-100">
+    <Header />
+    <main className="lg:px-28 px-10 mx-auto py-12">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">Cancellation Policy</h1>
         
         <div className="space-y-8">
@@ -55,7 +59,8 @@ export default function CancellationPolicy() {
             <p>For any cancellation-related queries or disputes, please email us at <a href="mailto:info@snasretreat.com" className="text-blue-600 hover:underline">info@snasretreat.com</a>.</p>
           </section>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   )
 }

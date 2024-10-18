@@ -96,10 +96,11 @@ export async function updateBookingPayment(
     // Fetch the booking details
     const booking = await sudo.query.Booking.findOne({
       where: { id: bookingId },
-      query: "id payment { id requestId response }",
+      query: "id payment { id requestId response} rooms{id}",
     });
 
     const payment = booking?.payment;
+    const roomIds = booking?.rooms?.map((room: any) => room.id) || [];
 
     if (!payment || !payment.requestId) {
       return { message: "No payment found for the given booking ID" };
@@ -116,6 +117,7 @@ export async function updateBookingPayment(
     const isVerifiedSignature = signature && expectedSignature === signature;
     const status: any = isVerifiedSignature ? "success" : "failure";
     const paymentStatus = isVerifiedSignature ? "Paid" : "Unpaid";
+    const isAvailable: any = isVerifiedSignature ? false : false;
 
     // Update booking status
     const updatedBooking = await sudo.query.Booking.updateOne({
@@ -127,12 +129,28 @@ export async function updateBookingPayment(
       query: "id",
     });
 
+    // Extract room IDs from the booking
+    console.log("roomIds", roomIds);
+    // Update the availability of the extracted rooms
+    if (roomIds.length > 0) {
+      await Promise.all(
+        roomIds.map(async (roomId:any) => {
+          await sudo.query.Room.updateOne({
+            where: { id: roomId }, // Use 'id' to update each room individually
+            data: {
+              isAvailable,
+            },
+            query: "id",
+          });
+        })
+      );
+    }
     // Update the payment information
     await sudo.query.Payment.updateOne({
       where: { id: payment.id },
       data: {
         status,
-          ...(paymentId ? { transactionId: paymentId } : {}),
+        ...(paymentId ? { transactionId: paymentId } : {}),
         response: {
           ...payment.response,
           ...(isVerifiedSignature

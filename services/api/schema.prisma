@@ -32,6 +32,8 @@ model User {
   from_User_createdBy               User[]               @relation("User_createdBy")
   from_Room_updatedBy               Room[]               @relation("Room_updatedBy")
   from_Room_createdBy               Room[]               @relation("Room_createdBy")
+  from_RoomType_updatedBy           RoomType[]           @relation("RoomType_updatedBy")
+  from_RoomType_createdBy           RoomType[]           @relation("RoomType_createdBy")
   from_Booking_updatedBy            Booking[]            @relation("Booking_updatedBy")
   from_Booking_createdBy            Booking[]            @relation("Booking_createdBy")
   from_Payment_user                 Payment[]            @relation("Payment_user")
@@ -67,28 +69,47 @@ model User {
 }
 
 model Room {
-  id               String           @id @default(cuid())
-  roomType         RoomRoomTypeType @default(Premium)
-  roomNumber       String           @default("")
+  id          String    @id @default(cuid())
+  roomType    RoomType? @relation("Room_roomType", fields: [roomTypeId], references: [id])
+  roomTypeId  String?   @map("roomType")
+  roomNumber  String    @default("")
+  isAvailable Boolean   @default(true)
+  bookings    Booking[] @relation("Booking_rooms")
+  updatedAt   DateTime? @updatedAt
+  createdAt   DateTime? @default(now())
+  updatedBy   User?     @relation("Room_updatedBy", fields: [updatedById], references: [id])
+  updatedById String?   @map("updatedBy")
+  createdBy   User?     @relation("Room_createdBy", fields: [createdById], references: [id])
+  createdById String?   @map("createdBy")
+
+  @@index([roomTypeId])
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
+}
+
+model RoomType {
+  id               String          @id @default(cuid())
+  name             String          @default("")
   actualPrice      Float
   offerPrice       Float
-  description      String           @default("")
-  isAvailable      Boolean          @default(true)
-  bookings         Booking[]        @relation("Booking_room")
-  reviews          Review[]         @relation("Review_room")
-  images           RoomImage[]      @relation("RoomImage_room")
-  breakfastPrice   BreakfastPrice?  @relation("Room_breakfastPrice", fields: [breakfastPriceId], references: [id])
-  breakfastPriceId String?          @map("breakfastPrice")
-  dinnerPrice      DinnerPrice?     @relation("Room_dinnerPrice", fields: [dinnerPriceId], references: [id])
-  dinnerPriceId    String?          @map("dinnerPrice")
+  description      String          @default("")
+  reviews          Review[]        @relation("Review_roomType")
+  images           RoomImage[]     @relation("RoomImage_room")
+  rooms            Room[]          @relation("Room_roomType")
+  breakfastPrice   BreakfastPrice? @relation("RoomType_breakfastPrice", fields: [breakfastPriceId], references: [id])
+  breakfastPriceId String?         @map("breakfastPrice")
+  dinnerPrice      DinnerPrice?    @relation("RoomType_dinnerPrice", fields: [dinnerPriceId], references: [id])
+  dinnerPriceId    String?         @map("dinnerPrice")
   numberOfAdults   Int?
   numberOfChildren Int?
-  updatedAt        DateTime?        @updatedAt
-  createdAt        DateTime?        @default(now())
-  updatedBy        User?            @relation("Room_updatedBy", fields: [updatedById], references: [id])
-  updatedById      String?          @map("updatedBy")
-  createdBy        User?            @relation("Room_createdBy", fields: [createdById], references: [id])
-  createdById      String?          @map("createdBy")
+  updatedAt        DateTime?       @updatedAt
+  createdAt        DateTime?       @default(now())
+  updatedBy        User?           @relation("RoomType_updatedBy", fields: [updatedById], references: [id])
+  updatedById      String?         @map("updatedBy")
+  createdBy        User?           @relation("RoomType_createdBy", fields: [createdById], references: [id])
+  createdById      String?         @map("createdBy")
 
   @@index([breakfastPriceId])
   @@index([dinnerPriceId])
@@ -103,8 +124,7 @@ model Booking {
   user                 User?               @relation("Booking_user", fields: [userId], references: [id])
   userId               String?             @map("user")
   bookingNumber        String              @default("")
-  room                 Room?               @relation("Booking_room", fields: [roomId], references: [id])
-  roomId               String?             @map("room")
+  rooms                Room[]              @relation("Booking_rooms")
   checkInDate          DateTime
   checkOutDate         DateTime
   totalPriceWithoutTax Float
@@ -126,7 +146,6 @@ model Booking {
   createdById          String?             @map("createdBy")
 
   @@index([userId])
-  @@index([roomId])
   @@index([updatedAt])
   @@index([createdAt])
   @@index([updatedById])
@@ -167,8 +186,8 @@ model Review {
   id              String    @id @default(cuid())
   user            User?     @relation("Review_user", fields: [userId], references: [id])
   userId          String?   @map("user")
-  room            Room?     @relation("Review_room", fields: [roomId], references: [id])
-  roomId          String?   @map("room")
+  roomType        RoomType? @relation("Review_roomType", fields: [roomTypeId], references: [id])
+  roomTypeId      String?   @map("roomType")
   rating          Int
   comment         String    @default("")
   image_id        String?
@@ -184,7 +203,7 @@ model Review {
   createdById     String?   @map("createdBy")
 
   @@index([userId])
-  @@index([roomId])
+  @@index([roomTypeId])
   @@index([updatedAt])
   @@index([createdAt])
   @@index([updatedById])
@@ -220,7 +239,7 @@ model RoomImage {
   image_height    Int?
   image_extension String?
   description     String    @default("")
-  room            Room?     @relation("RoomImage_room", fields: [roomId], references: [id])
+  room            RoomType? @relation("RoomImage_room", fields: [roomId], references: [id])
   roomId          String?   @map("room")
   updatedAt       DateTime? @updatedAt
   createdAt       DateTime? @default(now())
@@ -273,15 +292,15 @@ model Invoice {
 }
 
 model BreakfastPrice {
-  id          String    @id @default(cuid())
-  rooms       Room[]    @relation("Room_breakfastPrice")
+  id          String     @id @default(cuid())
+  rooms       RoomType[] @relation("RoomType_breakfastPrice")
   price       Float
-  updatedAt   DateTime? @updatedAt
-  createdAt   DateTime? @default(now())
-  updatedBy   User?     @relation("BreakfastPrice_updatedBy", fields: [updatedById], references: [id])
-  updatedById String?   @map("updatedBy")
-  createdBy   User?     @relation("BreakfastPrice_createdBy", fields: [createdById], references: [id])
-  createdById String?   @map("createdBy")
+  updatedAt   DateTime?  @updatedAt
+  createdAt   DateTime?  @default(now())
+  updatedBy   User?      @relation("BreakfastPrice_updatedBy", fields: [updatedById], references: [id])
+  updatedById String?    @map("updatedBy")
+  createdBy   User?      @relation("BreakfastPrice_createdBy", fields: [createdById], references: [id])
+  createdById String?    @map("createdBy")
 
   @@index([updatedAt])
   @@index([createdAt])
@@ -290,15 +309,15 @@ model BreakfastPrice {
 }
 
 model DinnerPrice {
-  id          String    @id @default(cuid())
-  rooms       Room[]    @relation("Room_dinnerPrice")
+  id          String     @id @default(cuid())
+  rooms       RoomType[] @relation("RoomType_dinnerPrice")
   price       Float
-  updatedAt   DateTime? @updatedAt
-  createdAt   DateTime? @default(now())
-  updatedBy   User?     @relation("DinnerPrice_updatedBy", fields: [updatedById], references: [id])
-  updatedById String?   @map("updatedBy")
-  createdBy   User?     @relation("DinnerPrice_createdBy", fields: [createdById], references: [id])
-  createdById String?   @map("createdBy")
+  updatedAt   DateTime?  @updatedAt
+  createdAt   DateTime?  @default(now())
+  updatedBy   User?      @relation("DinnerPrice_updatedBy", fields: [updatedById], references: [id])
+  updatedById String?    @map("updatedBy")
+  createdBy   User?      @relation("DinnerPrice_createdBy", fields: [createdById], references: [id])
+  createdById String?    @map("createdBy")
 
   @@index([updatedAt])
   @@index([createdAt])
@@ -391,9 +410,4 @@ model Otp {
 enum UserUserTypeType {
   user
   admin
-}
-
-enum RoomRoomTypeType {
-  Deluxe
-  Premium
 }

@@ -25,12 +25,10 @@ export const Review = list({
           itemView: { fieldMode: "edit" },
         },
       }),
-      room: relationship({
-        ref: "Room.reviews", 
+      roomType: relationship({
+        ref: "RoomType.reviews", 
         ui: {
-          createView: { fieldMode: "edit" },
-          listView: { fieldMode: "read" },
-          itemView: { fieldMode: "edit" },
+          labelField: 'name',
         },
       }),
       rating: integer({

@@ -19,7 +19,7 @@ export default function BookingForm() {
   const [checkOut, setCheckOut] = useState("");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
-  const [room, setRoom] = useState("Deluxe");
+  const [room, setRoom] = useState("All");
 
   // State for form errors
   const [errors, setErrors] = useState({
@@ -204,6 +204,7 @@ export default function BookingForm() {
               value={room}
               onChange={(e) => setRoom(e.target.value)}
             >
+              <option>All</option>
               <option>Deluxe</option>
               <option>Premium</option>
             </select>

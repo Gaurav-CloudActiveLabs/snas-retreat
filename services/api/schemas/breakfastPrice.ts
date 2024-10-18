@@ -20,7 +20,7 @@ export const BreakfastPrice = list({
         },
       },
     fields: {
-      rooms: relationship({ ref: 'Room.breakfastPrice', many: true }),
+      rooms: relationship({ ref: 'RoomType.breakfastPrice', many: true }),
       price: float({ validation: { isRequired: true } }),
     },
   });

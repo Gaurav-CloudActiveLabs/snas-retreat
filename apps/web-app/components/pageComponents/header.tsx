@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { LogoRectangleWithoutBg } from "@/assets/svg";
+import SignUp from "./SignUp";
 
 export default function Header() {
   const [isSticky, setIsSticky] = useState(false);
@@ -140,12 +141,7 @@ export default function Header() {
             </nav>
 
             <div className="hidden lg:block">
-              <Link
-                href="/reservation"
-                className="bg-[#C19A6B] text-white py-4 px-6 hover:bg-[#a8835b] text-sm font-normal transition duration-300"
-              >
-                RESERVATION
-              </Link>
+             <SignUp/>
             </div>
 
             <Button onClick={toggleSidebar} className="mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none">

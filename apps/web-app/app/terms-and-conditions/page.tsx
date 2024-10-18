@@ -1,9 +1,13 @@
+"use client"
+import Footer from "@/components/pageComponents/footer"
+import Header from "@/components/pageComponents/header"
 import { FileText, Calendar, DollarSign, Users, Shield, AlertTriangle } from "lucide-react"
 
 export default function TermsAndConditions() {
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gray-100">
+    <Header />
+    <main className="lg:px-28 px-10 mx-auto py-12">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">Terms and Conditions</h1>
         
         <div className="space-y-8">
@@ -71,7 +75,8 @@ export default function TermsAndConditions() {
             </p>
           </section>
         </div>
-      </div>
+        </main>
+      <Footer />
     </div>
   )
 }
