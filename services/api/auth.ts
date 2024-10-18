@@ -13,8 +13,6 @@ const { withAuth } = createAuth({
   initFirstItem: {
     fields: ['name', 'email', 'password'],
     itemData: {
-      isAdmin: true,
-      verified: true,
       userType: 'admin',
     },
     skipKeystoneWelcome: true,

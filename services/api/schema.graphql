@@ -12,8 +12,6 @@ type User {
   bookingsCount(where: BookingWhereInput! = {}): Int
   reviews(where: ReviewWhereInput! = {}, orderBy: [ReviewOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ReviewWhereUniqueInput): [Review!]
   reviewsCount(where: ReviewWhereInput! = {}): Int
-  verified: Boolean
-  isAdmin: Boolean
   otps(where: OtpWhereInput! = {}, orderBy: [OtpOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: OtpWhereUniqueInput): [Otp!]
   otpsCount(where: OtpWhereInput! = {}): Int
   updatedAt: DateTime
@@ -36,7 +34,6 @@ scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339
 input UserWhereUniqueInput {
   id: ID
   email: String
-  phoneNumber: String
 }
 
 input UserWhereInput {
@@ -50,8 +47,6 @@ input UserWhereInput {
   userType: UserUserTypeTypeNullableFilter
   bookings: BookingManyRelationFilter
   reviews: ReviewManyRelationFilter
-  verified: BooleanFilter
-  isAdmin: BooleanFilter
   otps: OtpManyRelationFilter
   updatedAt: DateTimeNullableFilter
   createdAt: DateTimeNullableFilter
@@ -123,11 +118,6 @@ input ReviewManyRelationFilter {
   none: ReviewWhereInput
 }
 
-input BooleanFilter {
-  equals: Boolean
-  not: BooleanFilter
-}
-
 input OtpManyRelationFilter {
   every: OtpWhereInput
   some: OtpWhereInput
@@ -151,8 +141,6 @@ input UserOrderByInput {
   email: OrderDirection
   phoneNumber: OrderDirection
   userType: OrderDirection
-  verified: OrderDirection
-  isAdmin: OrderDirection
   updatedAt: OrderDirection
   createdAt: OrderDirection
 }
@@ -170,8 +158,6 @@ input UserUpdateInput {
   userType: UserUserTypeType
   bookings: BookingRelateToManyForUpdateInput
   reviews: ReviewRelateToManyForUpdateInput
-  verified: Boolean
-  isAdmin: Boolean
   otps: OtpRelateToManyForUpdateInput
 }
 
@@ -209,8 +195,6 @@ input UserCreateInput {
   userType: UserUserTypeType
   bookings: BookingRelateToManyForCreateInput
   reviews: ReviewRelateToManyForCreateInput
-  verified: Boolean
-  isAdmin: Boolean
   otps: OtpRelateToManyForCreateInput
 }
 
@@ -302,6 +286,11 @@ input FloatFilter {
   gt: Float
   gte: Float
   not: FloatFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
 }
 
 input RoomImageManyRelationFilter {

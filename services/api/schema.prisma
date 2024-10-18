@@ -16,13 +16,11 @@ model User {
   id                                String               @id @default(cuid())
   name                              String               @default("")
   email                             String               @unique @default("")
-  phoneNumber                       String               @unique @default("")
+  phoneNumber                       String               @default("")
   password                          String
   userType                          UserUserTypeType?    @default(user)
   bookings                          Booking[]            @relation("Booking_user")
   reviews                           Review[]             @relation("Review_user")
-  verified                          Boolean              @default(false)
-  isAdmin                           Boolean              @default(false)
   otps                              Otp[]                @relation("Otp_user")
   updatedAt                         DateTime?            @updatedAt
   createdAt                         DateTime?            @default(now())
