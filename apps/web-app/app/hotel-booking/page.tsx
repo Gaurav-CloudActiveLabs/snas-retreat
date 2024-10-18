@@ -31,7 +31,11 @@ import {
 } from "lucide-react";
 // Instead of importing from './gql/payment'
 import { useMutation, useQuery, gql } from "@apollo/client";
-import { BOOKING_PAYMENT, CREATE_BOOKING, UPDATE_BOOKING_PAYMENT } from "../../gql";
+import {
+  BOOKING_PAYMENT,
+  CREATE_BOOKING,
+  UPDATE_BOOKING_PAYMENT,
+} from "../../gql";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 
 export default function PrimaryBooking() {
@@ -162,9 +166,24 @@ export default function PrimaryBooking() {
           name: "SNAS Retreat",
           description: "Test Transaction",
           order_id: payment?.requestId, // Generate order_id on server
-          handler: (response) => {
-            console.log(response);
-            alert("Payment Successful!");
+          handler: async (response) => {
+            console.log("response", response);
+            if (
+              Object.keys(response).includes("razorpay_payment_id") &&
+              response.razorpay_payment_id
+            ) {
+              await updateBookingPayment({
+                variables: {
+                  requestId: response?.razorpay_order_id,
+                  bookingId: bookingId,
+                  paymentId: response?.razorpay_payment_id,
+                  signature: response?.razorpay_signature,
+                },
+              });
+              alert("Payment Successfull");
+            } else {
+              alert("Something went wrong");
+            }
           },
           prefill: {
             name: "John Doe",
@@ -177,6 +196,17 @@ export default function PrimaryBooking() {
         };
         const razorpayInstance = new Razorpay(options);
         razorpayInstance.open();
+        razorpayInstance.on("payment.failed", async (res) => {
+          await updateBookingPayment({
+            variables: {
+              bookingId: bookingId,
+              paymentError: res.error,
+            },
+          });
+          alert(
+            "Error in processing payment, you can retry payment in orders page"
+          );
+        });
       } else {
         console.error("Booking creation failed, no booking ID returned.");
       }

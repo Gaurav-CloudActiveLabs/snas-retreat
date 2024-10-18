@@ -233,7 +233,8 @@ type Room {
   id: ID!
   roomType: RoomRoomTypeType
   roomNumber: String
-  price: Float
+  actualPrice: Float
+  offerPrice: Float
   description: String
   isAvailable: Boolean
   bookings(where: BookingWhereInput! = {}, orderBy: [BookingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BookingWhereUniqueInput): [Booking!]
@@ -268,7 +269,8 @@ input RoomWhereInput {
   id: IDFilter
   roomType: RoomRoomTypeTypeNullableFilter
   roomNumber: StringFilter
-  price: FloatFilter
+  actualPrice: FloatFilter
+  offerPrice: FloatFilter
   description: StringFilter
   isAvailable: BooleanFilter
   bookings: BookingManyRelationFilter
@@ -323,7 +325,8 @@ input RoomOrderByInput {
   id: OrderDirection
   roomType: OrderDirection
   roomNumber: OrderDirection
-  price: OrderDirection
+  actualPrice: OrderDirection
+  offerPrice: OrderDirection
   description: OrderDirection
   isAvailable: OrderDirection
   numberOfAdults: OrderDirection
@@ -335,7 +338,8 @@ input RoomOrderByInput {
 input RoomUpdateInput {
   roomType: RoomRoomTypeType
   roomNumber: String
-  price: Float
+  actualPrice: Float
+  offerPrice: Float
   description: String
   isAvailable: Boolean
   bookings: BookingRelateToManyForUpdateInput
@@ -374,7 +378,8 @@ input RoomUpdateArgs {
 input RoomCreateInput {
   roomType: RoomRoomTypeType
   roomNumber: String
-  price: Float
+  actualPrice: Float
+  offerPrice: Float
   description: String
   isAvailable: Boolean
   bookings: BookingRelateToManyForCreateInput
@@ -424,7 +429,6 @@ type Booking {
 
 input BookingWhereUniqueInput {
   id: ID
-  bookingNumber: String
 }
 
 input BookingWhereInput {

@@ -78,10 +78,10 @@ export async function updateBookingPayment(
     signature,
     paymentError,
   }: {
-    requestId: string;
-    bookingId: string;
-    paymentId: string;
-    signature: string;
+    requestId?: string;
+    bookingId?: string;
+    paymentId?: string;
+    signature?: string;
     paymentError?: any;
   },
   context: Context
@@ -114,8 +114,8 @@ export async function updateBookingPayment(
 
     // Verify the signature
     const isVerifiedSignature = signature && expectedSignature === signature;
-    const status:any = isVerifiedSignature ? "success" : "failure";
-    const paymentStatus = isVerifiedSignature ? "Paid" : "Pending";
+    const status: any = isVerifiedSignature ? "success" : "failure";
+    const paymentStatus = isVerifiedSignature ? "Paid" : "Unpaid";
 
     // Update booking status
     const updatedBooking = await sudo.query.Booking.updateOne({
@@ -132,7 +132,7 @@ export async function updateBookingPayment(
       where: { id: payment.id },
       data: {
         status,
-        ...(paymentId ? { transactionId: paymentId } : {}),
+          ...(paymentId ? { transactionId: paymentId } : {}),
         response: {
           ...payment.response,
           ...(isVerifiedSignature
