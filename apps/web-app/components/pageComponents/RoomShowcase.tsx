@@ -1,3 +1,4 @@
+"use client";
 import RoomCard from "./RoomCard";
 import Room1 from "../../assets/ROOM1.png";
 import Room2 from "../../assets/ROOM2.png";
@@ -8,12 +9,14 @@ const rooms = [
     image: Room1,
     description:
       "A cozy and elegant space with all essential amenities and a private balcony overlooking the scenic valley.",
+    navigateTo:"/room-deluxe"
   },
   {
     title: "Premium Room",
     image: Room2,
     description:
       "A larger, more luxurious option with upgraded features, ideal for those seeking the ultimate in relaxation.",
+    navigateTo:"/room-premium"
   },
 ];
 
@@ -34,6 +37,7 @@ export default function RoomShowCase() {
             title={room.title}
             image={room.image}
             description={room.description}
+            navigateTo={room.navigateTo}
           />
         ))}
       </div>

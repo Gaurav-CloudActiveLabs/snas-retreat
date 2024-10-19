@@ -39,7 +39,7 @@ function Card({ title, details, Icon }: CardData) {
         <div className='bg-orange-100 w-[51px] h-[51px] flex justify-center items-center rounded'>
           <Icon width={40} height={40} />
         </div>
-        <h3 className="font-semibold mt-3">{title}</h3>
+        <h3 className="font-semibold mt-3 text-[#2B3F58]">{title}</h3>
         {isHovered && (
           <div className="absolute inset-0 bg-[#A75F37] bg-opacity-90 flex items-center justify-center p-4 transition-opacity duration-300">
             <p className="text-white text-sm">{details}</p>

@@ -19,68 +19,70 @@ type CategoryData = {
 const categoryData: Record<AmenityCategory, CategoryData> = {
   'Basic Facilities': {
     amenities: [
-      { name: 'Telephone', description: 'In-room telephone service' },
-      { name: 'Room Service', description: '24/7 room service available' },
-      { name: 'Air Conditioning', description: 'Individual climate control in each room' },
-      { name: 'Mini Bar', description: 'Fully stocked mini bar with snacks and beverages' },
+      { name: 'Telephone', description: 'Direct dial telephones available in every room' },
+      { name: 'Room Service', description: 'Enjoy meals and snacks delivered directly to your room' },
+      { name: 'Attached Bathroom', description: 'All rooms feature modern bathrooms with complimentary toiletries' },
+      { name: 'Housekeeping', description: 'Daily housekeeping to maintain a clean environment' },
+      { name: 'Umbrellas', description: 'Available for guests during rainy weather' },
+      { name: 'Torch', description: 'Provided on request for emergency use or nighttime navigation' },
+      { name: 'First-Aid Services', description: 'First-aid kit readily available for minor injuries' },
     ],
-    image: Telephone
+    image: Telephone,
   },
   'Accessibility Features': {
     amenities: [
-      { name: 'Wheelchair Accessible', description: 'Rooms and facilities are wheelchair accessible' },
-      { name: 'Braille Signage', description: 'Braille signage available throughout the hotel' },
-      { name: 'Hearing Loop', description: 'Hearing loop system available in common areas' },
-      { name: 'Accessible Bathroom', description: 'Bathrooms with grab bars and roll-in showers' },
+      { name: 'Wheelchair', description: 'Available upon request for guests requiring assistance' },
+      { name: 'Lift', description: 'Easy elevator access to all floors for your convenience' },
     ],
-    image: Telephone
+    image: Telephone,
   },
   'Media and Technology': {
     amenities: [
-      { name: 'Free Wi-Fi', description: 'Complimentary high-speed Wi-Fi throughout the hotel' },
-      { name: 'Flat-screen TV', description: 'HD flat-screen TV with cable channels' },
-      { name: 'Charging Stations', description: 'USB charging ports in rooms and common areas' },
-      { name: 'Smart Room Controls', description: 'Tablet-controlled lighting and temperature' },
+      { name: 'Electrical Adapters', description: 'Provided to ensure compatibility for your electronic devices' },
+      { name: 'Electrical Chargers', description: 'Available on request for various device types' },
+      { name: 'Printer and Photocopying', description: 'On-site services for printing and photocopying documents' },
     ],
-    image: Telephone
+    image: Telephone,
   },
   'General Services': {
     amenities: [
-      { name: 'Concierge', description: '24-hour concierge service' },
-      { name: 'Laundry', description: 'Laundry and dry cleaning services available' },
-      { name: 'Currency Exchange', description: 'Currency exchange service at the front desk' },
-      { name: 'Luggage Storage', description: 'Secure luggage storage available' },
+      { name: 'Wake-up Call', description: 'Wake-up call service to ensure you never miss an important moment' },
+      { name: 'Multilingual Staff', description: 'Our team speaks multiple languages to assist international guests' },
+      { name: 'Bellboy Service', description: 'Friendly bellboys to assist with your luggage and other needs' },
+      { name: 'Caretaker', description: 'On-site caretaking services to assist you' },
+      { name: 'Ticket/Tour Assistance', description: 'Help with booking tickets or organizing tours for local attractions' },
     ],
-    image: Telephone
-  },
-  'Transportation Services': {
-    amenities: [
-      { name: 'Airport Shuttle', description: 'Complimentary airport shuttle service' },
-      { name: 'Car Rental', description: 'On-site car rental service' },
-      { name: 'Valet Parking', description: 'Valet parking service available' },
-      { name: 'Bike Rental', description: 'Bicycle rental for exploring the city' },
-    ],
-    image: Telephone
+    image: Telephone,
   },
   'Safety and Security': {
     amenities: [
-      { name: '24/7 Security', description: 'Round-the-clock security personnel' },
-      { name: 'In-room Safe', description: 'Electronic in-room safe for valuables' },
-      { name: 'Fire Safety', description: 'Smoke detectors and sprinkler systems in all areas' },
-      { name: 'Key Card Access', description: 'Secure key card access to rooms and facilities' },
+      { name: 'Fire Extinguishers', description: 'Strategically placed fire extinguishers for emergencies' },
+      { name: 'Security Alarms', description: 'Security alarms installed throughout the hotel for added safety' },
+      { name: 'Smoke Detectors', description: 'Equipped in rooms and common areas for your protection' },
     ],
-    image: Telephone
+    image: Telephone,
   },
   'Common Areas': {
     amenities: [
-      { name: 'Lobby', description: 'Spacious lobby with seating areas' },
-      { name: 'Business Center', description: 'Fully equipped business center' },
-      { name: 'Fitness Center', description: '24-hour fitness center with modern equipment' },
-      { name: 'Swimming Pool', description: 'Indoor heated swimming pool and jacuzzi' },
+      { name: 'Restaurant', description: 'In-house restaurant offering delicious meals' },
+      { name: 'Kids Zone', description: 'A fun and safe play area for children' },
+      { name: 'Living Room', description: 'A comfortable communal space to relax or socialize' },
+      { name: 'Reception', description: '24/7 reception desk for guest services and inquiries' },
+      { name: 'Seating Area', description: 'Cozy seating areas throughout the hotel for casual gatherings' },
+      { name: 'Garden', description: 'A tranquil garden for leisure walks or peaceful moments' },
     ],
-    image: Telephone
+    image: Telephone,
   },
-}
+  'Transportation Services': {
+    amenities: [
+      { name: 'Paid Airport Transfers', description: 'Hassle-free airport pick-up and drop-off services' },
+      { name: 'Paid Shuttle Service', description: 'Available for local travel and sightseeing tours' },
+      { name: 'Transport for Tourist Places', description: 'Paid transport services to local tourist spots and attractions' },
+    ],
+    image: Telephone,
+  },
+};
+
 
 export default function HotelAminities() {
   const [selectedCategory, setSelectedCategory] = useState<AmenityCategory>('Basic Facilities')

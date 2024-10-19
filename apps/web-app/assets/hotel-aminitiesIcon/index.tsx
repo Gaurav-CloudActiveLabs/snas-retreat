@@ -90,29 +90,29 @@ export const wheelchair : React.FC<LogoProps> = ({
     height = 100, // Default height
   }) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 37 37" fill="none">
-        <g clip-path="url(#clip0_413_138)">
-        <mask id="mask0_413_138" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="37" height="37">
-        <path d="M0.513916 0.559761H36.715V36.7608H0.513916V0.559761Z" fill="white"/>
-        </mask>
-        <g mask="url(#mask0_413_138)">
-        <path d="M20.7339 26.1197C20.7339 31.4109 16.4445 35.7003 11.1533 35.7003C5.86208 35.7003 1.57275 31.4109 1.57275 26.1197C1.57275 20.8285 5.86208 16.5392 11.1533 16.5392C16.4445 16.5392 20.7339 20.8285 20.7339 26.1197Z" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        <path d="M11.1534 31.4579C8.2099 31.4579 5.81519 29.0631 5.81519 26.1196C5.81519 23.1762 8.2099 20.7814 11.1534 20.7814C14.097 20.7814 16.4917 23.1762 16.4917 26.1196C16.4917 29.0631 14.097 31.4579 11.1534 31.4579Z" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        <path d="M35.6545 31.4579C35.6545 33.8009 33.7552 35.7003 31.4122 35.7003C29.0693 35.7003 27.1699 33.8009 27.1699 31.4579C27.1699 29.115 29.0693 27.2156 31.4122 27.2156C33.7552 27.2156 35.6545 29.115 35.6545 31.4579Z" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        <path d="M11.1536 16.5392H28.2306C29.9807 16.5392 31.4124 17.9709 31.4124 19.7209V27.2156" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        <path d="M6.91089 17.528V1.62028" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        <path d="M20.1921 22.9379H31.4122" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        <path d="M0.512207 1.62033H7.9716C9.72156 1.62033 11.1533 3.05211 11.1533 4.80207V16.5391" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        <path d="M11.1536 12.2968H27.1701L27.0993 16.5391" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        <path d="M15.3958 16.5391V12.2968" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
-        </g>
-        </g>
-        <defs>
-        <clipPath id="clip0_413_138">
-        <rect width="36.201" height="36.201" fill="white" transform="translate(0.513916 0.559753)"/>
-        </clipPath>
-        </defs>
-        </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 37 37" fill="none">
+<g clip-path="url(#clip0_413_138)">
+<mask id="mask0_413_138"  maskUnits="userSpaceOnUse" x="0" y="0" width="37" height="37">
+<path d="M0.513916 0.559761H36.715V36.7608H0.513916V0.559761Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_413_138)">
+<path d="M20.7339 26.1197C20.7339 31.4109 16.4445 35.7003 11.1533 35.7003C5.86208 35.7003 1.57275 31.4109 1.57275 26.1197C1.57275 20.8285 5.86208 16.5392 11.1533 16.5392C16.4445 16.5392 20.7339 20.8285 20.7339 26.1197Z" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+<path d="M11.1534 31.4579C8.2099 31.4579 5.81519 29.0631 5.81519 26.1196C5.81519 23.1762 8.2099 20.7814 11.1534 20.7814C14.097 20.7814 16.4917 23.1762 16.4917 26.1196C16.4917 29.0631 14.097 31.4579 11.1534 31.4579Z" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+<path d="M35.6545 31.4579C35.6545 33.8009 33.7552 35.7003 31.4122 35.7003C29.0693 35.7003 27.1699 33.8009 27.1699 31.4579C27.1699 29.115 29.0693 27.2156 31.4122 27.2156C33.7552 27.2156 35.6545 29.115 35.6545 31.4579Z" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+<path d="M11.1536 16.5392H28.2306C29.9807 16.5392 31.4124 17.9709 31.4124 19.7209V27.2156" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+<path d="M6.91089 17.528V1.62028" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+<path d="M20.1921 22.9379H31.4122" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+<path d="M0.512207 1.62033H7.9716C9.72156 1.62033 11.1533 3.05211 11.1533 4.80207V16.5391" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+<path d="M11.1536 12.2968H27.1701L27.0993 16.5391" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+<path d="M15.3958 16.5391V12.2968" stroke="#A75F37" stroke-width="2.12116" stroke-miterlimit="10"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_413_138">
+<rect width="36.201" height="36.201" fill="white" transform="translate(0.513916 0.559753)"/>
+</clipPath>
+</defs>
+</svg>
 )}
 
 export const Parking : React.FC<LogoProps> = ({
@@ -271,7 +271,7 @@ export const TransPortTouriest : React.FC<LogoProps> = ({
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 32 32" fill="none">
         <g clip-path="url(#clip0_413_297)">
-        <mask id="mask0_413_297" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+        <mask id="mask0_413_297"  maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
         <path d="M0.132812 0.0610371H31.4676V31.3959H0.132812V0.0610371Z" fill="white"/>
         </mask>
         <g mask="url(#mask0_413_297)">
@@ -342,7 +342,7 @@ export const Music : React.FC<LogoProps> = ({
   }) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 36 37" fill="none">
-        <mask id="mask0_413_336" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="37">
+        <mask id="mask0_413_336"  maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="37">
         <path d="M0 0.866703H35.6885V36.5552H0V0.866703Z" fill="white"/>
         </mask>
         <g mask="url(#mask0_413_336)">
