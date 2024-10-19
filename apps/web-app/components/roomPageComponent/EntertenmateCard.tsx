@@ -17,13 +17,7 @@ export default function EntertainmentCards({ cards }: EntertainmentCardsProps) {
 
   return (
     <div className="mx-auto py-8 bg-[#F7F5F1]">
-      <p className="text-2xl font-semibold mb-2 text-primary text-center text-[14px] text-[#644222]" style={{ color: "#644222" }}>Entertainment</p>
-      <h2 className="text-2xl font-semibold mb-2 text-primary text-center text[46px]">Entertainment:</h2>
-      <p className="text-sm text-[#777777] mb-6 text-center text-[11px]">
-        Proin consectetur non dolor vitae pulvinar. Pellentesque sollicitudin dolor eget neque viverra, sed interdum metus
-        interdum. Cras lobortis pulvinar dolor, sit amet ullamcorper dolor iaculis vel.
-      </p>
-
+      <h2 className="text-2xl font-semibold mb-2 text-primary text-center text[46px]">Entertainment</h2>
       {/* Grid Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-3/4 mx-auto">
         {cards.map((card, index) => (

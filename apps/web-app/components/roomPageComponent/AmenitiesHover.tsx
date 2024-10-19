@@ -16,7 +16,6 @@ export default function AmenitiesHover({ cardData }: AmenitiesHoverProps) {
   return (
     <div className="container mx-auto px-4 py-8 mt-5">
       <h1 className="text-3xl font-bold mb-6 text-[21px] text-[#BF9445]">Amenities</h1>
-      <h2 className="text-xl font-semibold mb-4 text-[43px]">Figma ipsum component variant</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10 text-center">
         {cardData.map((card) => (
           <Card key={card.id} {...card} />

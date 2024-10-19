@@ -1,8 +1,6 @@
 "use client";
-import { useState } from "react";
 import RoomBg1 from "../../assets/Room-bg1.png";
 import Image from "next/image";
-import Header from "@/components/pageComponents/header";
 import AmenitiesHover from "@/components/roomPageComponent/AmenitiesHover";
 import EntertainmentCards from "@/components/roomPageComponent/EntertenmateCard";
 import BathroomComponent from "@/components/roomPageComponent/BathroomComponent";
@@ -11,6 +9,10 @@ import RoomSizeDeluxe from "@/components/roomPageComponent/RoomSizeDeluxe";
 import { WaterBottel, Towel, Tea, Sweater, Slipper, Razor, Laundry, Hanger, HairDryer, DentalCare } from '@/assets/room-aminitiesIcon';
 import Television from "../../assets/Television.png";
 import Telephone from "../../assets/Telephone.png";
+import RoomHeader from "@/components/roomPageComponent/roomHeader";
+import TestimonialSection from "@/components/pageComponents/testimonial";
+import Appointment from "@/components/pageComponents/Appointment";
+import Location from "@/components/pageComponents/Location";
 
 interface CardData {
   id: number;
@@ -49,7 +51,7 @@ const bathroomDescription = "Equipped with a modern shower and complimentary bas
 export default function DeluxeRoom() {
   return (
     <div className="min-h-screen">
-      <Header />
+      <RoomHeader />
       {/* Static Image Section */}
       <section className="h-72 md:h-screen relative">
         <Image
@@ -60,10 +62,21 @@ export default function DeluxeRoom() {
           quality={100}
         />
       </section>
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center bg-black bg-opacity-40 px-2 pt-20 md:pt-10">
+          <h1 className="text-2xl md:text-5xl font-bold mb-2 md:mb-6 pt-10">
+            Enjoy A Luxury Experience
+          </h1>
+          <p className="max-w-2xl text-[12px] md:text-lg mb-4">
+          The Deluxe Room at our hotel is designed for comfort and convenience, offering anelegant space for relaxation after a day of exploring.
+          </p>
+        </div>
       <RoomSizeDeluxe />
       <AmenitiesHover cardData={cardData} /> 
       <EntertainmentCards cards={entertainmentCards} />
       <BathroomComponent description={bathroomDescription} />
+      <Location />
+      <TestimonialSection />
+      <Appointment />
       <Footer />
     </div>
   );
