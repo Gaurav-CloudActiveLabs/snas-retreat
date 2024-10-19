@@ -3063,3 +3063,64 @@ export const LogoRectangleWithoutBg: React.FC<LogoProps> = ({
 </svg>
   );
 };
+
+export const WifiIcon: React.FC<LogoProps> = ({
+  width = 100, // Default width
+  height = 100, // Default height
+}) => {
+  return (
+    <svg width={width} height={height} viewBox="0 0 53 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.966797" y="0.114197" width="51.0922" height="51.0922" rx="4.25768" fill="#BF9445" fill-opacity="0.2"/>
+<path d="M15.3242 26.2666C18.5494 23.5803 22.614 22.1093 26.8113 22.1093C31.0086 22.1093 35.0732 23.5803 38.2984 26.2666" stroke="url(#paint0_linear_316_73)" stroke-width="3.72547" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.48242 20.4741C14.2509 16.2708 20.3891 13.9516 26.7457 13.9516C33.1022 13.9516 39.2404 16.2708 44.0089 20.4741" stroke="url(#paint1_linear_316_73)" stroke-width="3.72547" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21.084 32.0755C22.7405 30.8986 24.7221 30.2663 26.7541 30.2663C28.7861 30.2663 30.7677 30.8986 32.4242 32.0755" stroke="url(#paint2_linear_316_73)" stroke-width="3.72547" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M26.7461 38.4226H26.7684" stroke="url(#paint3_linear_316_73)" stroke-width="3.72547" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<linearGradient id="paint0_linear_316_73" x1="17.424" y1="22.4669" x2="18.5226" y2="28.907" gradientUnits="userSpaceOnUse">
+<stop stop-color="#BF9445"/>
+<stop offset="1" stop-color="#A75F37"/>
+</linearGradient>
+<linearGradient id="paint1_linear_316_73" x1="12.6381" y1="14.5127" x2="14.4328" y2="24.591" gradientUnits="userSpaceOnUse">
+<stop stop-color="#BF9445"/>
+<stop offset="1" stop-color="#A75F37"/>
+</linearGradient>
+<linearGradient id="paint2_linear_316_73" x1="22.1205" y1="30.422" x2="22.5446" y2="33.2422" gradientUnits="userSpaceOnUse">
+<stop stop-color="#BF9445"/>
+<stop offset="1" stop-color="#A75F37"/>
+</linearGradient>
+<linearGradient id="paint3_linear_316_73" x1="26.7481" y1="38.5087" x2="26.7858" y2="38.5095" gradientUnits="userSpaceOnUse">
+<stop stop-color="#BF9445"/>
+<stop offset="1" stop-color="#A75F37"/>
+</linearGradient>
+</defs>
+</svg>
+
+  );
+};
+
+export const RoomVector1 : React.FC<LogoProps> = ({
+  width = 100, // Default width
+  height = 100, // Default height
+}) => {
+  return (
+
+<svg width={width} height={height} viewBox="0 0 55 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.242185 2.57561L0.0541675 22.6459C0.0409756 24.0543 1.08741 25.1205 2.49585 25.1337L52.1433 25.5988C53.5518 25.612 54.618 24.5656 54.6312 23.1571L54.8192 3.08689C54.8324 1.67845 53.786 0.612222 52.3775 0.599028L44.9832 0.529758L44.8678 12.8536C44.8546 14.262 43.7884 15.3085 42.3799 15.2953C40.9715 15.2821 39.925 14.2159 39.9382 12.8074L40.0537 0.483577L35.1241 0.437401L35.0549 7.83171C35.0417 9.24014 33.9755 10.2866 32.567 10.2734C31.1586 10.2602 30.1121 9.19397 30.1253 7.78553L30.1946 0.39122L25.2651 0.34504L25.1496 12.6689C25.1364 14.0773 24.0702 15.1238 22.6618 15.1106C21.2533 15.0974 20.2069 14.0311 20.2201 12.6227L20.3355 0.298861L15.406 0.252681L15.3367 7.64699C15.3235 9.05543 14.2573 10.1019 12.8489 10.0887C11.4404 10.0755 10.394 9.00925 10.4072 7.60081L10.4765 0.206501L3.08216 0.137233C1.3216 0.120739 0.0776753 1.34158 0.242185 2.57561Z" fill="#A75F37"/>
+</svg>
+
+  );
+};
+
+export const RoomVector2 : React.FC<LogoProps> = ({
+  width = 100, // Default width
+  height = 100, // Default height
+}) => {
+  return (
+
+<svg width={width} height={height} viewBox="0 0 60 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.39828 22.3149H57.396C57.8975 22.3149 58.3315 22.4981 58.698 22.8646C59.0645 23.2311 59.2477 23.6651 59.2477 24.1666V37.129H51.8407V29.7219H7.39828V37.129H-0.00878906V1.94544C-0.00878906 1.44392 0.174459 1.00991 0.540954 0.643417C0.90745 0.276921 1.34146 0.0936737 1.84298 0.0936737H5.54651C6.04803 0.0936737 6.48204 0.276921 6.84853 0.643417C7.21503 1.00991 7.39828 1.44392 7.39828 1.94544V22.3149ZM24.0642 13.056C24.0642 11.0114 23.3408 9.2657 21.8941 7.81901C20.4474 6.37232 18.7018 5.64897 16.6571 5.64897C14.6125 5.64897 12.8668 6.37232 11.4201 7.81901C9.97339 9.2657 9.25004 11.0114 9.25004 13.056C9.25004 15.1007 9.97339 16.8464 11.4201 18.2931C12.8668 19.7398 14.6125 20.4631 16.6571 20.4631C18.7018 20.4631 20.4474 19.7398 21.8941 18.2931C23.3408 16.8464 24.0642 15.1007 24.0642 13.056ZM59.2477 20.4631V18.6113C59.2477 15.5443 58.1627 12.9258 55.9927 10.7558C53.8226 8.58576 51.2041 7.50074 48.1371 7.50074H27.7677C27.2662 7.50074 26.8322 7.68399 26.4657 8.05048C26.0992 8.41698 25.9159 8.85099 25.9159 9.35251V20.4631H59.2477Z" fill="#A75F37"/>
+</svg>
+
+
+  );
+};

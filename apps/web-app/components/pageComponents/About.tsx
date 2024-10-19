@@ -1,8 +1,14 @@
 import { Button } from "../ui/button";
 import AboutImg from "../../assets/about.png";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function About() {
+  const router = useRouter();
+
+  const handleNavigation = () => {
+    router.push("/hotel-page");
+  };
   return (
     <div className="lg:px-28 px-10 mx-auto py-12 fon">
 
@@ -35,7 +41,7 @@ export default function About() {
             to come.
           </p>
           {/* Button */}
-          <Button className="h-12 md:h-14 px-8 bg-[#654222] text-white rounded-none mt-6 ">
+          <Button onClick={handleNavigation} className="h-12 md:h-14 px-8 bg-[#654222] text-white rounded-none mt-6 ">
             LEARN MORE
           </Button>
         </div>
