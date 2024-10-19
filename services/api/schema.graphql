@@ -1270,13 +1270,18 @@ type BookingPrimaryUser {
   id: ID!
   name: String
   age: Int
-  primaryUserGender: String
+  gender: String
   verificationIdType: String
   verificationId: String
   bookingType: String
-  address: String
+  countries: Country
+  state: String
+  indianState: State
+  streetAddress: String
+  addressLine2: String
+  city: String
+  postalCode: String
   companyName: String
-  companyAddress: String
   gstNumber: String
   booking: Booking
   updatedAt: DateTime
@@ -1296,13 +1301,18 @@ input BookingPrimaryUserWhereInput {
   id: IDFilter
   name: StringFilter
   age: IntNullableFilter
-  primaryUserGender: StringNullableFilter
+  gender: StringNullableFilter
   verificationIdType: StringNullableFilter
   verificationId: StringFilter
   bookingType: StringNullableFilter
-  address: StringFilter
+  countries: CountryWhereInput
+  state: StringFilter
+  indianState: StateWhereInput
+  streetAddress: StringFilter
+  addressLine2: StringFilter
+  city: StringFilter
+  postalCode: StringFilter
   companyName: StringFilter
-  companyAddress: StringFilter
   gstNumber: StringFilter
   booking: BookingWhereInput
   updatedAt: DateTimeNullableFilter
@@ -1315,13 +1325,16 @@ input BookingPrimaryUserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   age: OrderDirection
-  primaryUserGender: OrderDirection
+  gender: OrderDirection
   verificationIdType: OrderDirection
   verificationId: OrderDirection
   bookingType: OrderDirection
-  address: OrderDirection
+  state: OrderDirection
+  streetAddress: OrderDirection
+  addressLine2: OrderDirection
+  city: OrderDirection
+  postalCode: OrderDirection
   companyName: OrderDirection
-  companyAddress: OrderDirection
   gstNumber: OrderDirection
   updatedAt: OrderDirection
   createdAt: OrderDirection
@@ -1330,15 +1343,32 @@ input BookingPrimaryUserOrderByInput {
 input BookingPrimaryUserUpdateInput {
   name: String
   age: Int
-  primaryUserGender: String
+  gender: String
   verificationIdType: String
   verificationId: String
   bookingType: String
-  address: String
+  countries: CountryRelateToOneForUpdateInput
+  state: String
+  indianState: StateRelateToOneForUpdateInput
+  streetAddress: String
+  addressLine2: String
+  city: String
+  postalCode: String
   companyName: String
-  companyAddress: String
   gstNumber: String
   booking: BookingRelateToOneForUpdateInput
+}
+
+input CountryRelateToOneForUpdateInput {
+  create: CountryCreateInput
+  connect: CountryWhereUniqueInput
+  disconnect: Boolean
+}
+
+input StateRelateToOneForUpdateInput {
+  create: StateCreateInput
+  connect: StateWhereUniqueInput
+  disconnect: Boolean
 }
 
 input BookingPrimaryUserUpdateArgs {
@@ -1349,15 +1379,30 @@ input BookingPrimaryUserUpdateArgs {
 input BookingPrimaryUserCreateInput {
   name: String
   age: Int
-  primaryUserGender: String
+  gender: String
   verificationIdType: String
   verificationId: String
   bookingType: String
-  address: String
+  countries: CountryRelateToOneForCreateInput
+  state: String
+  indianState: StateRelateToOneForCreateInput
+  streetAddress: String
+  addressLine2: String
+  city: String
+  postalCode: String
   companyName: String
-  companyAddress: String
   gstNumber: String
   booking: BookingRelateToOneForCreateInput
+}
+
+input CountryRelateToOneForCreateInput {
+  create: CountryCreateInput
+  connect: CountryWhereUniqueInput
+}
+
+input StateRelateToOneForCreateInput {
+  create: StateCreateInput
+  connect: StateWhereUniqueInput
 }
 
 type Otp {
@@ -1407,6 +1452,106 @@ input OtpUpdateArgs {
 input OtpCreateInput {
   otp: String
   user: UserRelateToOneForCreateInput
+}
+
+type State {
+  id: ID!
+  name: String
+  stateCode: Int
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+input StateWhereUniqueInput {
+  id: ID
+}
+
+input StateWhereInput {
+  AND: [StateWhereInput!]
+  OR: [StateWhereInput!]
+  NOT: [StateWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  stateCode: IntNullableFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input StateOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  stateCode: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input StateUpdateInput {
+  name: String
+  stateCode: Int
+}
+
+input StateUpdateArgs {
+  where: StateWhereUniqueInput!
+  data: StateUpdateInput!
+}
+
+input StateCreateInput {
+  name: String
+  stateCode: Int
+}
+
+type Country {
+  id: ID!
+  name: String
+  code: String
+  updatedAt: DateTime
+  createdAt: DateTime
+  updatedBy: User
+  createdBy: User
+}
+
+input CountryWhereUniqueInput {
+  id: ID
+}
+
+input CountryWhereInput {
+  AND: [CountryWhereInput!]
+  OR: [CountryWhereInput!]
+  NOT: [CountryWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  code: StringFilter
+  updatedAt: DateTimeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedBy: UserWhereInput
+  createdBy: UserWhereInput
+}
+
+input CountryOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  code: OrderDirection
+  updatedAt: OrderDirection
+  createdAt: OrderDirection
+}
+
+input CountryUpdateInput {
+  name: String
+  code: String
+}
+
+input CountryUpdateArgs {
+  where: CountryWhereUniqueInput!
+  data: CountryUpdateInput!
+}
+
+input CountryCreateInput {
+  name: String
+  code: String
 }
 
 """
@@ -1511,6 +1656,18 @@ type Mutation {
   updateOtps(data: [OtpUpdateArgs!]!): [Otp]
   deleteOtp(where: OtpWhereUniqueInput!): Otp
   deleteOtps(where: [OtpWhereUniqueInput!]!): [Otp]
+  createState(data: StateCreateInput!): State
+  createStates(data: [StateCreateInput!]!): [State]
+  updateState(where: StateWhereUniqueInput!, data: StateUpdateInput!): State
+  updateStates(data: [StateUpdateArgs!]!): [State]
+  deleteState(where: StateWhereUniqueInput!): State
+  deleteStates(where: [StateWhereUniqueInput!]!): [State]
+  createCountry(data: CountryCreateInput!): Country
+  createCountries(data: [CountryCreateInput!]!): [Country]
+  updateCountry(where: CountryWhereUniqueInput!, data: CountryUpdateInput!): Country
+  updateCountries(data: [CountryUpdateArgs!]!): [Country]
+  deleteCountry(where: CountryWhereUniqueInput!): Country
+  deleteCountries(where: [CountryWhereUniqueInput!]!): [Country]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -1587,6 +1744,12 @@ type Query {
   otp(where: OtpWhereUniqueInput!): Otp
   otps(where: OtpWhereInput! = {}, orderBy: [OtpOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: OtpWhereUniqueInput): [Otp!]
   otpsCount(where: OtpWhereInput! = {}): Int
+  state(where: StateWhereUniqueInput!): State
+  states(where: StateWhereInput! = {}, orderBy: [StateOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: StateWhereUniqueInput): [State!]
+  statesCount(where: StateWhereInput! = {}): Int
+  country(where: CountryWhereUniqueInput!): Country
+  countries(where: CountryWhereInput! = {}, orderBy: [CountryOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CountryWhereUniqueInput): [Country!]
+  countriesCount(where: CountryWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

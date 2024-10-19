@@ -14,22 +14,26 @@ import { Slider } from "./slider";
 import { User } from "./user";
 import { Otp } from "./otp";
 import { RoomType } from "./roomType";
+import { State } from "./state";
+import { Country } from "./country";
 
 export const lists = {
- User,
- Room,
- RoomType,
- Booking,
- Payment,
- Review,
- Slider,
- RoomImage,
- Faq,
- Invoice,
- BreakfastPrice,
- DinnerPrice,
- ReportList,
- Coupon,
- BookingPrimaryUser,
- Otp
+  User,
+  Room,
+  RoomType,
+  Booking,
+  Payment,
+  Review,
+  Slider,
+  RoomImage,
+  Faq,
+  Invoice,
+  BreakfastPrice,
+  DinnerPrice,
+  ReportList,
+  Coupon,
+  BookingPrimaryUser,
+  Otp,
+  State,
+  Country,
 };

@@ -79,46 +79,7 @@ export default function UserForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white relative overflow-hidden">
       {/* Add Mountain Background Image with animation to the left side */}
-      <motion.div
-        className="absolute left-0 top-0 w-1/4 h-full z-0"
-        animate={{ y: [0, -10, 0] }} // Animation for shaking effect
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          repeatType: "reverse",
-          ease: "easeInOut",
-        }}
-      >
-        <Image
-          src={MountainBackground}
-          alt="Mountain Background"
-          layout="fill"
-          objectFit="contain"
-          className="opacity-20"
-          style={{ objectPosition: "top left" }}
-        />
-      </motion.div>
-
-      {/* Add Mountain Background Image with animation to the right side */}
-      <motion.div
-        className="absolute right-0 top-0 w-1/4 h-full z-0"
-        animate={{ y: [0, 10, 0] }} // Animation for shaking effect
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          repeatType: "reverse",
-          ease: "easeInOut",
-        }}
-      >
-        <Image
-          src={MountainBackground}
-          alt="Mountain Background"
-          layout="fill"
-          objectFit="contain"
-          className="opacity-20"
-          style={{ objectPosition: "bottom right" }}
-        />
-      </motion.div>
+   
 
       {/* Static Sign Up Form */}
       <div className="min-h-screen flex items-center justify-center bg-white relative overflow-hidden m-6">

@@ -117,7 +117,7 @@ export async function updateBookingPayment(
     const isVerifiedSignature = signature && expectedSignature === signature;
     const status: any = isVerifiedSignature ? "success" : "failure";
     const paymentStatus = isVerifiedSignature ? "Paid" : "Unpaid";
-    const isAvailable: any = isVerifiedSignature ? false : false;
+    const isAvailable: any = isVerifiedSignature ? false : true;
 
     // Update booking status
     const updatedBooking = await sudo.query.Booking.updateOne({
@@ -129,8 +129,6 @@ export async function updateBookingPayment(
       query: "id",
     });
 
-    // Extract room IDs from the booking
-    console.log("roomIds", roomIds);
     // Update the availability of the extracted rooms
     if (roomIds.length > 0) {
       await Promise.all(

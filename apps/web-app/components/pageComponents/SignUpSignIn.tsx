@@ -4,34 +4,17 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Mail, ArrowLeft, X } from "lucide-react";
+import { ArrowRight, Mail, ArrowLeft } from "lucide-react";
 import { LogoRectangleWithoutBg } from "@/assets/svg";
 import { VERIFY_OTP, WEB_LOGIN } from "@/gql/loginQuery";
 import { useMutation } from "@apollo/client";
 import { setCookie } from "cookies-next";
 import { GlobalInfo } from "@/context/provider";
 import { useRouter } from "next/navigation";
+import UserForm from "./UserForm"; // Import UserForm component
+import Modal from "../modal";
 
-// Simple Modal component
-const Modal = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-        >
-          <X size={24} />
-        </button>
-        {children}
-      </div>
-    </div>
-  );
-};
-
-export default function SignUp() {
+export default function SignUpSignIn({ title, isOpen, onClose }: any) {
   const [email, setEmail] = useState("");
   const [showOTP, setShowOTP] = useState(false);
   const [otp, setOTP] = useState(["", "", "", "", "", ""]);
@@ -40,7 +23,7 @@ export default function SignUp() {
   const [userId, setUserId] = useState();
   const { setUserState } = useContext(GlobalInfo);
   const router = useRouter();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); // For UserForm modal
 
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -140,10 +123,11 @@ export default function SignUp() {
         setCookie("token", data?.verifyOtp.token);
         setUserState();
         if (data?.verifyOtp?.user?.name === "New User") {
-          router.push("/userForm");
+          setModalVisible(true); // Open the UserForm modal
+          onClose(); 
         } else {
           setOTP(["", "", "", "", "", ""]);
-          closeModal();
+          onClose(); // Close the sign-in modal
         }
       } else {
         alert("Request not success, Try again later");
@@ -154,18 +138,9 @@ export default function SignUp() {
     },
   });
 
-  const openModal = () => setModalVisible(true);
-  const closeModal = () => setModalVisible(false);
-
   return (
     <div>
-      <Button
-        onClick={openModal}
-        className="bg-[#C19A6B] text-white py-4 px-6 hover:bg-[#a8835b] text-sm font-normal transition duration-300 rounded-none"
-      >
-        Sign Up/Sign In
-      </Button>
-      <Modal isOpen={modalVisible} onClose={closeModal}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <div className="text-center">
           <div className="mx-auto bg-[#654222] flex items-center justify-center mb-4 p-4">
             <LogoRectangleWithoutBg
@@ -173,8 +148,8 @@ export default function SignUp() {
               height={logoSize?.height}
             />
           </div>
-          <h1 className="text-3xl font-bold text-black">Sign Up</h1>
-          <p className="mt-2 text-gray-600">Join our community today</p>
+          <h1 className="text-3xl font-bold text-black"> {title}</h1>
+          {title === 'Sign Up' && <p className="mt-2 text-gray-600">Join our community today</p>}
         </div>
         <form onSubmit={handleSubmit} className="space-y-6 mt-6">
           <div className="space-y-2">
@@ -242,11 +217,12 @@ export default function SignUp() {
               className="w-full bg-[#654222] hover:bg-[#7A5D3A] text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
               onClick={verify}
             >
-              Verify & Sign Up
+              Verify & { title }
             </Button>
           )}
         </form>
       </Modal>
+      <UserForm isOpen={modalVisible} onClose={() => setModalVisible(false)} /> {/* UserForm modal */}
     </div>
   );
 }

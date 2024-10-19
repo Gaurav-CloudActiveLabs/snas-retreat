@@ -231,7 +231,7 @@ export default function RoomList({
                         <p className="text-sm text-gray-600 mt-1">
                           Reviews:{" "}
                           <span className="font-bold text-[#644222]">
-                            {room.reviews}
+                            {room.reviews||0}
                           </span>
                           <span className="text-gray-500 ml-1">
                             ({room.reviewCount} reviews)
@@ -260,7 +260,7 @@ export default function RoomList({
                               );
                             }}
                             disabled={isButtonDisabled}
-                            className={`bg-[#D5C148] hover:bg-[#bba834] text-white py-2 px-4 rounded-md font-semibold text-sm ${
+                            className={`bg-[#C19A6B] hover:bg-[#a8835b] text-white py-2 px-4 rounded-none font-semibold text-sm ${
                               isButtonDisabled
                                 ? "opacity-50 cursor-not-allowed"
                                 : ""

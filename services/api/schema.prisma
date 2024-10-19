@@ -61,6 +61,10 @@ model User {
   from_BookingPrimaryUser_createdBy BookingPrimaryUser[] @relation("BookingPrimaryUser_createdBy")
   from_Otp_updatedBy                Otp[]                @relation("Otp_updatedBy")
   from_Otp_createdBy                Otp[]                @relation("Otp_createdBy")
+  from_State_updatedBy              State[]              @relation("State_updatedBy")
+  from_State_createdBy              State[]              @relation("State_createdBy")
+  from_Country_updatedBy            Country[]            @relation("Country_updatedBy")
+  from_Country_createdBy            Country[]            @relation("Country_createdBy")
 
   @@index([updatedAt])
   @@index([createdAt])
@@ -366,13 +370,20 @@ model BookingPrimaryUser {
   id                 String    @id @default(cuid())
   name               String    @default("")
   age                Int?
-  primaryUserGender  String?
+  gender             String?
   verificationIdType String?
   verificationId     String    @default("")
   bookingType        String?
-  address            String    @default("")
+  countries          Country?  @relation("BookingPrimaryUser_countries", fields: [countriesId], references: [id])
+  countriesId        String?   @map("countries")
+  state              String    @default("")
+  indianState        State?    @relation("BookingPrimaryUser_indianState", fields: [indianStateId], references: [id])
+  indianStateId      String?   @map("indianState")
+  streetAddress      String    @default("")
+  addressLine2       String    @default("")
+  city               String    @default("")
+  postalCode         String    @default("")
   companyName        String    @default("")
-  companyAddress     String    @default("")
   gstNumber          String    @default("")
   booking            Booking?  @relation("Booking_primaryUser")
   updatedAt          DateTime? @updatedAt
@@ -382,6 +393,8 @@ model BookingPrimaryUser {
   createdBy          User?     @relation("BookingPrimaryUser_createdBy", fields: [createdById], references: [id])
   createdById        String?   @map("createdBy")
 
+  @@index([countriesId])
+  @@index([indianStateId])
   @@index([updatedAt])
   @@index([createdAt])
   @@index([updatedById])
@@ -401,6 +414,42 @@ model Otp {
   createdById String?   @map("createdBy")
 
   @@index([userId])
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
+}
+
+model State {
+  id                                  String               @id @default(cuid())
+  name                                String               @default("")
+  stateCode                           Int?
+  updatedAt                           DateTime?            @updatedAt
+  createdAt                           DateTime?            @default(now())
+  updatedBy                           User?                @relation("State_updatedBy", fields: [updatedById], references: [id])
+  updatedById                         String?              @map("updatedBy")
+  createdBy                           User?                @relation("State_createdBy", fields: [createdById], references: [id])
+  createdById                         String?              @map("createdBy")
+  from_BookingPrimaryUser_indianState BookingPrimaryUser[] @relation("BookingPrimaryUser_indianState")
+
+  @@index([updatedAt])
+  @@index([createdAt])
+  @@index([updatedById])
+  @@index([createdById])
+}
+
+model Country {
+  id                                String               @id @default(cuid())
+  name                              String               @default("")
+  code                              String               @default("")
+  updatedAt                         DateTime?            @updatedAt
+  createdAt                         DateTime?            @default(now())
+  updatedBy                         User?                @relation("Country_updatedBy", fields: [updatedById], references: [id])
+  updatedById                       String?              @map("updatedBy")
+  createdBy                         User?                @relation("Country_createdBy", fields: [createdById], references: [id])
+  createdById                       String?              @map("createdBy")
+  from_BookingPrimaryUser_countries BookingPrimaryUser[] @relation("BookingPrimaryUser_countries")
+
   @@index([updatedAt])
   @@index([createdAt])
   @@index([updatedById])

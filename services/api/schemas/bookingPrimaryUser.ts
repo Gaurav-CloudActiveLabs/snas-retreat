@@ -1,4 +1,5 @@
 // import { isAdmin, isSignedIn } from "../utils/access";
+import { countries } from "unique-names-generator";
 import { list } from "./lib";
 import {
   text,
@@ -21,7 +22,7 @@ export const BookingPrimaryUser = list({
   fields: {
     name: text(),
     age: integer(),
-    primaryUserGender: select({
+    gender: select({
       options: [
         { label: "Male", value: "male" },
         { label: "Female", value: "female" },
@@ -44,9 +45,30 @@ export const BookingPrimaryUser = list({
         { label: "CORPORATE", value: "corporate" },
       ],
     }),
-    address:text(),
+    countries:relationship({
+      ref: "Country",
+      ui: {
+        labelField: 'name',
+        createView: { fieldMode: "edit" },
+        listView: { fieldMode: "read" },
+        itemView: { fieldMode: "edit" },
+      },
+    }),
+    state:text(),
+    indianState: relationship({
+      ref: "State",
+      ui: {
+        labelField: 'name',
+        createView: { fieldMode: "edit" },
+        listView: { fieldMode: "read" },
+        itemView: { fieldMode: "edit" },
+      },
+    }),
+    streetAddress:text(),
+    addressLine2:text(),
+    city:text(),
+    postalCode:text(),
     companyName: text(),
-    companyAddress: text(),
     gstNumber: text(),
     booking: relationship({
       ref: "Booking.primaryUser",

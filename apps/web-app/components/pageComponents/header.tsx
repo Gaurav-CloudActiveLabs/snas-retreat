@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import {
   Phone,
@@ -8,15 +8,29 @@ import {
   CornerRightUp,
   Mail,
   Linkedin,
+  User,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { LogoRectangleWithoutBg } from "@/assets/svg";
-import SignUp from "./SignUp";
+import SignUpSignIn from "./SignUpSignIn";
+import { GlobalInfo } from "@/context/provider";
 
 export default function Header() {
+  const { userDetails, signOut } = useContext(GlobalInfo); // Assuming logout is a method in context
+  const userId = userDetails?.user?.id;
+  const userName = userDetails?.user?.name;
+  const userEmail = userDetails?.user?.email;
   const [isSticky, setIsSticky] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [logoSize, setLogoSize] = useState({ width: 0, height: 0 });
+  const [isLoginCardOpen, setIsLoginCardOpen] = useState(false); // for login card toggle
+  const [modalVisible, setModalVisible] = useState(false);
+  const [title, setTitle] = useState("");
+
+  function openSignUpSignInModal(title: any) {
+    setTitle(title);
+    setModalVisible(true);
+  }
 
   useEffect(() => {
     const updateLogoSize = () => {
@@ -45,6 +59,10 @@ export default function Header() {
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleLoginCard = () => {
+    setIsLoginCardOpen(!isLoginCardOpen); // toggle login card visibility
   };
 
   const scrollToSection = (id: string) => {
@@ -108,7 +126,7 @@ export default function Header() {
             : "relative top-0 bg-[#09090975] z-50"
         }`}
       >
-        <div className="lg:px-28 px-2 mx-auto ">
+        <div className="lg:px-28 px-2 mx-auto">
           <div className="flex justify-between items-center">
             <Link href="/" className="flex items-center lg:-ml-12">
               <LogoRectangleWithoutBg
@@ -124,7 +142,6 @@ export default function Header() {
                   "Rooms & Suites",
                   "Features",
                   "Location",
-                  // "Gallery",
                   "Booking",
                   "Contact",
                 ].map((item) => (
@@ -140,11 +157,52 @@ export default function Header() {
               </ul>
             </nav>
 
-            <div className="hidden lg:block">
-             <SignUp/>
-            </div>
+            {/* User section */}
+            {userId ? (
+              <div className="relative">
+                <User
+                  size={40}
+                  className="cursor-pointer text-white"
+                  onClick={toggleLoginCard} // Toggle card on click
+                />
+                {isLoginCardOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-4 z-50">
+                    <p className="text-gray-800">{userName}</p>
+                    <p className="text-gray-500">{userEmail}</p>
+                    <Button
+                      className="mt-3 bg-red-500 text-white w-full"
+                      onClick={signOut} // Call logout function
+                    >
+                      Sign out
+                    </Button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="hidden lg:flex space-x-2">
+                  {" "}
+                  {/* Changed to lg:flex and added space-x-2 */}
+                  <Button
+                    onClick={() => openSignUpSignInModal("Sign Up")}
+                    className="bg-primary text-primary-foreground shadow hover:bg-primary/90  py-4 px-6 text-sm font-normal transition duration-300 rounded-none"
+                  >
+                    Sign Up
+                  </Button>
+                  <Button
+                    onClick={() => openSignUpSignInModal("Sign In")}
+                    className="bg-primary text-primary-foreground shadow hover:bg-primary/90  py-4 px-6 text-sm font-normal transition duration-300 rounded-none"
+                  >
+                    Sign In
+                  </Button>
+                </div>
+              </>
+            )}
 
-            <Button onClick={toggleSidebar} className="mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none">
+            <Button
+              onClick={toggleSidebar}
+              className="mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -179,7 +237,10 @@ export default function Header() {
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          <Button onClick={toggleSidebar} className={`mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none`}>
+          <Button
+            onClick={toggleSidebar}
+            className={`mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -204,7 +265,6 @@ export default function Header() {
                 "Rooms & Suites",
                 "Features",
                 "Location",
-                "Gallery",
                 "Booking",
                 "Contact",
               ].map((item) => (
@@ -221,14 +281,11 @@ export default function Header() {
           </nav>
         </div>
       </div>
-      <div className="fixed bottom-4 right-4 z-50 ">
-        <button
-          className={`bg-[#654224] text-white p-3 rounded-full shadow-lg hover:bg-primary-dark transition-colors`}
-          onClick={() => scrollToSection("Home")}
-        >
-          <CornerRightUp className="w-6 h-6 z-50 bg-[#654222]" />
-        </button>
-      </div>
+      <SignUpSignIn
+        title={title}
+        isOpen={modalVisible}
+        onClose={() => setModalVisible(false)} // Close function
+      />
     </div>
   );
 }
