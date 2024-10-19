@@ -9,6 +9,10 @@ import HeroImage from "../../assets/SLIDER2.png";
 import HotelAminities from "@/components/hotelPageComponent/HotelAminities";
 import { Music, Garden,Cctv,LuggageAssistance,TransPortTouriest,Touriest,Doctor,PaidAirPortTransfer,ShuttleService,TV,Parking,wheelchair,NewsPaper,Lowndery,PowerBackup,HotelWifi} from "@/assets/hotel-aminitiesIcon/index";
 import HotelAbout from "@/components/hotelPageComponent/HoteAbout";
+import TestimonialSection from "@/components/pageComponents/testimonial";
+import Appointment from "@/components/pageComponents/Appointment";
+import Location from "@/components/pageComponents/Location";
+import RoomHeader from "@/components/roomPageComponent/roomHeader";
 
 
 export default function HotelPage() {
@@ -34,7 +38,7 @@ export default function HotelPage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
+      <RoomHeader/>
       <section className="h-72 md:h-screen relative">
         <Image
           src={HeroImage}
@@ -45,8 +49,11 @@ export default function HotelPage() {
         />   
       </section>
       <HotelAbout/>
-      <AmenitiesHover cardData={hotelAmenitiesData}/>
+      <AmenitiesHover title="Amenities" cardData={hotelAmenitiesData}/>
       <HotelAminities/>
+      <Location />
+      <TestimonialSection />
+      <Appointment />
       <Footer />
     </div>
   );

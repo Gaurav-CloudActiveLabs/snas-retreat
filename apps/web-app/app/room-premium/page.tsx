@@ -72,7 +72,7 @@ export default function PremiumRoom() {
           The Premium Room offers an elevated level of luxury and comfort, ideal for guests whoseek a more spacious and indulgent stay.          </p>
         </div>
       <RoomSizePremium/>
-      <AmenitiesHover cardData={premiumCardData} />
+      <AmenitiesHover title="Amenities" cardData={premiumCardData} />
       <EntertainmentCards cards={entertainmentCards} />
       <BathroomComponent description={bathroomDescription} />
       <Location />

@@ -10,12 +10,13 @@ interface CardData {
 
 interface AmenitiesHoverProps {
   cardData: CardData[];
+  title:string
 }
 
-export default function AmenitiesHover({ cardData }: AmenitiesHoverProps) {
+export default function AmenitiesHover({ cardData ,title}: AmenitiesHoverProps) {
   return (
     <div className="container mx-auto px-4 py-8 mt-5">
-      <h1 className="text-3xl font-bold mb-6 text-[21px] text-[#BF9445]">Amenities</h1>
+      <h1 className="text-3xl font-bold mb-6 text-[21px] text-[#BF9445] text-center">{title}</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10 text-center">
         {cardData.map((card) => (
           <Card key={card.id} {...card} />

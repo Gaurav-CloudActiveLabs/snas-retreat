@@ -12,31 +12,31 @@ import TestimonialSection from "@/components/pageComponents/testimonial";
 export default function Home() {
   return (
     <div>
-      <div id="Home">
+      <div id="home">
         <Navbar />
       </div>
-      <div id="About Us">
+      <div id="about-us">
         <About />
       </div>
-      <div id="Features">
+      <div id="features">
         <Explore />
       </div>
-      <div id="Rooms & Suites">
+      <div id="rooms-suites">
         <RoomShowCase />
       </div>
-      <div id="Location">
+      <div id="location">
         <Location />
       </div>
       <div id="testimonial">
         <TestimonialSection />
       </div>
-      <div id="Booking">
+      <div id="booking">
         <Appointment />
       </div>
       {/* <div id="Gallery">
         <VideoTour />
       </div> */}
-      <div id="Contact">
+      <div id="contact">
         <Footer />
       </div>
     </div>

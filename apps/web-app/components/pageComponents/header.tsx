@@ -46,6 +46,17 @@ export default function Header() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const menuItems = [
+    { id: "home", label: "Home" },
+    { id: "about-us", label: "About Us" },
+    { id: "rooms-suites", label: "Rooms & Suites" },
+    { id: "features", label: "Features" },
+    { id: "location", label: "Location" },
+    // { id: "gallery", label: "Gallery" },  // If needed in the future
+    { id: "booking", label: "Booking" },
+    { id: "contact", label: "Contact" },
+  ];
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -117,22 +128,13 @@ export default function Header() {
             </Link>
             <nav className="hidden lg:block">
               <ul className="flex space-x-6 text-white cursor-pointer">
-                {[
-                  "Home",
-                  "About Us",
-                  "Rooms & Suites",
-                  "Features",
-                  "Location",
-                  // "Gallery",
-                  "Booking",
-                  "Contact",
-                ].map((item) => (
-                  <li key={item}>
+                {menuItems.map((item,i) => (
+                  <li key={i}>
                     <h1
                       className="hover:text-[#D2B48C]"
-                      onClick={() => scrollToSection(item)}
+                      onClick={() => scrollToSection(item.id)}
                     >
-                      {item}
+                      {item.label}
                     </h1>
                   </li>
                 ))}
@@ -202,25 +204,16 @@ export default function Header() {
 
           <nav>
             <ul className="space-y-4">
-              {[
-                "Home",
-                "About Us",
-                "Rooms & Suites",
-                "Features",
-                "Location",
-                "Gallery",
-                "Booking",
-                "Contact",
-              ].map((item) => (
-                <li key={item}>
-                  <h1
-                    className="hover:text-[#D2B48C]"
-                    onClick={() => scrollToSection(item)}
-                  >
-                    {item}
-                  </h1>
-                </li>
-              ))}
+            {menuItems.map((item,i) => (
+                  <li key={i}>
+                    <h1
+                      className="hover:text-[#D2B48C]"
+                      onClick={() => scrollToSection(item.id)}
+                    >
+                      {item.label}
+                    </h1>
+                  </li>
+                ))}
             </ul>
           </nav>
         </div>

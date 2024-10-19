@@ -71,7 +71,7 @@ export default function DeluxeRoom() {
           </p>
         </div>
       <RoomSizeDeluxe />
-      <AmenitiesHover cardData={cardData} /> 
+      <AmenitiesHover title='Amenities' cardData={cardData} /> 
       <EntertainmentCards cards={entertainmentCards} />
       <BathroomComponent description={bathroomDescription} />
       <Location />
