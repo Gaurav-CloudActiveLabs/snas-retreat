@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import {
   Phone,
@@ -8,16 +8,31 @@ import {
   CornerRightUp,
   Mail,
   Linkedin,
+  User,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { LogoRectangleWithoutBg } from "@/assets/svg";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
+import { GlobalInfo } from "@/context/provider";
+import SignUpSignIn from "../pageComponents/SignUpSignIn";
 
 export default function RoomHeader() {
+  const { userDetails, signOut } = useContext(GlobalInfo); // Assuming logout is a method in context
   const [isSticky, setIsSticky] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [logoSize, setLogoSize] = useState({ width: 0, height: 0 });
   const router = useRouter();
+  const userId = userDetails?.user?.id;
+  const userName = userDetails?.user?.name;
+  const userEmail = userDetails?.user?.email;
+  const [isLoginCardOpen, setIsLoginCardOpen] = useState(false); // for login card toggle
+  const [modalVisible, setModalVisible] = useState(false);
+  const [title, setTitle] = useState("");
+
+  function openSignUpSignInModal(title: any) {
+    setTitle(title);
+    setModalVisible(true);
+  }
 
   useEffect(() => {
     const updateLogoSize = () => {
@@ -48,6 +63,10 @@ export default function RoomHeader() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const toggleLoginCard = () => {
+    setIsLoginCardOpen(!isLoginCardOpen); // toggle login card visibility
+  };
+
   const menuItems = [
     { id: "home", label: "Home" },
     { id: "about-us", label: "About Us" },
@@ -59,7 +78,7 @@ export default function RoomHeader() {
   ];
 
   const scrollToSection = (id: string) => {
-    router.push(`/#${id}`)
+    router.push(`/#${id}`);
   };
 
   return (
@@ -126,7 +145,7 @@ export default function RoomHeader() {
             </Link>
             <nav className="hidden lg:block">
               <ul className="flex space-x-6 text-white cursor-pointer">
-                {menuItems.map((item,i) => (
+                {menuItems.map((item, i) => (
                   <li key={i}>
                     <h1
                       className="hover:text-[#D2B48C]"
@@ -139,16 +158,52 @@ export default function RoomHeader() {
               </ul>
             </nav>
 
-            <div className="hidden lg:block">
-              <Link
-                href="/reservation"
-                className="bg-[#C19A6B] text-white py-4 px-6 hover:bg-[#a8835b] text-sm font-normal transition duration-300"
-              >
-                RESERVATION
-              </Link>
-            </div>
+            {/* User section */}
+            {userId ? (
+              <div className="relative">
+                <User
+                  size={40}
+                  className="cursor-pointer text-white"
+                  onClick={toggleLoginCard} // Toggle card on click
+                />
+                {isLoginCardOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-4 z-50">
+                    <p className="text-gray-800">{userName}</p>
+                    <p className="text-gray-500">{userEmail}</p>
+                    <Button
+                      className="mt-3 bg-red-500 text-white w-full"
+                      onClick={signOut} // Call logout function
+                    >
+                      Sign out
+                    </Button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="hidden lg:flex space-x-2">
+                  {" "}
+                  {/* Changed to lg:flex and added space-x-2 */}
+                  <Button
+                    onClick={() => openSignUpSignInModal("Sign Up")}
+                    className="bg-[#c19a6b] text-white  hover:bg-[#a8835b] text-primary-foreground shadow py-4 px-6 text-sm font-normal transition duration-300 rounded-none"
+                  >
+                    Sign Up
+                  </Button>
+                  <Button
+                    onClick={() => openSignUpSignInModal("Sign In")}
+                    className="bg-[#C19A6B] text-white  hover:bg-[#a8835b] text-primary-foreground shadow py-4 px-6 text-sm font-normal transition duration-300 rounded-none"
+                  >
+                    Sign In
+                  </Button>
+                </div>
+              </>
+            )}
 
-            <Button onClick={toggleSidebar} className="mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none">
+            <Button
+              onClick={toggleSidebar}
+              className="mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -183,7 +238,10 @@ export default function RoomHeader() {
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          <Button onClick={toggleSidebar} className={`mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none`}>
+          <Button
+            onClick={toggleSidebar}
+            className={`mb-6 lg:hidden bg-[#654224] border border-white text-white p-2 rounded-none`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -202,16 +260,16 @@ export default function RoomHeader() {
 
           <nav>
             <ul className="space-y-4">
-            {menuItems.map((item,i) => (
-                  <li key={i}>
-                    <h1
-                      className="hover:text-[#D2B48C]"
-                      onClick={() => scrollToSection(item.id)}
-                    >
-                      {item.label}
-                    </h1>
-                  </li>
-                ))}
+              {menuItems.map((item, i) => (
+                <li key={i}>
+                  <h1
+                    className="hover:text-[#D2B48C]"
+                    onClick={() => scrollToSection(item.id)}
+                  >
+                    {item.label}
+                  </h1>
+                </li>
+              ))}
             </ul>
           </nav>
         </div>
@@ -224,6 +282,11 @@ export default function RoomHeader() {
           <CornerRightUp className="w-6 h-6 z-50 bg-[#654222]" />
         </button>
       </div>
+      <SignUpSignIn
+        title={title}
+        isOpen={modalVisible}
+        onClose={() => setModalVisible(false)} // Close function
+      />
     </div>
   );
 }

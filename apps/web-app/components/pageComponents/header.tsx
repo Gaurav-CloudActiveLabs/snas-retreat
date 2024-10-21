@@ -188,13 +188,13 @@ export default function Header() {
                   {/* Changed to lg:flex and added space-x-2 */}
                   <Button
                     onClick={() => openSignUpSignInModal("Sign Up")}
-                    className="bg-primary text-primary-foreground shadow hover:bg-primary/90  py-4 px-6 text-sm font-normal transition duration-300 rounded-none"
+                    className="bg-[#C19A6B] text-white  hover:bg-[#a8835b] text-primary-foreground shadow py-4 px-6 text-sm font-normal transition duration-300 rounded-none"
                   >
                     Sign Up
                   </Button>
                   <Button
                     onClick={() => openSignUpSignInModal("Sign In")}
-                    className="bg-primary text-primary-foreground shadow hover:bg-primary/90  py-4 px-6 text-sm font-normal transition duration-300 rounded-none"
+                    className="bg-[#C19A6B] text-white  hover:bg-[#a8835b] text-primary-foreground shadow py-4 px-6 text-sm font-normal transition duration-300 rounded-none"
                   >
                     Sign In
                   </Button>
