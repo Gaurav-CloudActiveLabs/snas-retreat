@@ -8,7 +8,7 @@ interface BathroomComponentProps {
 
 export default function BathroomComponent({ description }: BathroomComponentProps) {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="lg:px-28 px-10 mx-auto py-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
           <h2 className="text-[#DF6951] text-[18px] font-semibold uppercase tracking-wide">Bathroom</h2>

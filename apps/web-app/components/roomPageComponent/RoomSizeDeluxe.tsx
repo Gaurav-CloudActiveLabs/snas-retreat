@@ -4,7 +4,7 @@ import { RoomVector1, RoomVector2 } from '@/assets/svg'
 export default function RoomSizeDeluxe() {
   return (
     <div className="lg:px-28 px-6 mx-auto lg:-mt-20 md:-mt-20 mt-10 relative z-8">
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden rounded-none">
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row gap-4 rounded-lg p-4">
             {/* Room Size Section */}
