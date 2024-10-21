@@ -60,13 +60,13 @@ export default function Appointment() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    // if (validateForm()) {
-    //   // Navigate with query parameters
-    //   router.push(
-    //     `/available-rooms?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}&roomType=${room}`,
-    //     { scroll: false }
-    //   );
-    // }
+    if (validateForm()) {
+      // Navigate with query parameters
+      router.push(
+        `/available-rooms?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}&roomType=${room}`,
+        { scroll: false }
+      );
+    }
   };
   return (
     <div className="relative min-h-screen py-8">
